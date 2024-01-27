@@ -1,0 +1,229 @@
+﻿@model Promote.website.Models.HomePage
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>HomePage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="VideoFileName" class="control-label"></label>
+                <input asp-for="VideoFileName" class="form-control" />
+                <span asp-validation-for="VideoFileName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsTaglineSectionIncluded" class="control-label"></label>
+                <input asp-for="IsTaglineSectionIncluded" class="form-control" />
+                <span asp-validation-for="IsTaglineSectionIncluded" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaglineSectionBgColor" class="control-label"></label>
+                <input asp-for="TaglineSectionBgColor" class="form-control" />
+                <span asp-validation-for="TaglineSectionBgColor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tagline" class="control-label"></label>
+                <input asp-for="Tagline" class="form-control" />
+                <span asp-validation-for="Tagline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsPopularProductsSectionIncluded" class="control-label"></label>
+                <input asp-for="IsPopularProductsSectionIncluded" class="form-control" />
+                <span asp-validation-for="IsPopularProductsSectionIncluded" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProductsSectionTitle" class="control-label"></label>
+                <input asp-for="PopularProductsSectionTitle" class="form-control" />
+                <span asp-validation-for="PopularProductsSectionTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProductsSectionBgColor" class="control-label"></label>
+                <input asp-for="PopularProductsSectionBgColor" class="form-control" />
+                <span asp-validation-for="PopularProductsSectionBgColor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct1Title" class="control-label"></label>
+                <input asp-for="PopularProduct1Title" class="form-control" />
+                <span asp-validation-for="PopularProduct1Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct1Image" class="control-label"></label>
+                <input asp-for="PopularProduct1Image" class="form-control" />
+                <span asp-validation-for="PopularProduct1Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct1Id" class="control-label"></label>
+                <input asp-for="PopularProduct1Id" class="form-control" />
+                <span asp-validation-for="PopularProduct1Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct2Title" class="control-label"></label>
+                <input asp-for="PopularProduct2Title" class="form-control" />
+                <span asp-validation-for="PopularProduct2Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct2Image" class="control-label"></label>
+                <input asp-for="PopularProduct2Image" class="form-control" />
+                <span asp-validation-for="PopularProduct2Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct2Id" class="control-label"></label>
+                <input asp-for="PopularProduct2Id" class="form-control" />
+                <span asp-validation-for="PopularProduct2Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct3Title" class="control-label"></label>
+                <input asp-for="PopularProduct3Title" class="form-control" />
+                <span asp-validation-for="PopularProduct3Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct3Image" class="control-label"></label>
+                <input asp-for="PopularProduct3Image" class="form-control" />
+                <span asp-validation-for="PopularProduct3Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct3Id" class="control-label"></label>
+                <input asp-for="PopularProduct3Id" class="form-control" />
+                <span asp-validation-for="PopularProduct3Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct4Title" class="control-label"></label>
+                <input asp-for="PopularProduct4Title" class="form-control" />
+                <span asp-validation-for="PopularProduct4Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct4Image" class="control-label"></label>
+                <input asp-for="PopularProduct4Image" class="form-control" />
+                <span asp-validation-for="PopularProduct4Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopularProduct4Id" class="control-label"></label>
+                <input asp-for="PopularProduct4Id" class="form-control" />
+                <span asp-validation-for="PopularProduct4Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsServicesSectionIncluded" class="control-label"></label>
+                <input asp-for="IsServicesSectionIncluded" class="form-control" />
+                <span asp-validation-for="IsServicesSectionIncluded" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServicesSectionTitle" class="control-label"></label>
+                <input asp-for="ServicesSectionTitle" class="form-control" />
+                <span asp-validation-for="ServicesSectionTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServicesSectionBgColor" class="control-label"></label>
+                <input asp-for="ServicesSectionBgColor" class="form-control" />
+                <span asp-validation-for="ServicesSectionBgColor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Services1Image" class="control-label"></label>
+                <input asp-for="Services1Image" class="form-control" />
+                <span asp-validation-for="Services1Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Services1Description" class="control-label"></label>
+                <input asp-for="Services1Description" class="form-control" />
+                <span asp-validation-for="Services1Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Services2Image" class="control-label"></label>
+                <input asp-for="Services2Image" class="form-control" />
+                <span asp-validation-for="Services2Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Services2Description" class="control-label"></label>
+                <input asp-for="Services2Description" class="form-control" />
+                <span asp-validation-for="Services2Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Services3Image" class="control-label"></label>
+                <input asp-for="Services3Image" class="form-control" />
+                <span asp-validation-for="Services3Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Services3Description" class="control-label"></label>
+                <input asp-for="Services3Description" class="form-control" />
+                <span asp-validation-for="Services3Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Services4Image" class="control-label"></label>
+                <input asp-for="Services4Image" class="form-control" />
+                <span asp-validation-for="Services4Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Services4Description" class="control-label"></label>
+                <input asp-for="Services4Description" class="form-control" />
+                <span asp-validation-for="Services4Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsStatisticsSectionIncluded" class="control-label"></label>
+                <input asp-for="IsStatisticsSectionIncluded" class="form-control" />
+                <span asp-validation-for="IsStatisticsSectionIncluded" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatisticSectionBgColor" class="control-label"></label>
+                <input asp-for="StatisticSectionBgColor" class="form-control" />
+                <span asp-validation-for="StatisticSectionBgColor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Statistic1Number" class="control-label"></label>
+                <input asp-for="Statistic1Number" class="form-control" />
+                <span asp-validation-for="Statistic1Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Statistic1Title" class="control-label"></label>
+                <input asp-for="Statistic1Title" class="form-control" />
+                <span asp-validation-for="Statistic1Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Statistic2Number" class="control-label"></label>
+                <input asp-for="Statistic2Number" class="form-control" />
+                <span asp-validation-for="Statistic2Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Statistic2Title" class="control-label"></label>
+                <input asp-for="Statistic2Title" class="form-control" />
+                <span asp-validation-for="Statistic2Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Statistic3Number" class="control-label"></label>
+                <input asp-for="Statistic3Number" class="form-control" />
+                <span asp-validation-for="Statistic3Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Statistic3Title" class="control-label"></label>
+                <input asp-for="Statistic3Title" class="form-control" />
+                <span asp-validation-for="Statistic3Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Statistic4Number" class="control-label"></label>
+                <input asp-for="Statistic4Number" class="form-control" />
+                <span asp-validation-for="Statistic4Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Statistic4Title" class="control-label"></label>
+                <input asp-for="Statistic4Title" class="form-control" />
+                <span asp-validation-for="Statistic4Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

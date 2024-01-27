@@ -1,0 +1,270 @@
+﻿@model IEnumerable<Promote.website.Models.HomePage>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoFileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsTaglineSectionIncluded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaglineSectionBgColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tagline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPopularProductsSectionIncluded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProductsSectionTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProductsSectionBgColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct1Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct1Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct1Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct2Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct2Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct2Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct3Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct3Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct3Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct4Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct4Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PopularProduct4Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsServicesSectionIncluded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServicesSectionTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServicesSectionBgColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Services1Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Services1Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Services2Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Services2Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Services3Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Services3Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Services4Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Services4Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsStatisticsSectionIncluded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatisticSectionBgColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statistic1Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statistic1Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statistic2Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statistic2Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statistic3Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statistic3Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statistic4Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statistic4Title)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.VideoFileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsTaglineSectionIncluded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaglineSectionBgColor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tagline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPopularProductsSectionIncluded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProductsSectionTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProductsSectionBgColor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct1Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct1Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct1Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct2Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct2Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct2Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct3Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct3Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct3Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct4Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct4Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PopularProduct4Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsServicesSectionIncluded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServicesSectionTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServicesSectionBgColor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Services1Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Services1Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Services2Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Services2Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Services3Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Services3Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Services4Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Services4Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsStatisticsSectionIncluded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatisticSectionBgColor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statistic1Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statistic1Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statistic2Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statistic2Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statistic3Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statistic3Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statistic4Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statistic4Title)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.HomeId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.HomeId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.HomeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,44 @@
+﻿@model Promote.website.Models.Layout
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Layout</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="LogoPath" class="control-label"></label>
+                <input asp-for="LogoPath" class="form-control" />
+                <span asp-validation-for="LogoPath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FooterColor" class="control-label"></label>
+                <input asp-for="FooterColor" class="form-control" />
+                <span asp-validation-for="FooterColor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HighlightColor" class="control-label"></label>
+                <input asp-for="HighlightColor" class="form-control" />
+                <span asp-validation-for="HighlightColor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
