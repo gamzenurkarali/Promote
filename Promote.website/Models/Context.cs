@@ -10,7 +10,7 @@ namespace Promote.website.Models
 
         public Context(DbContextOptions<Context> options) : base(options)
         {
-        } 
+        }
 
         public DbSet<Admin>? admins { get; set; }
         public DbSet<AboutPage>? aboutPages { get; set; }

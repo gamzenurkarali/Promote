@@ -1,0 +1,200 @@
+﻿@model List<Corporate.EntityLayer.Concrete.About>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="~/css/about.css" rel="stylesheet" />
+    <title>Touristt</title>
+</head>
+<body>
+
+    <div id="navbar">
+        <a href="home.html" id="logo">
+            <!--logonun bağlantı yolu src kısmına eklenmeli-->
+            <img id="logo-image" src="~/image/touristt-high-resolution-logo-removebg-preview (1).png" alt="logo" style="height: 70px;">
+        </a>
+        <!--navbardaki bağlantılar href kısmına eklenmeli-->
+        <div id="navbar-right">
+            <a href="/Home/Index">Home</a>
+            <a class="active" href="/Aboutt/Index">About</a>
+            <a href="/Tours/Index1">Tours</a>
+            <a href="/İletisim/Index">Contact</a>
+        </div>
+    </div>
+
+    <section class="header-section">
+        <div class="header-image-container">
+            <img src="~/image/banner.png" alt="Header Image"><!--Sayfa üstü büyük görsel için resim yolu src kısmına yazılır-->
+        </div>
+
+        <div class="content">
+            <h1>About</h1>
+            <h4><a href="home.html">Home</a> > <a href="about.html">About</a></h4><!--Sayfanın yolu için bağlantı eklenir-->
+        </div>
+    </section>
+
+    <section class="welcome-section">
+        <div class="welcome-image-container">
+            <img class="image1" src="~/image/about1.png" /><!--alttaki görsel-->
+            <img class="image2" src="~/image/about2.png" /><!--üstteki görsel-->
+        </div>
+        <!--p tagı içinde kısaca şirketin oluşturulma aşaması ve şirketi tanıtan metin yazılmalı-->
+        @foreach (var aboutItem in Model)
+        {
+            <p style="width: 30%; text-align: justify; font-style: oblique; align-self:center;">
+                @aboutItem.AboutDescription
+            </p>
+        }
+    </section>
+
+    <div class="mission-section">
+        @foreach (var aboutItem in Model)
+        {
+            <h2 class="mission__title">@aboutItem.MissionTitle</h2>
+
+            <!--misyon başlık-->
+        }
+        @foreach (var aboutItem in Model)
+        {
+            <p class="mission__descr">
+                <!--misyon açıklama-->
+                @aboutItem.Missiondescription
+            </p>
+        }
+        <!-- begin Separator -->
+        <div class="separator">
+            <svg class="separator__svg" width="100%" height="400" viewBox="0 0 100 100" preserveAspectRatio="none" fill="#fbc02d" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <!--ortadaki büyük üçgen kısmın rengi fill bölümünden değiştirilir-->
+                <path d="M 100 100 V 10 L 0 100" />
+                <path d="M 30 73 L 100 18 V 10 Z" fill="#f9a825" stroke-width="0" /><!--ortadaki koyu renkli ayırıcının rengi fill kısmından değiştirilir-->
+            </svg>
+        </div>
+        <!-- end Separator -->
+    </div>
+    <div class="vision-section">
+        @foreach (var aboutItem in Model)
+        {
+            <h2 class="vision__title">@aboutItem.VisionTitle</h2>
+
+            <!--vizyon başlık-->
+        }
+        @foreach (var aboutItem in Model)
+        {
+            <p class="vision__descr">
+                <!--vizyon açıklama-->
+                @aboutItem.Visiondescription
+            </p>
+        }
+    </div>
+
+
+    <section class="why-us-section">
+        <p>Neden Biz?</p>
+        <div class="light-background">
+            <div class="width80">
+                <div class="divider">
+                    <!--başlık ayırıcı çizgi-->
+                </div>
+            </div>
+            <!--Şirketin ayrıcalıklı özellikleri burada madde madde listelenir-->
+            <ul class="why-us-wrap">
+                <li>
+                    <h2>01</h2>
+                    @foreach (var aboutItem in Model)
+                    {
+                        <h3>@aboutItem.WhyUsTitle1</h3>
+
+                        <!--başlık-->
+                        <br>
+                        <p>
+                            @aboutItem.WhyUsdescription1      <!--açıklama-->
+                        </p>
+                    }
+                </li>}
+                <li>
+                    <h2>02</h2>
+                    @foreach (var aboutItem in Model)
+                    {
+                        <h3>@aboutItem.WhyUsTitle2</h3>
+                        <br>
+                        <p>
+                            @aboutItem.WhyUsdescription2
+                        </p>
+                    }
+                </li>
+                <li>
+                    <h2>03</h2>
+                    @foreach (var aboutItem in Model)
+                    {
+                        <h3>@aboutItem.WhyUsTitle3</h3>
+                        <br>
+                        <p>
+                            @aboutItem.WhyUsdescription3
+                        </p>
+                    }
+                </li>
+                }
+            </ul>
+    </section>
+
+
+
+    <footer class="footer">
+        <div class="container footer-row">
+            <!--footer başlıklar-->
+            <div class="footer-col">
+                <h4>About us</h4>
+            </div>
+            <div class="footer-col">
+                <h4>Tours</h4>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+            </div>
+            <div class="footer-col">
+                <h4>follow us</h4>
+                <!--footer sosyal medya bağlantıları-->
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /*-----------------------------------------------------------*/
+        //navbar efekt js başlangıcı
+        // Scroll 80 px aşağıya indirildiğinde navbar boyutlandırılır
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+                document.getElementById("navbar").style.padding = "0px 10px";
+                document.getElementById("logo").style.fontSize = "25px";
+                document.getElementById("logo-image").style.height = "70px";
+                document.getElementById("navbar").style.backgroundColor = "#212121";
+            } else {
+                document.getElementById("navbar").style.padding = "40px 50px";
+                document.getElementById("logo").style.fontSize = "35px";
+                document.getElementById("navbar").style.backgroundColor = "transparent";
+                document.getElementById("navbar").style.opacity = "0.5";
+                document.getElementById("logo-image").style.height = "100px";
+            }
+        }
+        //navbar efekt js sonu
+        /*-----------------------------------------------------------*/
+        //Animate On Scroll kütüphanesini kullanabilir hale getirme
+        AOS.init();
+          /*-----------------------------------------------------------*/
+
+    </script>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</body>
+</html>
