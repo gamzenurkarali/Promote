@@ -1,8 +1,282 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@*@model Corporate.PresentationLayer.Models.HomeViewModel;*@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="~/css/home.css" rel="stylesheet" />
+</head>
+<body>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div id="navbar">
+        <a href="home.html" id="logo">
+            <img id="logo-image" src="~/image/@Model.media.Logo" alt="logo" style="height: 70px;">
+        </a>
+        <div id="navbar-right">
+            <a class="active" href="/Home/Index">Home</a>
+            <a href="/Aboutt/Index">About</a>
+            <a href="/Tours/Index1">Tours</a>
+            <a href="/İletisim/Index">Contact</a>
+
+        </div>
+    </div>
+
+    <section class="showcase">
+        <div class="video-container">
+            @if (Model.media != null && !string.IsNullOrEmpty(Model.media.Video))
+            {
+                <video src="@Model.media.Video" autoplay muted loop></video>
+            }
+            else
+            {
+                <p>Video not available</p>
+            }
+        </div>
+        <div class="content">
+            @if (Model.page != null)
+            {
+                <h1>@Model.page.PageName</h1>
+            }
+            else
+            {
+                <p>Page information not available</p>
+            }
+        </div>
+    </section>
+
+
+    <section class="short-about">
+        <div data-aos="fade-right">
+
+            <h1>@Model.tagline.TaglineText</h1>
+        </div>
+        <div class="content">
+        </div>
+    </section>
+    <section class="products-section">
+
+
+        <div class="row">
+
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="cover item-a">
+                        <h1>Antalya</h1>
+                        <div class="card-back">
+                            <a href="#">View detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="cover item-b">
+                        <h1>Rize</h1>
+                        <div class="card-back">
+                            <a href="#">View detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="cover item-c">
+                        <h1>Mardin</h1>
+                        <div class="card-back">
+                            <a href="#">View detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="cover item-d">
+                        <h1>Bolu</h1>
+                        <div class="card-back">
+                            <a href="#">View detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </section>
+    <section class="services-section">
+        <div data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000" class="service-card">
+
+            <div class="service-image">
+                @if (Model.service != null && !string.IsNullOrEmpty(Model.service.ServiceImage))
+                {
+                    <img src="@Model.service.ServiceImage" alt="" srcset="">
+                }
+                else
+                {
+                    <p>Image not available</p>
+                }
+            </div>
+
+            <div><h1>@Model.service.ServiceTitle</h1></div>
+            <div class="service-text">@Model.service.ServiceDescription</div>
+        </div>
+
+        <div data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="2000" class="service-card">
+            <div class="service-image">
+                <img src="@Model.service.ServiceImage" alt="" srcset="">
+            </div>
+            <div><h1>@Model.service.ServiceTitle</h1></div>
+            <div class="service-text">@Model.service.ServiceDescription</div>
+        </div>
+
+        <div data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000" class="service-card">
+            <div class="service-image">
+                <img src="@Model.service.ServiceImage" alt="" srcset="">
+            </div>
+            <div><h1>@Model.service.ServiceTitle</h1></div>
+            <div class="service-text">@Model.service.ServiceDescription</div>
+        </div>
+
+        <div data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="2000" class="service-card">
+            <div class="service-image">
+                <img src="@Model.service.ServiceImage" alt="" srcset="">
+            </div>
+            <div><h1>@Model.service.ServiceTitle</h1></div>
+            <div class="service-text">@Model.service.ServiceDescription</div>
+        </div>
+
+    </section>
+    <section class="statistics-section">
+
+        <div class="happy-customer">
+            <div class="numbers">
+                <h1 id="1">0</h1>
+            </div>
+            <div class="title-for-numbers">Happy Customer</div>
+        </div>
+
+        <div class="happy-customer">
+            <div class="numbers">
+                <h1 id="2">0</h1>
+            </div>
+            <div class="title-for-numbers">Happy Customer</div>
+        </div>
+
+        <div class="happy-customer">
+            <div class="numbers">
+                <h1 id="3">0</h1>
+            </div>
+            <div class="title-for-numbers">Happy Customer</div>
+        </div>
+
+        <div class="happy-customer">
+            <div class="numbers">
+                <h1 id="4">0</h1>
+            </div>
+            <div class="title-for-numbers">Happy Customer</div>
+        </div>
+
+        <script>
+                function increment(elem, finalVal) {
+              var element = document.getElementById(elem);
+              var currVal = parseInt(element.innerHTML, 10);
+
+              if (currVal < finalVal) {
+                currVal++;
+                element.innerHTML = currVal;
+
+                setTimeout(function() {
+                  increment(elem, finalVal);
+                }, 40);
+              }
+            }
+
+            function handleWaypoint(id, finalVal) {
+              var offset = '75%'; // Adjust the offset as needed
+              var waypointElement = document.getElementById(id);
+
+              function handleScroll() {
+                var rect = waypointElement.getBoundingClientRect();
+                var isVisible = rect.top < window.innerHeight * 0.75 && rect.bottom >= 0;
+
+                if (isVisible) {
+                  increment(id, finalVal);
+                  window.removeEventListener('scroll', handleScroll);
+                }
+              }
+
+              window.addEventListener('scroll', handleScroll);
+            }
+
+            handleWaypoint('1', 87);
+            handleWaypoint('2', 43);
+            handleWaypoint('3', 79);
+            handleWaypoint('4', 68);
+            handleWaypoint('5', 46);
+            handleWaypoint('6', 14);
+
+        </script>
+
+    </section>
+
+    <section class="partners-section">
+    </section>
+
+
+    <footer class="footer">
+        <div class="container footer-row">
+            <div class="footer-col">
+                <h4>About us</h4>
+
+            </div>
+            <div class="footer-col">
+                <h4>Tours</h4>
+
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+
+            </div>
+            <div class="footer-col">
+                <h4>follow us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // When the user scrolls down 80px from the top of the document, resize the navbar's padding and the logo's font size
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+          if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+            document.getElementById("navbar").style.padding = "0px 10px";
+            document.getElementById("logo").style.fontSize = "25px";
+            document.getElementById("logo-image").style.height = "70px";
+            document.getElementById("navbar").style.backgroundColor = "#212121";
+          } else {
+            document.getElementById("navbar").style.padding = "40px 50px";
+            document.getElementById("logo").style.fontSize = "35px";
+
+            document.getElementById("navbar").style.backgroundColor = "transparent";
+            document.getElementById("navbar").style.opacity = "0.5";
+            document.getElementById("logo-image").style.height = "100px";
+          }
+        }
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>

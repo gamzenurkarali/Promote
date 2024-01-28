@@ -1,0 +1,124 @@
+﻿@model List<Corporate.EntityLayer.Concrete.TourDetail>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tatiller</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/tourlist.css">
+
+</head>
+<body>
+    <!--Navbar başlıkları ve linkleri-->
+    <div id="navbar">
+        <a href="home.html" id="logo">
+            <img id="logo-image" src="~/image/touristt-high-resolution-logo-removebg-preview (1).png" alt="logo" style="height: 70px;">
+        </a>
+        <div id="navbar-right">
+            <a href="/Home/Index">Home</a>
+            <a href="/Aboutt/Index">About</a>
+            <a class="active" href="/Tours/Index1">Tours</a>
+            <a href="/İletisim/Index">Contact</a>
+
+        </div>
+    </div>
+    <!--Banner fotoğraf uzantısı-->
+    <section class="header-section">
+        <div class="header-image-container">
+            <img src="~/image/Travel Explore the World (Banner (Landscape)) (1).png" alt="Banner Image">
+        </div>
+
+        <div class="content">
+            <!--Banner içindeki Link ve başlıklar-->
+            <h1>TOURS</h1>
+            <h4><a href="home.html">Home</a> > <a href="tours.html">Tours</a></h4>
+        </div>
+    </section>
+
+
+    <section class="products-section">
+
+        <div class="row">
+
+
+            @foreach (var item in Model)
+            {
+                <!--Fotoğrafın ön yüzündeki Şehir ismi-->
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="card">
+                        <div class="cover item-a" style="background-image: url(../../wwwroot/Image/@item.TourImageFileName);">
+                            <h1>@item.TourName</h1>
+                            <!--Fotoğrafın arka yüzündeki link ve yazı-->
+                            <div class="card-back">
+                                <a href="/Detail/Index/@item.TourDetailID">View detail</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </section>
+
+
+    <footer class="footer">
+        <div class="container footer-row">
+            <!--Footer başlıkları-->
+            <div class="footer-col">
+                <h4>About us</h4>
+
+            </div>
+            <div class="footer-col">
+                <h4>Tours</h4>
+
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+
+            </div>
+            <div class="footer-col">
+                <h4>follow us</h4>
+                <!--Footer sosyal medya linkleri-->
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Kullanıcı belgenin üst kısmından 80 piksel aşağı kaydırdığında gezinme çubuğunun dolgusunu ve logonun yazı tipi boyutunu yeniden boyutlandırın
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            // Sayfa yukarı veya aşağı kaydırıldığında çağrılan fonksiyon
+            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+                // Navbar'a stil uygula
+                document.getElementById("navbar").style.padding = "0px 10px";
+                document.getElementById("logo").style.fontSize = "25px";
+                document.getElementById("logo-image").style.height = "70px";
+                document.getElementById("navbar").style.backgroundColor = "#212121";
+            } else {
+                // Navbar'a farklı bir stil uygula
+                document.getElementById("navbar").style.padding = "40px 50px";
+                document.getElementById("logo").style.fontSize = "35px";
+
+                document.getElementById("navbar").style.backgroundColor = "transparent";
+                document.getElementById("navbar").style.opacity = "0.5";
+                document.getElementById("logo-image").style.height = "100px";
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+
+</body>
+</html>

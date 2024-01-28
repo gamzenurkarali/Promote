@@ -8,6 +8,7 @@ namespace Promote.website.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.AlterColumn<string>(
                 name: "UserName",
                 table: "admins",
