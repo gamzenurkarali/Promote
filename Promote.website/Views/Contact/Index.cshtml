@@ -1,4 +1,4 @@
-﻿@model Promote.website.Models.ContactViewModel;
+﻿@model Promote.website.Models.ContactViewModel
 @{
     Layout = "_PageLayout";
 }
@@ -14,7 +14,14 @@
 
 <section class="banner-section">
     <div class="banner-image-container">
-            <img src="~/Image/@Model.Contact.ImageHeader" alt="Banner Image">
+            @if (Model.Contact != null && !string.IsNullOrEmpty(Model.Contact.ImageHeader))
+            {
+                <img src="~/image/@Model.Contact.ImageHeader" alt="Banner Image">
+            }
+            else
+            {
+                <p>No image available</p>
+            }
     </div>
     
     <div class="content">
@@ -67,31 +74,53 @@
          </form>
       
     </section>
-    
-    <section class="contact-info-section">
-         
-            <h1><strong>Bizimle</strong></h1>
-       
-         
-         <h1><strong>İletisime geçin!</strong></h1> 
-        
-        <br><br>
-        <div data-aos="fade-down-right"><p>Seyahatlerinizle ilgili herhangi bir sorunuz, öneriniz veya yardım ihtiyacınız mı var? Bizimle iletişime geçmekten çekinmeyin! Turistt Ekibi, sizlere en iyi hizmeti sunmak için burada.</p>
-        </div>
-        <br><br>
-        <div data-aos="fade-down-right"><h4 style="display: flex;gap: 10px;"><img src="https://icons.iconarchive.com/icons/icons8/windows-8/128/Mobile-Phone-icon.png" width="24" height="24"></i> <a href="tel:05055555555">0505 555 55 55</a></h4>
-        </div><br>
-        <div data-aos="fade-down-right"><h4 style="display: flex;gap: 10px;"><img src="https://icons.iconarchive.com/icons/ionic/ionicons/24/mail-icon.png" width="24" height="24"> <a href="mailto:touristt@tour.com">touristt@tour.com</a></h4>
-        </div>
-        
-        
-        
-    </section>
+
+        <section class="contact-info-section">
+            <h1><strong>@Model.Contact.ContactInfoTitle</strong></h1>
+
+            <br><br>
+            <div data-aos="fade-down-right">
+                <p>@Model.Contact.ContactInfoDescription</p>
+            </div>
+            <br><br>
+
+            <div>
+                <img src="https://icons.iconarchive.com/icons/icons8/windows-8/128/Mobile-Phone-icon.png" width="24" height="24">
+                @if (Model.Contact != null)
+                {
+                    <a href="tel:05055555555">@Model.Contact.PhoneNumber</a>
+                }
+                else
+                {
+                    <span>Contact information not available</span>
+                }
+            </div><br />
+
+            <h4 style="display: flex; gap: 10px;">
+                <img src="https://icons.iconarchive.com/icons/ionic/ionicons/24/mail-icon.png" width="24" height="24">
+                @if (Model.Contact != null && !string.IsNullOrEmpty(Model.Contact.EmailAddress))
+                {
+                    <a href="mailto:@Model.Contact.EmailAddress">@Model.Contact.EmailAddress</a>
+                }
+                else
+                {
+                    <span>Email address not available</span>
+                }
+            </h4>
+        </section>
+
 
      
     <section class="map-section">
         <div class="map-container">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2992.8983463587024!2d39.174488875926585!3d38.68195877177091!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4076c0392d27f05b%3A0x4518a6344d591f49!2sF%C4%B1rat%20Teknokent!5e1!3m2!1str!2str"  style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            @if (!string.IsNullOrEmpty(Model.Contact.MapIframeUrl))
+            {
+                <iframe src="@Model.Contact.MapIframeUrl" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            }
+            else
+            {
+                <p>Map not available</p>
+            }
         </div>
       </section>
    

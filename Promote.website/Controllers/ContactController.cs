@@ -17,13 +17,13 @@ namespace Promote.website.Controllers
         [HttpGet]
         public IActionResult Index(int id)
         {
-            var contact = _context.contactPages.FirstOrDefault(x => x.ContactPageId == id);
-            var contactForms = _context.contactForms.Where(x => x.ContactFormId == id).ToList();
+            var contact = _context.contactPages.FirstOrDefault();
+            var contactFormList = _context.contactForms.Where(x => x.ContactFormId == id).ToList();
 
             ContactViewModel model = new ContactViewModel
             {
                 Contact = contact,
-                ContactForm = contactForms
+                ContactForm = contactFormList
             };
 
             return View(model);
@@ -39,10 +39,11 @@ namespace Promote.website.Controllers
 
                 // Burada, eklenen formun ait olduğu sayfanın ID'sini almalısınız.
                 // Eğer bu bilgiyi alamıyorsanız, sabit bir ID kullanmak yerine dinamik bir şekilde belirlemelisiniz.
-                return RedirectToAction("Index", new { id =  1});
+                return RedirectToAction("Index", new { id = 1 });
             }
 
             return View(contactForm);
         }
+
     }
 }
