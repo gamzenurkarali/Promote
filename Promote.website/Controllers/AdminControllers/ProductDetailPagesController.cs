@@ -18,7 +18,7 @@ namespace Promote.website.Controllers
         {
             _context = context;
         }
-        [Authorize]
+        //[Authorize]
         // GET: ProductDetailPages
         public async Task<IActionResult> Index()
         {
@@ -26,7 +26,7 @@ namespace Promote.website.Controllers
                           View(await _context.productDetailPages.ToListAsync()) :
                           Problem("Entity set 'Context.productDetailPages'  is null.");
         }
-        [Authorize]
+        //[Authorize]
         // GET: ProductDetailPages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +44,7 @@ namespace Promote.website.Controllers
 
             return View(productDetailPage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: ProductDetailPages/Create
         public IActionResult Create()
         {
@@ -66,7 +66,7 @@ namespace Promote.website.Controllers
             }
             return View(productDetailPage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: ProductDetailPages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,7 +117,7 @@ namespace Promote.website.Controllers
             }
             return View(productDetailPage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: ProductDetailPages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

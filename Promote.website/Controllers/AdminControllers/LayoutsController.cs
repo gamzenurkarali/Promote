@@ -26,7 +26,7 @@ namespace Promote.website.Controllers
                           View(await _context.layouts.ToListAsync()) :
                           Problem("Entity set 'Context.layouts'  is null.");
         }
-        [Authorize]
+        //[Authorize]
         // GET: Layouts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +44,7 @@ namespace Promote.website.Controllers
 
             return View(layout);
         }
-        [Authorize]
+        //[Authorize]
         // GET: Layouts/Create
         public IActionResult Create()
         {
@@ -66,7 +66,7 @@ namespace Promote.website.Controllers
             }
             return View(layout);
         }
-        [Authorize]
+        //[Authorize]
         // GET: Layouts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,7 +117,7 @@ namespace Promote.website.Controllers
             }
             return View(layout);
         }
-        [Authorize]
+        //[Authorize]
         // GET: Layouts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

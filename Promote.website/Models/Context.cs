@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using System.Data;
-using System.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Promote.website.Models
 {
     public class Context : DbContext
     {
+        public Context()
+        {
+        }
 
         public Context(DbContextOptions<Context> options) : base(options)
         {
@@ -23,6 +23,15 @@ namespace Promote.website.Models
         public DbSet<ProductListPage>? productLists { get; set; }
         public DbSet<Sublink>? sublinks { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Fee)
+                .HasColumnType("decimal(18,2)"); // 18 total digits, 2 decimal places
+
+            // Diğer model konfigürasyonlarını ekleyebilirsiniz...
+        }
     }
 }

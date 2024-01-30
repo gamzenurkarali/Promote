@@ -10,13 +10,15 @@ using Promote.website.Models;
 
 namespace Promote.website.Controllers
 {
+    //[Authorize]
     public class AboutPagesController : Controller
     {
         private readonly Context _context;
-
-        public AboutPagesController(Context context)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public AboutPagesController(Context context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
          
         // GET: AboutPages
@@ -26,7 +28,7 @@ namespace Promote.website.Controllers
                           View(await _context.aboutPages.ToListAsync()) :
                           Problem("Entity set 'Context.aboutPages'  is null.");
         }
-        [Authorize]
+        //[Authorize]
         // GET: AboutPages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +46,7 @@ namespace Promote.website.Controllers
 
             return View(aboutPage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: AboutPages/Create
         public IActionResult Create()
         {
@@ -56,17 +58,41 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AboutId,ImageHeader,ImageBottom,ImageTop,CompanyDescription,MissionTitle,MissionDescription,MissionBgColor,VisionTitle,VisionDescription,VisionBgColor,WhyUsSectionTitle,WhyUsSectionBgColor,WhyUs1Title,WhyUs1Description,WhyUs1BgColor,WhyUs2Title,WhyUs2Description,WhyUs2BgColor,WhyUs3Title,WhyUs3Description,WhyUs3BgColor")] AboutPage aboutPage)
+        public async Task<IActionResult> Create([Bind("AboutId,ImageHeader,ImageBottom,ImageTop,CompanyDescription,MissionTitle,MissionDescription,MissionBgColor,VisionTitle,VisionDescription,VisionBgColor,WhyUsSectionTitle,WhyUsSectionBgColor,WhyUs1Title,WhyUs1Description,WhyUs1BgColor,WhyUs2Title,WhyUs2Description,WhyUs2BgColor,WhyUs3Title,WhyUs3Description,WhyUs3BgColor")] AboutPage aboutPage, IFormFile imageFile)
         {
-            if (ModelState.IsValid)
-            {
+           
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    // Generate a unique file name
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+
+                    // File path where the image will be saved (in the "Image" folder)
+                    string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileName);
+
+                    // Copy the file
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+
+                    // Set the ImageHeader, ImageBottom, or other appropriate property to the file name
+                    aboutPage.ImageHeader = fileName;
+                    aboutPage.ImageBottom = fileName;
+                    aboutPage.ImageTop = fileName;
+                    // Repeat the above line for other image properties if needed
+                }
+
+                // Add the aboutPage to the context
                 _context.Add(aboutPage);
+
+                // Save changes to the database
                 await _context.SaveChangesAsync();
+
+                // Redirect to the Index action
                 return RedirectToAction(nameof(Index));
-            }
-            return View(aboutPage);
-        }
-        [Authorize]
+            }  
+
+        //[Authorize]
         // GET: AboutPages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,7 +143,7 @@ namespace Promote.website.Controllers
             }
             return View(aboutPage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: AboutPages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

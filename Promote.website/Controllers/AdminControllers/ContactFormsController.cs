@@ -18,7 +18,7 @@ namespace Promote.website.Controllers
         {
             _context = context;
         }
-        [Authorize]
+        //[Authorize]
         // GET: ContactForms
         public async Task<IActionResult> Index()
         {
@@ -26,7 +26,7 @@ namespace Promote.website.Controllers
                           View(await _context.contactForms.ToListAsync()) :
                           Problem("Entity set 'Context.contactForms'  is null.");
         }
-        [Authorize]
+        //[Authorize]
         // GET: ContactForms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +44,7 @@ namespace Promote.website.Controllers
 
             return View(contactForm);
         }
-        [Authorize]
+        //[Authorize]
         // GET: ContactForms/Create
         public IActionResult Create()
         {
@@ -66,7 +66,7 @@ namespace Promote.website.Controllers
             }
             return View(contactForm);
         }
-        [Authorize]
+        //[Authorize]
         // GET: ContactForms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,7 +117,7 @@ namespace Promote.website.Controllers
             }
             return View(contactForm);
         }
-        [Authorize]
+        //[Authorize]
         // GET: ContactForms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

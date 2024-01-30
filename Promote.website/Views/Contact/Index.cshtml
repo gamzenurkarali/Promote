@@ -1,5 +1,7 @@
-﻿@model Corporate.PresentationLayer.Models.ContactViewModel;
-
+﻿@model Promote.website.Models.ContactViewModel;
+@{
+    Layout = "_PageLayout";
+}
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -10,186 +12,99 @@
 </head>
 <body>
 
-    <div id="navbar">
-        <a href="home.html" id="logo">
-            <!--logonun bağlantı yolu src kısmına eklenmeli-->
-            <img id="logo-image" src="~/image/@Model.HeaderImage.Logo" alt="logo" style="height: 70px;">
-        </a>
-        <!--navbardaki bağlantılar href kısmına eklenmeli-->
-        <div id="navbar-right">
-            <a href="/Home/Index">Home</a>
-            <a href="/Aboutt/Index">About</a>
-            <a href="/Tours/Index1">Tours</a>
-            <a class="active" href="/İletisim/Index">Contact</a>
-        </div>
+<section class="banner-section">
+    <div class="banner-image-container">
+            <img src="~/Image/@Model.Contact.ImageHeader" alt="Banner Image">
     </div>
+    
+    <div class="content">
+        <h1>Contact</h1>
+        <h4><a href="home.html">Home</a> > <a href="contact.html">Contact</a></h4>
+    </div>
+</section>
 
-    <section class="header-section">
-        <div class="header-image-container">
-            <img src="~/image/@Model.HeaderImage.HeaderImage" alt="Header Image" /><!--Sayfa üstü büyük görsel için resim yolu src kısmına yazılır-->
-        </div>
 
-        <div class="content">
-            <h1>Contact</h1>
-            <h4><a href="home.html">Home</a> > <a href="contact.html">Contact</a></h4><!--Sayfanın yolu için bağlantı eklenir-->
+
+<div class="middle">
+    <section class="contact-form-section">
+        <form action="#">
+            <div class="form-row">
+               <div class="input-data">
+                  <input type="text" required>
+                  <div class="underline"></div>
+                  <label for="">First Name</label>
+               </div>
+               <div class="input-data">
+                  <input type="text" required>
+                  <div class="underline"></div>
+                  <label for="">Last Name</label>
+               </div>
+            </div>
+            <div class="form-row">
+               <div class="input-data">
+                  <input type="text" required>
+                  <div class="underline"></div>
+                  <label for="">Email Address</label>
+               </div>
+            </div>
+            <div class="form-row">
+            <div class="input-data textarea">
+               <textarea rows="8" cols="80" required></textarea>
+               <br />
+               <div class="underline"></div>
+               <label for="">Write your message</label>
+               <br>
+               <div class="submit-btn">
+                  <div>
+                     <div class="inner"></div>
+                     <button class="button-86" role="button">Send</button>
+                  </div>
+               </div>
+               <br><br>
+            </div> 
+            <!--buton css !-->
+  
+         </form>
+      
+    </section>
+    
+    <section class="contact-info-section">
+         
+            <h1><strong>Bizimle</strong></h1>
+       
+         
+         <h1><strong>İletisime geçin!</strong></h1> 
+        
+        <br><br>
+        <div data-aos="fade-down-right"><p>Seyahatlerinizle ilgili herhangi bir sorunuz, öneriniz veya yardım ihtiyacınız mı var? Bizimle iletişime geçmekten çekinmeyin! Turistt Ekibi, sizlere en iyi hizmeti sunmak için burada.</p>
         </div>
+        <br><br>
+        <div data-aos="fade-down-right"><h4 style="display: flex;gap: 10px;"><img src="https://icons.iconarchive.com/icons/icons8/windows-8/128/Mobile-Phone-icon.png" width="24" height="24"></i> <a href="tel:05055555555">0505 555 55 55</a></h4>
+        </div><br>
+        <div data-aos="fade-down-right"><h4 style="display: flex;gap: 10px;"><img src="https://icons.iconarchive.com/icons/ionic/ionicons/24/mail-icon.png" width="24" height="24"> <a href="mailto:touristt@tour.com">touristt@tour.com</a></h4>
+        </div>
+        
+        
+        
     </section>
 
-
-
-    <div class="middle">
-
-        <section class="contact-form-section">
-            <!--iletişim formu-->
-            <form action="#">
-                <div class="form-row">
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">First Name</label>
-                    </div>
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-
-                        <label for="">Last Name</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">Email Address</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="input-data textarea">
-                        <textarea rows="8" cols="80" required></textarea>
-                        <br />
-                        <div class="underline"></div>
-                        <label for="">Write your message</label>
-                        <br>
-                        <div class="submit-btn">
-                            <div>
-                                <div class="inner"></div>
-                                <button class="button-86" role="button">Send</button>
-                            </div>
-                        </div>
-                        <br><br>
-                    </div>
-                </div>
-            </form>
-        </section>
-
-        <section class="contact-info-section">
-            <h1><strong>Bizimle</strong></h1>
-            <h1><strong>İletisime geçin!</strong></h1>
-            <br><br>
-            <div data-aos="fade-down-right" class="aos-init aos-animate">
-                <p>Seyahatlerinizle ilgili herhangi bir sorunuz, öneriniz veya yardım ihtiyacınız mı var? Bizimle iletişime geçmekten çekinmeyin! Turistt Ekibi, sizlere en iyi hizmeti sunmak için burada.</p>
-            </div>
-            <br><br>
-            <div data-aos="fade-down-right" class="aos-init aos-animate">
-                <h4 style="display: flex;gap: 10px;">
-                    <img src="https://icons.iconarchive.com/icons/icons8/windows-8/128/Mobile-Phone-icon.png" width="24" height="24">
-                    @if (Model.Contact != null)
-                    {
-                        <a href="tel:05055555555">@Model.Contact.Phone</a>
-                    }
-                    else
-                    {
-                        <span>Contact information not available</span>
-                    }
-                </h4><!--telefon numarası yazılmalı-->
-            </div><br>
-            <div data-aos="fade-down-right" class="aos-init aos-animate">
-                <h4 style="display: flex; gap: 10px;">
-                    <img src="https://icons.iconarchive.com/icons/ionic/ionicons/24/mail-icon.png" width="24" height="24">
-                    @if (Model.Contact != null && !string.IsNullOrEmpty(Model.Contact.Email))
-                    {
-                        <a href="mailto:@Model.Contact.Email">@Model.Contact.Email</a>
-                    }
-                    else
-                    {
-                        <span>Email address not available</span>
-                    }
-                </h4>
-            </div>
-        </section>
-
-
-        <section class="map-section">
-            <div class="map-container">
-                @if (!string.IsNullOrEmpty(Model.Contact?.Map))
-                {
-                    <iframe src="@Model.Contact.Map" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                }
-                else
-                {
-                    <p>Map not available</p>
-                }
-            </div>
-        </section>
-
-
-    </div>
-
-
-    <footer class="footer">
-        <div class="container footer-row">
-            <!--footer başlıklar-->
-            <div class="footer-col">
-                <h4>About us</h4>
-            </div>
-            <div class="footer-col">
-                <h4>Tours</h4>
-            </div>
-            <div class="footer-col">
-                <h4>Contact</h4>
-            </div>
-            <div class="footer-col">
-                <h4>follow us</h4>
-                <!--footer sosyal medya bağlantıları-->
-                <div class="social-links">
-                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>
-            </div>
+     
+    <section class="map-section">
+        <div class="map-container">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2992.8983463587024!2d39.174488875926585!3d38.68195877177091!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4076c0392d27f05b%3A0x4518a6344d591f49!2sF%C4%B1rat%20Teknokent!5e1!3m2!1str!2str"  style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
-    </footer>
+      </section>
+   
+ 
+</div>
 
-    <script>
-        /*-----------------------------------------------------------*/
-        //navbar efekt js başlangıcı
-        // Scroll 80 px aşağıya indirildiğinde navbar boyutlandırılır
-        window.onscroll = function () { scrollFunction() };
 
-        function scrollFunction() {
-            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-                document.getElementById("navbar").style.padding = "0px 10px";
-                document.getElementById("logo").style.fontSize = "25px";
-                document.getElementById("logo-image").style.height = "70px";
-                document.getElementById("navbar").style.backgroundColor = "#212121";
-            } else {
-                document.getElementById("navbar").style.padding = "40px 50px";
-                document.getElementById("logo").style.fontSize = "35px";
-                document.getElementById("navbar").style.backgroundColor = "transparent";
-                document.getElementById("navbar").style.opacity = "0.5";
-                document.getElementById("logo-image").style.height = "100px";
-            }
-        }
-        //navbar efekt js sonu
-        /*-----------------------------------------------------------*/
-        //Animate On Scroll kütüphanesini kullanabilir hale getirme
-        AOS.init();
-          /*-----------------------------------------------------------*/
-
+  
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  
+  <script>
+    AOS.init();
     </script>
-
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -13,12 +13,13 @@ namespace Promote.website.Controllers
     public class ContactPagesController : Controller
     {
         private readonly Context _context;
-
-        public ContactPagesController(Context context)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public ContactPagesController(Context context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
-        [Authorize]
+        //[Authorize]
         // GET: ContactPages
         public async Task<IActionResult> Index()
         {
@@ -26,7 +27,7 @@ namespace Promote.website.Controllers
                           View(await _context.contactPages.ToListAsync()) :
                           Problem("Entity set 'Context.contactPages'  is null.");
         }
-        [Authorize]
+        //[Authorize]
         // GET: ContactPages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +45,7 @@ namespace Promote.website.Controllers
 
             return View(contactPage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: ContactPages/Create
         public IActionResult Create()
         {
@@ -56,17 +57,36 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContactPageId,ImageHeader,ContactInfoTitle,ContactInfoDescription,PhoneNumber,EmailAddress,MapIframeUrl")] ContactPage contactPage)
+        public async Task<IActionResult> Create([Bind("ContactPageId,ImageHeader,ContactInfoTitle,ContactInfoDescription,PhoneNumber,EmailAddress,MapIframeUrl")] ContactPage contactPage, IFormFile headerImage)
         {
             if (ModelState.IsValid)
             {
+                if (headerImage != null && headerImage.Length > 0)
+                {
+                    // Dosya adını benzersiz bir şekilde oluştur
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(headerImage.FileName);
+
+                    // Dosyanın kaydedileceği yol (image klasörü)
+                    string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileName);
+
+                    // Dosyayı kopyala
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await headerImage.CopyToAsync(stream);
+                    }
+
+                    // Set the ImageHeader property to the file name
+                    contactPage.ImageHeader = fileName;
+                }
+
                 _context.Add(contactPage);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(contactPage);
         }
-        [Authorize]
+
+        //[Authorize]
         // GET: ContactPages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,7 +137,7 @@ namespace Promote.website.Controllers
             }
             return View(contactPage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: ContactPages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

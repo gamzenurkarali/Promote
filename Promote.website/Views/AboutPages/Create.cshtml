@@ -11,21 +11,21 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ImageHeader" class="control-label"></label>
-                <input asp-for="ImageHeader" class="form-control" />
+                <input asp-for="ImageHeader" name="imageFile" class="form-control" type="file" />
                 <span asp-validation-for="ImageHeader" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImageBottom" class="control-label"></label>
-                <input asp-for="ImageBottom" class="form-control" />
+                <input asp-for="ImageBottom" name="imageFile" class="form-control" type="file" />
                 <span asp-validation-for="ImageBottom" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImageTop" class="control-label"></label>
-                <input asp-for="ImageTop" class="form-control" />
+                <input asp-for="ImageTop" name="imageFile" class="form-control" type="file" />
                 <span asp-validation-for="ImageTop" class="text-danger"></span>
             </div>
             <div class="form-group">

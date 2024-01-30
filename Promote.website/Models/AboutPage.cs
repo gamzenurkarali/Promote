@@ -90,5 +90,7 @@ namespace Promote.website.Models
         [Required(ErrorMessage = "Why Us 3 Background Color is required.")]
         [Display(Name = "Why Us 3 Background Color")]
         public string WhyUs3BgColor { get; set; } = string.Empty;
+
+        
     }
 }
