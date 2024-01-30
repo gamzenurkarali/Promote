@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="~/css/home.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div id="navbar">
+        <a href="home.html" id="logo">
+            <img id="logo-image" src="~/image/touristt-high-resolution-logo-removebg-preview (1).png" alt="logo" style="height: 70px;">
+        </a>
+        <div id="navbar-right">
+            <a href="/Home/Index">Home</a>
+            <a href="/Aboutt/Index">About</a>
+            <a href="/Tours/Index1">Tours</a>
+            <a href="/İletisim/Index">Contact</a>
+
+        </div>
+    </div>
+
+    @RenderBody()
+
+    <footer class="footer">
+        <div class="container footer-row">
+            <div class="footer-col">
+                <h4>About us</h4>
+
+            </div>
+            <div class="footer-col">
+                <h4>Tours</h4>
+
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+
+            </div>
+            <div class="footer-col">
+                <h4>follow us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // When the user scrolls down 80px from the top of the document, resize the navbar's padding and the logo's font size
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+                document.getElementById("navbar").style.padding = "0px 10px";
+                document.getElementById("logo").style.fontSize = "25px";
+                document.getElementById("logo-image").style.height = "70px";
+                document.getElementById("navbar").style.backgroundColor = "#212121";
+            } else {
+                document.getElementById("navbar").style.padding = "40px 50px";
+                document.getElementById("logo").style.fontSize = "35px";
+
+                document.getElementById("navbar").style.backgroundColor = "transparent";
+                document.getElementById("navbar").style.opacity = "0.5";
+                document.getElementById("logo-image").style.height = "100px";
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>

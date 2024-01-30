@@ -18,7 +18,7 @@ namespace Promote.website.Controllers
         {
             _context = context;
         }
-        [Authorize]
+        //[Authorize]
         // GET: HomePages
         public async Task<IActionResult> Index()
         {
@@ -26,7 +26,7 @@ namespace Promote.website.Controllers
                           View(await _context.homePages.ToListAsync()) :
                           Problem("Entity set 'Context.homePages'  is null.");
         }
-        [Authorize]
+        //[Authorize]
         // GET: HomePages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +44,7 @@ namespace Promote.website.Controllers
 
             return View(homePage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: HomePages/Create
         public IActionResult Create()
         {
@@ -66,7 +66,7 @@ namespace Promote.website.Controllers
             }
             return View(homePage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: HomePages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,7 +117,7 @@ namespace Promote.website.Controllers
             }
             return View(homePage);
         }
-        [Authorize]
+        //[Authorize]
         // GET: HomePages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

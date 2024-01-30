@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies; // Bu namespace'i ekleyin
 using Promote.website.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Servisleri konteynere ekle
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc().AddRazorRuntimeCompilation();
 
@@ -14,13 +15,25 @@ var configuration = builder.Configuration;
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+// Kimlik doðrulama servislerini ekle
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
+{
+    // Çerez kimlik doðrulama seçenekleri
+    options.Cookie.Name = "SizinCerezAdiniz"; // Ýhtiyaca göre özel bir çerez adý belirleyin
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// HTTP isteði pipeline'ýný yapýlandýr
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -29,10 +42,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Yetkilendirme öncesinde kimlik doðrulamayý kullan
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

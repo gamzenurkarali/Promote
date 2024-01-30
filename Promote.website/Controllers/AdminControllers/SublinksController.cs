@@ -18,7 +18,7 @@ namespace Promote.website.Controllers
         {
             _context = context;
         }
-        [Authorize]
+        //[Authorize]
         // GET: Sublinks
         public async Task<IActionResult> Index()
         {
@@ -26,7 +26,7 @@ namespace Promote.website.Controllers
                           View(await _context.sublinks.ToListAsync()) :
                           Problem("Entity set 'Context.sublinks'  is null.");
         }
-        [Authorize]
+        //[Authorize]
         // GET: Sublinks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +44,7 @@ namespace Promote.website.Controllers
 
             return View(sublink);
         }
-        [Authorize]
+        //[Authorize]
         // GET: Sublinks/Create
         public IActionResult Create()
         {
@@ -66,7 +66,7 @@ namespace Promote.website.Controllers
             }
             return View(sublink);
         }
-        [Authorize]
+        //[Authorize]
         // GET: Sublinks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,7 +117,7 @@ namespace Promote.website.Controllers
             }
             return View(sublink);
         }
-        [Authorize]
+        //[Authorize]
         // GET: Sublinks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
