@@ -63,9 +63,7 @@ namespace Promote.website.Controllers
             {
                 if (headerImage != null && headerImage.Length > 0)
                 {
-                    // Dosya adını benzersiz bir şekilde oluştur
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(headerImage.FileName);
-
+                    string fileName = headerImage.FileName;
                     // Dosyanın kaydedileceği yol (image klasörü)
                     string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileName);
 
