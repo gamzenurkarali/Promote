@@ -1,22 +1,28 @@
-﻿@model List<Promote.website.Models.AboutPage>
+﻿@model Promote.website.Models.AboutPage
 @{
     Layout = "_PageLayout";
 }
 
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+@section Styles {
     <link href="~/css/about.css" rel="stylesheet" />
-    <title>Touristt</title>
-</head>
-<body>
+}
+
+
 <section class="header-section">
     <div class="header-image-container">
-        <img src="/Image/banner.png" alt="Header Image"><!--Sayfa üstü büyük görsel için resim yolu src kısmına yazılır-->}
+        <!--Sayfa üstü büyük görsel için resim yolu src kısmına yazılır-->}
+        @if (!string.IsNullOrEmpty(Model.ImageHeader))
+        {
+            <img src="@Model.ImageHeader" alt="Banner Image">
+        }
+        else
+        {
+            <!-- Varsayılan görüntüyü kullanabilirsiniz -->
+            <img src="~/DefaultMedia/Header.png" alt="Default Image">
+        }
     </div>
-    
+
     <div class="content">
         <h1>About</h1>
         <h4><a href="home.html">Home</a> > <a href="about.html">About</a></h4><!--Sayfanın yolu için bağlantı eklenir-->
@@ -25,126 +31,129 @@
 
 <section class="welcome-section">
     <div class="welcome-image-container">
-        <img class="image1" src="Image/about1.png" /><!--alttaki görsel-->
-        <img class="image2" src="Image/about2.png" /><!--üstteki görsel-->
-      </div>
-    <!--p tagı içinde kısaca şirketin oluşturulma aşaması ve şirketi tanıtan metin yazılmalı-->
-    @foreach (var aboutItem in Model)
+        <!--alttaki görsel-->
+        @if (!string.IsNullOrEmpty(Model.ImageBottom))
         {
-            <p style="width: 30%; text-align: justify; font-style: oblique;align-self:center;">@aboutItem.CompanyDescription</p>
+            <img class="image1"  src="@Model.ImageBottom" alt="Banner Image">
         }
+        else
+        {
+            <!-- Varsayılan görüntüyü kullanabilirsiniz -->
+            <img class="image1" src="~/DefaultMedia/about1.png" alt="Default Image">
+        }
+        <!--üstteki görsel-->
+        @if (!string.IsNullOrEmpty(Model.ImageTop))
+        {
+            <img class="image2" src="@Model.ImageTop" alt="Banner Image">
+        }
+        else
+        {
+            <!-- Varsayılan görüntüyü kullanabilirsiniz -->
+            <img class="image2" src="~/DefaultMedia/about2.png" alt="Default Image">
+        }
+
+    </div>
+
+    <!--p tagı içinde kısaca şirketin oluşturulma aşaması ve şirketi tanıtan metin yazılmalı-->
+    <p style="width: 30%; text-align: justify; font-style: oblique;align-self:center;">@Model.CompanyDescription</p>
+
 </section>
 
-<div class="mission-section">
-    @foreach (var aboutItem in Model)
-        {
-    <h2 class="mission__title">@aboutItem.MissionTitle</h2><!--misyon başlık-->
-        }
-         @foreach (var aboutItem in Model)
-        {
-    <p class="mission__descr"><!--misyon açıklama-->
-       @aboutItem.MissionDescription</p>
-        }
+<div class="mission-section" style="background-color: @Model.MissionBgColor">
+
+    <h2 class="mission__title">@Model.MissionTitle</h2><!--misyon başlık-->
+
+    <p class="mission__descr">
+        @Model.MissionDescription
+    </p><!--misyon açıklama-->
     <!-- begin Separator -->
     <div class="separator">
-      <svg class="separator__svg" width="100%" height="400" viewBox="0 0 100 100" preserveAspectRatio="none" fill="#fbc02d" version="1.1" xmlns="http://www.w3.org/2000/svg"><!--ortadaki büyük üçgen kısmın rengi fill bölümünden değiştirilir-->
-         <path d="M 100 100 V 10 L 0 100"/>
-         <path d="M 30 73 L 100 18 V 10 Z" fill="#f9a825" stroke-width="0"/><!--ortadaki koyu renkli ayırıcının rengi fill kısmından değiştirilir-->
+        <svg class="separator__svg" width="100%" height="400" viewBox="0 0 100 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <!-- ortadaki büyük üçgen kısmın rengi fill bölümünden değiştirilir -->
+            <path d="M 100 100 V 10 L 0 100" fill=@Model.VisionBgColor />
+            @{
+                // Eğer Model.VisionBgColor değeri null ise, varsayılan rengi kullan
+                var upperPathColor = Model.VisionBgColor ?? "#f9a825";
+
+                // Upper path rengini biraz daha koyu yapmak için her bir bileşeni 20 değeri düşürelim
+                var darkerUpperPathColor = ShadeColor(upperPathColor, -20);
+            }
+            @functions {
+                public string ShadeColor(string color, int shade)
+                {
+                    var r = int.Parse(color.Substring(1, 2), System.Globalization.NumberStyles.HexNumber);
+                    var g = int.Parse(color.Substring(3, 2), System.Globalization.NumberStyles.HexNumber);
+                    var b = int.Parse(color.Substring(5, 2), System.Globalization.NumberStyles.HexNumber);
+
+                    r = Math.Max(0, Math.Min(255, r + shade));
+                    g = Math.Max(0, Math.Min(255, g + shade));
+                    b = Math.Max(0, Math.Min(255, b + shade));
+
+                    return $"#{r:X2}{g:X2}{b:X2}";
+                }
+            }
+
+            <!-- ortadaki koyu renkli ayırıcının rengi fill kısmından değiştirilir -->
+            <path d="M 30 73 L 100 18 V 10 Z" fill=@darkerUpperPathColor stroke-width="0" />
         </svg>
     </div>
+
     <!-- end Separator -->
 </div>
-<div class="vision-section">
-    @foreach (var aboutItem in Model)
-        {
-  <h2 class="vision__title">@aboutItem.VisionTitle</h2><!--vizyon başlık-->
-        }
-        @foreach (var aboutItem in Model)
-        {
-  <p class="vision__descr"><!--vizyon açıklama-->
-      @aboutItem.VisionDescription</p>
-        }
+<div class="vision-section" style="background-color: @Model.VisionBgColor">
+
+    <h2 class="vision__title">@Model.VisionTitle</h2><!--vizyon başlık-->
+
+    <p class="vision__descr">
+        @Model.VisionDescription
+    </p><!--vizyon açıklama-->
+
 </div>
 
 
-<section class="why-us-section">
-     @foreach (var aboutItem in Model)
-        {
-    <p>@aboutItem.WhyUsSectionTitle</p>}
+<section class="why-us-section" style="background-color: @Model.WhyUsSectionBgColor">
+     
+        <p>@Model.WhyUsSectionTitle</p>
+         
 
-    <div class="light-background">
+    <div class="light-background" style="background-color: @Model.WhyUsSectionBgColor">
         <div class="width80">
-          <div class="divider"> <!--başlık ayırıcı çizgi-->
+            <div class="divider">
+                <!--başlık ayırıcı çizgi-->
+            </div>
         </div>
-    </div>
 
-    <!--Şirketin ayrıcalıklı özellikleri burada madde madde listelenir-->
-    <ul class="why-us-wrap">
-        <li>
-            <h2>01</h2>
-            @foreach (var aboutItem in Model)
-        {
-            <h3>@aboutItem.WhyUs1Title</h3><!--başlık-->
-            <br>
-            <p>
-                @aboutItem.WhyUs1Description<!--açıklama-->
-            </p> }
-        </li>
-        <li>
-            <h2>02</h2>
-            @foreach (var aboutItem in Model)
-        {
-            <h3>@aboutItem.WhyUs2Title</h3>
-            <br>
-            <p>
-                 @aboutItem.WhyUs2Description
-            </p> }
-        </li>
-        <li>
-            <h2>03</h2>
-             @foreach (var aboutItem in Model)
-        {
-            <h3>@aboutItem.WhyUs3Title</h3>
-            <br>
-            <p>
-                @aboutItem.WhyUs3Description
-            </p> }
-        </li>
-    </ul> 
+        <!--Şirketin ayrıcalıklı özellikleri burada madde madde listelenir-->
+        <ul class="why-us-wrap">
+            <li style="background-color: @Model.WhyUs1BgColor">
+                <h2>01</h2>
+
+                <h3>@Model.WhyUs1Title</h3><!--başlık-->
+                <br>
+                <p>
+                    @Model.WhyUs1Description<!--açıklama-->
+                </p>
+            </li>
+            <li style="background-color: @Model.WhyUs2BgColor">
+                <h2>02</h2>
+
+                <h3>@Model.WhyUs2Title</h3>
+                <br>
+                <p>
+                    @Model.WhyUs2Description
+                </p>
+            </li>
+            <li style="background-color: @Model.WhyUs3BgColor">
+                <h2>03</h2>
+
+                <h3>@Model.WhyUs3Title</h3>
+                <br>
+                <p>
+                    @Model.WhyUs3Description
+                </p>
+            </li>
+        </ul>
     </div>
 </section>
 
-  
-<script>
-  /*-----------------------------------------------------------*/
-  //navbar efekt js başlangıcı
-  // Scroll 80 px aşağıya indirildiğinde navbar boyutlandırılır
-  window.onscroll = function() {scrollFunction()};
 
-  function scrollFunction() {
-    if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-      document.getElementById("navbar").style.padding = "0px 10px";
-      document.getElementById("logo").style.fontSize = "25px"; 
-      document.getElementById("logo-image").style.height = "70px"; 
-      document.getElementById("navbar").style.backgroundColor = "#212121"; 
-    } else {
-      document.getElementById("navbar").style.padding = "40px 50px";
-      document.getElementById("logo").style.fontSize = "35px"; 
-      document.getElementById("navbar").style.backgroundColor = "transparent"; 
-      document.getElementById("navbar").style.opacity = "0.5"; 
-      document.getElementById("logo-image").style.height = "100px"; 
-    }
-  }
-  //navbar efekt js sonu
-  /*-----------------------------------------------------------*/
-  //Animate On Scroll kütüphanesini kullanabilir hale getirme
-  AOS.init();
-  /*-----------------------------------------------------------*/
-  
-</script>
-
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-</body>
-</html>

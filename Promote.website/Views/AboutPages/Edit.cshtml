@@ -11,23 +11,31 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AboutId" />
+            <!-- ImageHeader -->
             <div class="form-group">
                 <label asp-for="ImageHeader" class="control-label"></label>
-                <input asp-for="ImageHeader" class="form-control" />
+                <input asp-for="ImageHeader" name="ImageHeader" class="form-control removeValue" type="file" id="imageHeaderInput" onchange="updateFileName('imageHeaderInput', 'imageHeaderName')" style="color:transparent;" />
                 <span asp-validation-for="ImageHeader" class="text-danger"></span>
+                <small id="imageHeaderName" class="form-text text-muted">@Model.ImageHeader</small>
             </div>
+
+            <!-- ImageBottom -->
             <div class="form-group">
                 <label asp-for="ImageBottom" class="control-label"></label>
-                <input asp-for="ImageBottom" class="form-control" />
+                <input asp-for="ImageBottom" name="ImageBottom" class="form-control removeValue" type="file" id="imageBottomInput" onchange="updateFileName('imageBottomInput', 'imageBottomName')" style="color:transparent;" />
                 <span asp-validation-for="ImageBottom" class="text-danger"></span>
+                <small id="imageBottomName" class="form-text text-muted">@Model.ImageBottom</small>
             </div>
+
+            <!-- ImageTop -->
             <div class="form-group">
                 <label asp-for="ImageTop" class="control-label"></label>
-                <input asp-for="ImageTop" class="form-control" />
+                <input asp-for="ImageTop" name="ImageTop" class="form-control removeValue" type="file" id="imageTopInput" onchange="updateFileName('imageTopInput', 'imageTopName')" style="color:transparent;" />
                 <span asp-validation-for="ImageTop" class="text-danger"></span>
+                <small id="imageTopName" class="form-text text-muted">@Model.ImageTop</small>
             </div>
             <div class="form-group">
                 <label asp-for="CompanyDescription" class="control-label"></label>
@@ -125,11 +133,16 @@
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+ 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function updateFileName(inputId, outputId) {
+            var input = document.getElementById(inputId);
+            var output = document.getElementById(outputId);
+            output.innerText = input.files.length > 0 ? input.files[0].name : "";
+            input.nextElementSibling.style.display = "none";  
+        }
+    </script>
 }
