@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="~/css/home.css" rel="stylesheet" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
 
@@ -14,7 +15,7 @@
         <div id="navbar-right">
             <a href="/Home/Index">Home</a>
             <a href="/About/Index">About</a>
-            <a href="/Tours/Index">Tours</a>
+            <a href="/ProductPages/ProductListPage">Products</a>
             <a href="/Contact/Index">Contact</a>
 
         </div>
@@ -29,7 +30,7 @@
 
             </div>
             <div class="footer-col">
-                <h4>Tours</h4>
+                <h4>Products</h4>
 
             </div>
             <div class="footer-col">
@@ -74,5 +75,6 @@
     <script>
         AOS.init();
     </script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
