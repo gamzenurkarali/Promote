@@ -6,17 +6,38 @@ namespace Promote.website.Models
     {
         [Key]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Logo Path is required.")]
+         
         [Display(Name = "Logo Path")]
         public string LogoPath { get; set; }
-
-        [Required(ErrorMessage = "Footer Color is required.")]
+         
         [Display(Name = "Footer Color")]
         public string FooterColor { get; set; }
-
-        [Required(ErrorMessage = "Highlight Color is required.")]
+         
         [Display(Name = "Highlight Color")]
         public string HighlightColor { get; set; }
+
+        [Display(Name = "Social Media 1 Link")]
+        public string SocialMedia1Link { get; set; }
+
+        [Display(Name = "Social Media 1 Icon")]
+        public string SocialMedia1Icon { get; set; }
+
+        [Display(Name = "Social Media 2 Link")]
+        public string SocialMedia2Link { get; set; }
+
+        [Display(Name = "Social Media 2 Icon")]
+        public string SocialMedia2Icon { get; set; }
+
+        [Display(Name = "Social Media 3 Link")]
+        public string SocialMedia3Link { get; set; }
+
+        [Display(Name = "Social Media 3 Icon")]
+        public string SocialMedia3Icon { get; set; }
+
+        [Display(Name = "Social Media 4 Link")]
+        public string SocialMedia4Link { get; set; }
+
+        [Display(Name = "Social Media 4 Icon")]
+        public string SocialMedia4Icon { get; set; }
     }
 }

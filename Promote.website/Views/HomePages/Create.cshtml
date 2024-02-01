@@ -11,21 +11,24 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" asp-controller="HomePages" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="VideoFileName" class="control-label"></label>
-                <input asp-for="VideoFileName" class="form-control" />
+                <input asp-for="VideoFileName" name="VideoFileName" type="file" class="form-control" />
                 <span asp-validation-for="VideoFileName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IsTaglineSectionIncluded" class="control-label"></label>
-                <input asp-for="IsTaglineSectionIncluded" class="form-control" />
+                <select id="IsTaglineSectionIncluded" name="IsTaglineSectionIncluded" class="form-control" >
+                    <option value="true">Evet</option>
+                    <option value="false">Hayır</option>
+                </select> 
                 <span asp-validation-for="IsTaglineSectionIncluded" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TaglineSectionBgColor" class="control-label"></label>
-                <input asp-for="TaglineSectionBgColor" class="form-control" />
+                <input asp-for="TaglineSectionBgColor" type="color" class="form-control" />
                 <span asp-validation-for="TaglineSectionBgColor" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,7 +38,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="IsPopularProductsSectionIncluded" class="control-label"></label>
-                <input asp-for="IsPopularProductsSectionIncluded" class="form-control" />
+                <select id="IsPopularProductsSectionIncluded" name="IsPopularProductsSectionIncluded" class="form-control" >
+                    <option value="true">Evet</option>
+                    <option value="false">Hayır</option>
+                </select>
                 <span asp-validation-for="IsPopularProductsSectionIncluded" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -45,7 +51,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProductsSectionBgColor" class="control-label"></label>
-                <input asp-for="PopularProductsSectionBgColor" class="form-control" />
+                <input asp-for="PopularProductsSectionBgColor" type="color" class="form-control" />
                 <span asp-validation-for="PopularProductsSectionBgColor" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,7 +61,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct1Image" class="control-label"></label>
-                <input asp-for="PopularProduct1Image" class="form-control" />
+                <input asp-for="PopularProduct1Image" name="PopularProduct1Image" type="file" class="form-control" />
                 <span asp-validation-for="PopularProduct1Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -70,7 +76,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct2Image" class="control-label"></label>
-                <input asp-for="PopularProduct2Image" class="form-control" />
+                <input asp-for="PopularProduct2Image" name="PopularProduct2Image" type="file" class="form-control" />
                 <span asp-validation-for="PopularProduct2Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -85,7 +91,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct3Image" class="control-label"></label>
-                <input asp-for="PopularProduct3Image" class="form-control" />
+                <input asp-for="PopularProduct3Image" name="PopularProduct3Image" type="file" class="form-control" />
                 <span asp-validation-for="PopularProduct3Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -100,7 +106,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct4Image" class="control-label"></label>
-                <input asp-for="PopularProduct4Image" class="form-control" />
+                <input asp-for="PopularProduct4Image" name="PopularProduct4Image" type="file" class="form-control" />
                 <span asp-validation-for="PopularProduct4Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -110,7 +116,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="IsServicesSectionIncluded" class="control-label"></label>
-                <input asp-for="IsServicesSectionIncluded" class="form-control" />
+                <select id="IsServicesSectionIncluded" name="IsServicesSectionIncluded" class="form-control" >
+                    <option value="true">Evet</option>
+                    <option value="false">Hayır</option>
+                </select>
                 <span asp-validation-for="IsServicesSectionIncluded" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -120,12 +129,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="ServicesSectionBgColor" class="control-label"></label>
-                <input asp-for="ServicesSectionBgColor" class="form-control" />
+                <input asp-for="ServicesSectionBgColor" type="color" class="form-control" />
                 <span asp-validation-for="ServicesSectionBgColor" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Services1Image" class="control-label"></label>
-                <input asp-for="Services1Image" class="form-control" />
+                <input asp-for="Services1Image" name="Services1Image" type="file" class="form-control" />
                 <span asp-validation-for="Services1Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -135,7 +144,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Services2Image" class="control-label"></label>
-                <input asp-for="Services2Image" class="form-control" />
+                <input asp-for="Services2Image" name="Services2Image" type="file" class="form-control" />
                 <span asp-validation-for="Services2Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -145,7 +154,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Services3Image" class="control-label"></label>
-                <input asp-for="Services3Image" class="form-control" />
+                <input asp-for="Services3Image" name="Services3Image" type="file" class="form-control" />
                 <span asp-validation-for="Services3Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -155,7 +164,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Services4Image" class="control-label"></label>
-                <input asp-for="Services4Image" class="form-control" />
+                <input asp-for="Services4Image" name="Services4Image" type="file" class="form-control" />
                 <span asp-validation-for="Services4Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -165,12 +174,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="IsStatisticsSectionIncluded" class="control-label"></label>
-                <input asp-for="IsStatisticsSectionIncluded" class="form-control" />
+                <select id="IsStatisticsSectionIncluded" name="IsStatisticsSectionIncluded" class="form-control" >
+                    <option value="true">Evet</option>
+                    <option value="false">Hayır</option>
+                </select>
                 <span asp-validation-for="IsStatisticsSectionIncluded" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StatisticSectionBgColor" class="control-label"></label>
-                <input asp-for="StatisticSectionBgColor" class="form-control" />
+                <input asp-for="StatisticSectionBgColor" type="color" class="form-control" />
                 <span asp-validation-for="StatisticSectionBgColor" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -219,11 +231,7 @@
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+ 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

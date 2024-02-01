@@ -18,37 +18,38 @@ namespace Promote.website.Controllers
         {
             _context = context;
         }
-        //[Authorize]
-        // GET: ProductDetailPages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Router()
         {
-              return _context.productDetailPages != null ? 
-                          View(await _context.productDetailPages.ToListAsync()) :
-                          Problem("Entity set 'Context.productDetailPages'  is null.");
-        }
-        //[Authorize]
-        // GET: ProductDetailPages/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.productDetailPages == null)
-            {
-                return NotFound();
-            }
+            bool hasRecord = _context.productDetailPages.Any();
 
-            var productDetailPage = await _context.productDetailPages
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (productDetailPage == null)
-            {
-                return NotFound();
-            }
+            int firstRecordId = hasRecord ? _context.productDetailPages.First().Id : 0;
 
-            return View(productDetailPage);
+            if (hasRecord)
+            {
+                return RedirectToAction("Edit", new { id = firstRecordId });
+            }
+            else
+            {
+                return RedirectToAction("Create");
+            }
         }
         //[Authorize]
         // GET: ProductDetailPages/Create
         public IActionResult Create()
         {
-            return View();
+            bool hasRecord = _context.productDetailPages.Any();
+
+            int firstRecordId = hasRecord ? _context.productDetailPages.First().Id : 0;
+
+            if (hasRecord)
+            {
+                return RedirectToAction("Edit", new { id = firstRecordId });
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
         // POST: ProductDetailPages/Create

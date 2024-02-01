@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promote.website.Models;
+using Promote.website.Services;
 
 namespace Promote.website.Controllers
 {
     public class LoginController : Controller
     {
         private readonly Context _context;
-
-        public LoginController(Context context)
+        private readonly LayoutService _layoutService;
+        public LoginController(Context context, LayoutService layoutService)
         {
             _context = context;
+            _layoutService = layoutService;
         }
 
         [HttpGet]

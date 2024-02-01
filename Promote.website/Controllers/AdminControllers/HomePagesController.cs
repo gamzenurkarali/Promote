@@ -13,59 +13,126 @@ namespace Promote.website.Controllers
     public class HomePagesController : Controller
     {
         private readonly Context _context;
-
-        public HomePagesController(Context context)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public HomePagesController(Context context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
-        //[Authorize]
-        // GET: HomePages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Router()
         {
-              return _context.homePages != null ? 
-                          View(await _context.homePages.ToListAsync()) :
-                          Problem("Entity set 'Context.homePages'  is null.");
-        }
-        //[Authorize]
-        // GET: HomePages/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.homePages == null)
-            {
-                return NotFound();
-            }
+            // Veritabanında AboutPages tablosunda kayıt var mı diye kontrol et
+            bool hasRecord = _context.homePages.Any();
 
-            var homePage = await _context.homePages
-                .FirstOrDefaultAsync(m => m.HomeId == id);
-            if (homePage == null)
-            {
-                return NotFound();
-            }
+            // Eğer bir kayıt varsa, ilk kaydın ID'sini al
+            int firstRecordId = hasRecord ? _context.homePages.First().HomeId : 0;
 
-            return View(homePage);
+            if (hasRecord)
+            {
+                // Eğer bir kayıt varsa, Edit action'ına yönlendir
+                return RedirectToAction("Edit", new { id = firstRecordId });
+            }
+            else
+            {
+                // Eğer kayıt yoksa, Create action'ına yönlendir
+                return RedirectToAction("Create");
+            }
         }
+        
         //[Authorize]
         // GET: HomePages/Create
         public IActionResult Create()
         {
-            return View();
+            // Veritabanında AboutPages tablosunda kayıt var mı diye kontrol et
+            bool hasRecord = _context.homePages.Any();
+
+            // Eğer bir kayıt varsa, ilk kaydın ID'sini al
+            int firstRecordId = hasRecord ? _context.homePages.First().HomeId : 0;
+
+            if (hasRecord)
+            {
+                // Eğer bir kayıt varsa, Edit action'ına yönlendir
+                return RedirectToAction("Edit", new { id = firstRecordId });
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
         // POST: HomePages/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HomeId,VideoFileName,IsTaglineSectionIncluded,TaglineSectionBgColor,Tagline,IsPopularProductsSectionIncluded,PopularProductsSectionTitle,PopularProductsSectionBgColor,PopularProduct1Title,PopularProduct1Image,PopularProduct1Id,PopularProduct2Title,PopularProduct2Image,PopularProduct2Id,PopularProduct3Title,PopularProduct3Image,PopularProduct3Id,PopularProduct4Title,PopularProduct4Image,PopularProduct4Id,IsServicesSectionIncluded,ServicesSectionTitle,ServicesSectionBgColor,Services1Image,Services1Description,Services2Image,Services2Description,Services3Image,Services3Description,Services4Image,Services4Description,IsStatisticsSectionIncluded,StatisticSectionBgColor,Statistic1Number,Statistic1Title,Statistic2Number,Statistic2Title,Statistic3Number,Statistic3Title,Statistic4Number,Statistic4Title")] HomePage homePage)
+        [RequestSizeLimit(500 * 1024 * 1024)] // 500 MB limit
+        [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)] 
+        public async Task<IActionResult> Create(
+     IFormFile VideoFileName,
+     IFormFile PopularProduct1Image,
+     IFormFile PopularProduct2Image,
+     IFormFile PopularProduct3Image,
+     IFormFile PopularProduct4Image,
+     IFormFile Services1Image,
+     IFormFile Services2Image,
+     IFormFile Services3Image,
+     IFormFile Services4Image,
+     [Bind("VideoFileName,IsTaglineSectionIncluded,TaglineSectionBgColor,Tagline,IsPopularProductsSectionIncluded,PopularProductsSectionTitle,PopularProductsSectionBgColor,PopularProduct1Title,PopularProduct1Id,PopularProduct2Title,PopularProduct2Id,PopularProduct3Title,PopularProduct3Id,PopularProduct4Title,PopularProduct4Id,IsServicesSectionIncluded,ServicesSectionTitle,ServicesSectionBgColor,Services1Description,Services2Description,Services3Description,Services4Description,IsStatisticsSectionIncluded,StatisticSectionBgColor,Statistic1Number,Statistic1Title,Statistic2Number,Statistic2Title,Statistic3Number,Statistic3Title,Statistic4Number,Statistic4Title")] HomePage homePage)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(homePage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (VideoFileName != null &&
+                    PopularProduct1Image != null &&
+                    PopularProduct2Image != null &&
+                    PopularProduct3Image != null &&
+                    PopularProduct4Image != null &&
+                    Services1Image != null &&
+                    Services2Image != null &&
+                    Services3Image != null &&
+                    Services4Image != null)
+                {
+                    // Dosyaları kaydetme işlemi
+                    homePage.VideoFileName = await SaveFile(VideoFileName);
+                    homePage.PopularProduct1Image = await SaveFile(PopularProduct1Image);
+                    homePage.PopularProduct2Image = await SaveFile(PopularProduct2Image);
+                    homePage.PopularProduct3Image = await SaveFile(PopularProduct3Image);
+                    homePage.PopularProduct4Image = await SaveFile(PopularProduct4Image);
+                    homePage.Services1Image = await SaveFile(Services1Image);
+                    homePage.Services2Image = await SaveFile(Services2Image);
+                    homePage.Services3Image = await SaveFile(Services3Image);
+                    homePage.Services4Image = await SaveFile(Services4Image);
+
+                    _context.Add(homePage);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Edit",homePage.HomeId);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Please select all required files.");
+                }
             }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+            }
+
             return View(homePage);
         }
+
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return fileName;
+        }
+
         //[Authorize]
         // GET: HomePages/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -88,17 +155,86 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HomeId,VideoFileName,IsTaglineSectionIncluded,TaglineSectionBgColor,Tagline,IsPopularProductsSectionIncluded,PopularProductsSectionTitle,PopularProductsSectionBgColor,PopularProduct1Title,PopularProduct1Image,PopularProduct1Id,PopularProduct2Title,PopularProduct2Image,PopularProduct2Id,PopularProduct3Title,PopularProduct3Image,PopularProduct3Id,PopularProduct4Title,PopularProduct4Image,PopularProduct4Id,IsServicesSectionIncluded,ServicesSectionTitle,ServicesSectionBgColor,Services1Image,Services1Description,Services2Image,Services2Description,Services3Image,Services3Description,Services4Image,Services4Description,IsStatisticsSectionIncluded,StatisticSectionBgColor,Statistic1Number,Statistic1Title,Statistic2Number,Statistic2Title,Statistic3Number,Statistic3Title,Statistic4Number,Statistic4Title")] HomePage homePage)
+        public async Task<IActionResult> Edit(int id,
+    IFormFile VideoFileName,
+    IFormFile PopularProduct1Image,
+    IFormFile PopularProduct2Image,
+    IFormFile PopularProduct3Image,
+    IFormFile PopularProduct4Image,
+    IFormFile Services1Image,
+    IFormFile Services2Image,
+    IFormFile Services3Image,
+    IFormFile Services4Image,
+    [Bind("HomeId,VideoFileName,IsTaglineSectionIncluded,TaglineSectionBgColor,Tagline,IsPopularProductsSectionIncluded,PopularProductsSectionTitle,PopularProductsSectionBgColor,PopularProduct1Title,PopularProduct1Id,PopularProduct2Title,PopularProduct2Id,PopularProduct3Title,PopularProduct3Id,PopularProduct4Title,PopularProduct4Id,IsServicesSectionIncluded,ServicesSectionTitle,ServicesSectionBgColor,Services1Description,Services2Description,Services3Description,Services4Description,IsStatisticsSectionIncluded,StatisticSectionBgColor,Statistic1Number,Statistic1Title,Statistic2Number,Statistic2Title,Statistic3Number,Statistic3Title,Statistic4Number,Statistic4Title")] HomePage homePage)
         {
             if (id != homePage.HomeId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+             
                 try
                 {
+                    var existingHomePage = await _context.homePages.AsNoTracking().FirstOrDefaultAsync(m => m.HomeId == id);
+
+                // Dosyaların silme işlemleri
+                if (VideoFileName != null)
+                {
+                    await DeleteFileIfExists(existingHomePage.VideoFileName);
+                }
+
+                if (PopularProduct1Image != null)
+                {
+                    await DeleteFileIfExists(existingHomePage.PopularProduct1Image);
+                }
+
+                if (PopularProduct2Image != null)
+                {
+                    await DeleteFileIfExists(existingHomePage.PopularProduct2Image);
+                }
+
+                if (PopularProduct3Image != null)
+                {
+                    await DeleteFileIfExists(existingHomePage.PopularProduct3Image);
+                }
+
+                if (PopularProduct4Image != null)
+                {
+                    await DeleteFileIfExists(existingHomePage.PopularProduct4Image);
+                }
+
+                if (Services1Image != null)
+                {
+                    await DeleteFileIfExists(existingHomePage.Services1Image);
+                }
+
+                if (Services2Image != null)
+                {
+                    await DeleteFileIfExists(existingHomePage.Services2Image);
+                }
+
+                if (Services3Image != null)
+                {
+                    await DeleteFileIfExists(existingHomePage.Services3Image);
+                }
+
+                if (Services4Image != null)
+                {
+                    await DeleteFileIfExists(existingHomePage.Services4Image);
+                }
+
+
+                // Dosyaları kaydetme işlemleri
+                homePage.VideoFileName = VideoFileName != null ? await SaveFile(VideoFileName) : existingHomePage.VideoFileName;
+                    homePage.PopularProduct1Image = PopularProduct1Image != null ? await SaveFile(PopularProduct1Image) : existingHomePage.PopularProduct1Image;
+                    homePage.PopularProduct2Image = PopularProduct2Image != null ? await SaveFile(PopularProduct2Image) : existingHomePage.PopularProduct2Image;
+                    homePage.PopularProduct3Image = PopularProduct3Image != null ? await SaveFile(PopularProduct3Image) : existingHomePage.PopularProduct3Image;
+                    homePage.PopularProduct4Image = PopularProduct4Image != null ? await SaveFile(PopularProduct4Image) : existingHomePage.PopularProduct4Image;
+                    homePage.Services1Image = Services1Image != null ? await SaveFile(Services1Image) : existingHomePage.Services1Image;
+                    homePage.Services2Image = Services2Image != null ? await SaveFile(Services2Image) : existingHomePage.Services2Image;
+                    homePage.Services3Image = Services3Image != null ? await SaveFile(Services3Image) : existingHomePage.Services3Image;
+                    homePage.Services4Image = Services4Image != null ? await SaveFile(Services4Image) : existingHomePage.Services4Image;
+
                     _context.Update(homePage);
                     await _context.SaveChangesAsync();
                 }
@@ -113,10 +249,25 @@ namespace Promote.website.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(homePage);
+            return RedirectToAction("Router");
+             
         }
+
+        private async Task DeleteFileIfExists(string fileName)
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileName);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+        }
+         
+
+
+
         //[Authorize]
         // GET: HomePages/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -145,15 +296,29 @@ namespace Promote.website.Controllers
             {
                 return Problem("Entity set 'Context.homePages'  is null.");
             }
+
             var homePage = await _context.homePages.FindAsync(id);
+
             if (homePage != null)
             {
+                // Dosyaların silme işlemleri
+                await DeleteFileIfExists(homePage.VideoFileName);
+                await DeleteFileIfExists(homePage.PopularProduct1Image);
+                await DeleteFileIfExists(homePage.PopularProduct2Image);
+                await DeleteFileIfExists(homePage.PopularProduct3Image);
+                await DeleteFileIfExists(homePage.PopularProduct4Image);
+                await DeleteFileIfExists(homePage.Services1Image);
+                await DeleteFileIfExists(homePage.Services2Image);
+                await DeleteFileIfExists(homePage.Services3Image);
+                await DeleteFileIfExists(homePage.Services4Image);
+
                 _context.homePages.Remove(homePage);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool HomePageExists(int id)
         {
