@@ -1,19 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promote.website.Models;
+using Promote.website.Services;
 
 namespace Promote.website.Controllers
 {
     public class ProductPagesController : Controller
     {
         private readonly Context _context;
-
-        public ProductPagesController(Context context)
+        private readonly LayoutService _layoutService;
+        public ProductPagesController(Context context, LayoutService layoutService)
         {
             _context = context;
+            _layoutService = layoutService;
         }
 
         public IActionResult ProductListPage()
         {
+            var layout = _layoutService.GetLayout();
+            var sublinks = _layoutService.GetSublinks();
+            ViewBag.Layout = layout;
+            ViewBag.Sublinks = sublinks;
+
             var page = _context.productLists.FirstOrDefault();  
             var productList=_context.products.ToList();
              
@@ -26,6 +33,10 @@ namespace Promote.website.Controllers
         }
         public IActionResult ProductDetailPage(int id)
         {
+            var layout = _layoutService.GetLayout();
+            var sublinks = _layoutService.GetSublinks();
+            ViewBag.Layout = layout;
+            ViewBag.Sublinks = sublinks;
             var page = _context.productDetailPages.FirstOrDefault();
             var product = _context.products.FirstOrDefault(x => x.Id == id);
 

@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Promote.website.Models;
 
-namespace Promote.website.Controllers
+namespace Promote.website.Controllers.AdminControllers
 {
     public class LayoutsController : Controller
     {
         private readonly Context _context;
-
-        public LayoutsController(Context context)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public LayoutsController(Context context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: Layouts
@@ -26,7 +26,7 @@ namespace Promote.website.Controllers
                           View(await _context.layouts.ToListAsync()) :
                           Problem("Entity set 'Context.layouts'  is null.");
         }
-        //[Authorize]
+
         // GET: Layouts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +44,7 @@ namespace Promote.website.Controllers
 
             return View(layout);
         }
-        //[Authorize]
+
         // GET: Layouts/Create
         public IActionResult Create()
         {
@@ -55,18 +55,53 @@ namespace Promote.website.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [RequestSizeLimit(500 * 1024 * 1024)] // 500 MB limit
+        [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,LogoPath,FooterColor,HighlightColor")] Layout layout)
+        public async Task<IActionResult> Create(IFormFile LogoPath, IFormFile SocialMedia1Icon, IFormFile SocialMedia2Icon, IFormFile SocialMedia3Icon, IFormFile SocialMedia4Icon, [Bind("Id,LogoPath,FooterColor,HighlightColor,SocialMedia1Link,SocialMedia1Icon,SocialMedia2Link,SocialMedia2Icon,SocialMedia3Link,SocialMedia3Icon,SocialMedia4Link,SocialMedia4Icon")] Layout layout)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(layout);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (LogoPath != null && SocialMedia1Icon != null && SocialMedia2Icon != null && SocialMedia3Icon != null && SocialMedia4Icon != null)
+                {
+                    // Save files
+                    layout.LogoPath = await SaveFile(LogoPath);
+                    layout.SocialMedia1Icon = await SaveFile(SocialMedia1Icon);
+                    layout.SocialMedia2Icon = await SaveFile(SocialMedia2Icon);
+                    layout.SocialMedia3Icon = await SaveFile(SocialMedia3Icon);
+                    layout.SocialMedia4Icon = await SaveFile(SocialMedia4Icon);
+
+                    _context.Add(layout);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Please select all required files.");
+                }
             }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+            }
+
             return View(layout);
         }
-        //[Authorize]
+
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "LayoutMedia", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return fileName;
+        }
+
         // GET: Layouts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -87,37 +122,82 @@ namespace Promote.website.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [RequestSizeLimit(500 * 1024 * 1024)] // 500 MB limit
+        [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,LogoPath,FooterColor,HighlightColor")] Layout layout)
+        public async Task<IActionResult> Edit(int id, IFormFile LogoPath, IFormFile SocialMedia1Icon, IFormFile SocialMedia2Icon, IFormFile SocialMedia3Icon, IFormFile SocialMedia4Icon, [Bind("Id,LogoPath,FooterColor,HighlightColor,SocialMedia1Link,SocialMedia1Icon,SocialMedia2Link,SocialMedia2Icon,SocialMedia3Link,SocialMedia3Icon,SocialMedia4Link,SocialMedia4Icon")] Layout layout)
         {
             if (id != layout.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var existingLayout = await _context.layouts.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+
+                // Delete existing files
+                if (LogoPath != null)
                 {
-                    _context.Update(layout);
-                    await _context.SaveChangesAsync();
+                    await DeleteFileIfExists(existingLayout.LogoPath);
                 }
-                catch (DbUpdateConcurrencyException)
+
+                if (SocialMedia1Icon != null)
                 {
-                    if (!LayoutExists(layout.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    await DeleteFileIfExists(existingLayout.SocialMedia1Icon);
                 }
-                return RedirectToAction(nameof(Index));
+
+                if (SocialMedia2Icon != null)
+                {
+                    await DeleteFileIfExists(existingLayout.SocialMedia2Icon);
+                }
+
+                if (SocialMedia3Icon != null)
+                {
+                    await DeleteFileIfExists(existingLayout.SocialMedia3Icon);
+                }
+
+                if (SocialMedia4Icon != null)
+                {
+                    await DeleteFileIfExists(existingLayout.SocialMedia4Icon);
+                }
+
+                // Save new files or keep existing file names
+                layout.LogoPath = LogoPath != null ? await SaveFile(LogoPath) : existingLayout.LogoPath;
+                layout.SocialMedia1Icon = SocialMedia1Icon != null ? await SaveFile(SocialMedia1Icon) : existingLayout.SocialMedia1Icon;
+                layout.SocialMedia2Icon = SocialMedia2Icon != null ? await SaveFile(SocialMedia2Icon) : existingLayout.SocialMedia2Icon;
+                layout.SocialMedia3Icon = SocialMedia3Icon != null ? await SaveFile(SocialMedia3Icon) : existingLayout.SocialMedia3Icon;
+                layout.SocialMedia4Icon = SocialMedia4Icon != null ? await SaveFile(SocialMedia4Icon) : existingLayout.SocialMedia4Icon;
+
+                _context.Update(layout);
+                await _context.SaveChangesAsync();
             }
-            return View(layout);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LayoutExists(layout.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
         }
-        //[Authorize]
+        private async Task DeleteFileIfExists(string fileName)
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "LayoutMedia", fileName);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+        }
+
         // GET: Layouts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    bool selectedValueTaglineSection = Model.IsTaglineSectionIncluded;
+    bool selectedValuePopularProductsSection = Model.IsPopularProductsSectionIncluded;
+    bool selectedValueServicesSection = Model.IsServicesSectionIncluded;
+    bool selectedValueStatisticsSection = Model.IsStatisticsSectionIncluded;
 }
 
 <h1>Edit</h1>
@@ -11,22 +15,25 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="Edit" enctype="multipart/form-data"> 
             <input type="hidden" asp-for="HomeId" />
             <div class="form-group">
                 <label asp-for="VideoFileName" class="control-label"></label>
-                <input asp-for="VideoFileName" class="form-control" />
+                <input asp-for="VideoFileName" name="VideoFileName" type="file" class="form-control removeValue" onchange="updateFileName('videoFileInput', 'videoFileName')" style="color:transparent;" />
                 <span asp-validation-for="VideoFileName" class="text-danger"></span>
+                <small id="videoFileName" class="form-text text-muted">@Model.VideoFileName</small>
             </div>
             <div class="form-group">
                 <label asp-for="IsTaglineSectionIncluded" class="control-label"></label>
-                <input asp-for="IsTaglineSectionIncluded" class="form-control" />
+                <select id="IsTaglineSectionIncluded" name="IsTaglineSectionIncluded" class="form-control" asp-for="@selectedValueTaglineSection">
+                    <option value="true" >Evet</option>
+                    <option value="false" >Hayır</option>
+                </select> 
                 <span asp-validation-for="IsTaglineSectionIncluded" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TaglineSectionBgColor" class="control-label"></label>
-                <input asp-for="TaglineSectionBgColor" class="form-control" />
+                <input asp-for="TaglineSectionBgColor" type="color" class="form-control" />
                 <span asp-validation-for="TaglineSectionBgColor" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,8 +42,11 @@
                 <span asp-validation-for="Tagline" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IsPopularProductsSectionIncluded" class="control-label"></label>
-                <input asp-for="IsPopularProductsSectionIncluded" class="form-control" />
+                <label asp-for="IsPopularProductsSectionIncluded" class="control-label"></label> 
+                <select id="IsPopularProductsSectionIncluded" name="IsPopularProductsSectionIncluded" class="form-control" asp-for="@selectedValuePopularProductsSection">
+                    <option  value="true">Evet</option>
+                    <option value="false">Hayır</option>
+                </select>
                 <span asp-validation-for="IsPopularProductsSectionIncluded" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,7 +56,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProductsSectionBgColor" class="control-label"></label>
-                <input asp-for="PopularProductsSectionBgColor" class="form-control" />
+                <input asp-for="PopularProductsSectionBgColor" type="color" class="form-control" />
                 <span asp-validation-for="PopularProductsSectionBgColor" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -56,8 +66,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct1Image" class="control-label"></label>
-                <input asp-for="PopularProduct1Image" class="form-control" />
+                <input asp-for="PopularProduct1Image" name="PopularProduct1Image" type="file" class="form-control removeValue" id="popularProduct1ImageInput" onchange="updateFileName('popularProduct1ImageInput', 'popularProduct1ImageName')" style="color:transparent;" />
                 <span asp-validation-for="PopularProduct1Image" class="text-danger"></span>
+                <small id="popularProduct1ImageName" class="form-text text-muted">@Model.PopularProduct1Image</small>
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct1Id" class="control-label"></label>
@@ -71,8 +82,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct2Image" class="control-label"></label>
-                <input asp-for="PopularProduct2Image" class="form-control" />
+                <input asp-for="PopularProduct2Image" name="PopularProduct2Image" type="file" class="form-control removeValue" id="popularProduct2ImageInput" onchange="updateFileName('popularProduct2ImageInput', 'popularProduct2ImageName')" style="color:transparent;" />
                 <span asp-validation-for="PopularProduct2Image" class="text-danger"></span>
+                <small id="popularProduct2ImageName" class="form-text text-muted">@Model.PopularProduct2Image</small>
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct2Id" class="control-label"></label>
@@ -86,8 +98,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct3Image" class="control-label"></label>
-                <input asp-for="PopularProduct3Image" class="form-control" />
+                <input asp-for="PopularProduct3Image" name="PopularProduct3Image" type="file" class="form-control removeValue" id="popularProduct3ImageInput" onchange="updateFileName('popularProduct3ImageInput', 'popularProduct3ImageName')" style="color:transparent;" />
                 <span asp-validation-for="PopularProduct3Image" class="text-danger"></span>
+                <small id="popularProduct3ImageName" class="form-text text-muted">@Model.PopularProduct3Image</small>
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct3Id" class="control-label"></label>
@@ -101,8 +114,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct4Image" class="control-label"></label>
-                <input asp-for="PopularProduct4Image" class="form-control" />
+                <input asp-for="PopularProduct4Image" name="PopularProduct4Image" type="file" class="form-control removeValue" id="popularProduct4ImageInput" onchange="updateFileName('popularProduct4ImageInput', 'popularProduct4ImageName')" style="color:transparent;" />
                 <span asp-validation-for="PopularProduct4Image" class="text-danger"></span>
+                <small id="popularProduct4ImageName" class="form-text text-muted">@Model.PopularProduct4Image</small>
             </div>
             <div class="form-group">
                 <label asp-for="PopularProduct4Id" class="control-label"></label>
@@ -110,8 +124,11 @@
                 <span asp-validation-for="PopularProduct4Id" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IsServicesSectionIncluded" class="control-label"></label>
-                <input asp-for="IsServicesSectionIncluded" class="form-control" />
+                <label asp-for="IsServicesSectionIncluded" class="control-label"></label> 
+                <select id="IsServicesSectionIncluded" name="IsServicesSectionIncluded" class="form-control" asp-for="@selectedValueServicesSection">
+                    <option value="true">Evet</option>
+                    <option value="false">Hayır</option>
+                </select>
                 <span asp-validation-for="IsServicesSectionIncluded" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -121,13 +138,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="ServicesSectionBgColor" class="control-label"></label>
-                <input asp-for="ServicesSectionBgColor" class="form-control" />
+                <input asp-for="ServicesSectionBgColor" type="color" class="form-control" />
                 <span asp-validation-for="ServicesSectionBgColor" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Services1Image" class="control-label"></label>
-                <input asp-for="Services1Image" class="form-control" />
+                <input asp-for="Services1Image" name="Services1Image" type="file" class="form-control removeValue" id="services1ImageInput" onchange="updateFileName('services1ImageInput', 'services1ImageName')" style="color:transparent;" />
                 <span asp-validation-for="Services1Image" class="text-danger"></span>
+                <small id="services1ImageName" class="form-text text-muted">@Model.Services1Image</small>
             </div>
             <div class="form-group">
                 <label asp-for="Services1Description" class="control-label"></label>
@@ -136,8 +154,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Services2Image" class="control-label"></label>
-                <input asp-for="Services2Image" class="form-control" />
+                <input asp-for="Services2Image" name="Services2Image" type="file" class="form-control removeValue" id="services2ImageInput" onchange="updateFileName('services2ImageInput', 'services2ImageName')" style="color:transparent;" />
                 <span asp-validation-for="Services2Image" class="text-danger"></span>
+                <small id="services2ImageName" class="form-text text-muted">@Model.Services2Image</small>
             </div>
             <div class="form-group">
                 <label asp-for="Services2Description" class="control-label"></label>
@@ -146,8 +165,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Services3Image" class="control-label"></label>
-                <input asp-for="Services3Image" class="form-control" />
+                <input asp-for="Services3Image" name="Services3Image" type="file" class="form-control removeValue" id="services3ImageInput" onchange="updateFileName('services3ImageInput', 'services3ImageName')" style="color:transparent;" />
                 <span asp-validation-for="Services3Image" class="text-danger"></span>
+                <small id="services3ImageName" class="form-text text-muted">@Model.Services3Image</small>
             </div>
             <div class="form-group">
                 <label asp-for="Services3Description" class="control-label"></label>
@@ -156,8 +176,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Services4Image" class="control-label"></label>
-                <input asp-for="Services4Image" class="form-control" />
+                <input asp-for="Services4Image" name="Services4Image" type="file" class="form-control removeValue" id="services4ImageInput" onchange="updateFileName('services4ImageInput', 'services4ImageName')" style="color:transparent;" />
                 <span asp-validation-for="Services4Image" class="text-danger"></span>
+                <small id="services4ImageName" class="form-text text-muted">@Model.Services4Image</small>
             </div>
             <div class="form-group">
                 <label asp-for="Services4Description" class="control-label"></label>
@@ -165,13 +186,16 @@
                 <span asp-validation-for="Services4Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IsStatisticsSectionIncluded" class="control-label"></label>
-                <input asp-for="IsStatisticsSectionIncluded" class="form-control" />
+                <label asp-for="IsStatisticsSectionIncluded" class="control-label"></label> 
+                <select id="IsStatisticsSectionIncluded" name="IsStatisticsSectionIncluded" class="form-control" asp-for="@selectedValueStatisticsSection">
+                    <option  value="true">Evet</option>
+                    <option value="false">Hayır</option>
+                </select>
                 <span asp-validation-for="IsStatisticsSectionIncluded" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StatisticSectionBgColor" class="control-label"></label>
-                <input asp-for="StatisticSectionBgColor" class="form-control" />
+                <input asp-for="StatisticSectionBgColor" type="color" class="form-control" />
                 <span asp-validation-for="StatisticSectionBgColor" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -220,11 +244,18 @@
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+ 
+ 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function updateFileName(inputId, outputId) {
+            var input = document.getElementById(inputId);
+            var output = document.getElementById(outputId);
+            output.innerText = input.files.length > 0 ? input.files[0].name : "";
+            input.nextElementSibling.style.display = "none";
+        }
+    </script>
 }

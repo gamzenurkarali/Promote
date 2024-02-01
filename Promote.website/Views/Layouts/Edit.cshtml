@@ -11,23 +11,63 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="LogoPath" class="control-label"></label>
-                <input asp-for="LogoPath" class="form-control" />
+                <input asp-for="LogoPath" name="LogoPath" type="file" class="form-control" />
                 <span asp-validation-for="LogoPath" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FooterColor" class="control-label"></label>
-                <input asp-for="FooterColor" class="form-control" />
+                <input asp-for="FooterColor" class="form-control"  type="color"/>
                 <span asp-validation-for="FooterColor" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="HighlightColor" class="control-label"></label>
-                <input asp-for="HighlightColor" class="form-control" />
+                <input asp-for="HighlightColor" class="form-control" type="color" />
                 <span asp-validation-for="HighlightColor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialMedia1Link" class="control-label"></label>
+                <input asp-for="SocialMedia1Link" class="form-control" />
+                <span asp-validation-for="SocialMedia1Link" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialMedia1Icon" class="control-label"></label>
+                <input asp-for="SocialMedia1Icon" name="SocialMedia1Icon" type="file" class="form-control" />
+                <span asp-validation-for="SocialMedia1Icon" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialMedia2Link" class="control-label"></label>
+                <input asp-for="SocialMedia2Link" class="form-control" />
+                <span asp-validation-for="SocialMedia2Link" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialMedia2Icon" class="control-label"></label>
+                <input asp-for="SocialMedia2Icon" name="SocialMedia2Icon" type="file" class="form-control" />
+                <span asp-validation-for="SocialMedia2Icon" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialMedia3Link" class="control-label"></label>
+                <input asp-for="SocialMedia3Link" class="form-control" />
+                <span asp-validation-for="SocialMedia3Link" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialMedia3Icon" class="control-label"></label>
+                <input asp-for="SocialMedia3Icon" name="SocialMedia3Icon" type="file" class="form-control" />
+                <span asp-validation-for="SocialMedia3Icon" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialMedia4Link" class="control-label"></label>
+                <input asp-for="SocialMedia4Link" class="form-control" />
+                <span asp-validation-for="SocialMedia4Link" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialMedia4Icon" class="control-label"></label>
+                <input asp-for="SocialMedia4Icon" name="SocialMedia4Icon" type="file" class="form-control" />
+                <span asp-validation-for="SocialMedia4Icon" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -40,6 +80,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

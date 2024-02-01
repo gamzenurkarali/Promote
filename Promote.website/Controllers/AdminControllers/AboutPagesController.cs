@@ -42,8 +42,21 @@ namespace Promote.website.Controllers
        
         // GET: AboutPages/Create
         public IActionResult Create()
-        {
-            return View();
+        { 
+            bool hasRecord = _context.aboutPages.Any();
+             
+            int firstRecordId = hasRecord ? _context.aboutPages.First().AboutId : 0;
+
+            if (hasRecord)
+            {
+                // Eğer bir kayıt varsa, Edit action'ına yönlendir
+                return RedirectToAction("Edit", new { id = firstRecordId });
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
         // POST: AboutPages/Create

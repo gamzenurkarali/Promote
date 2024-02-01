@@ -1,19 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promote.website.Models;
+using Promote.website.Services;
 
 namespace Promote.website.Controllers
 {
     public class AboutController : Controller
     {
         private readonly Context _context;
-
-        public AboutController(Context context)
+        private readonly LayoutService _layoutService;
+        public AboutController(Context context, LayoutService layoutService)
         {
             _context = context;
+            _layoutService = layoutService;
         }
 
         public IActionResult Index()
         {
+            var layout = _layoutService.GetLayout();
+            var sublinks = _layoutService.GetSublinks();
+            ViewBag.Layout = layout;
+            ViewBag.Sublinks = sublinks;
             var values = _context.aboutPages.FirstOrDefault(); // AboutPage modelinin DbSet'i üzerinden verileri çekiyoruz
             if (values != null)
             {

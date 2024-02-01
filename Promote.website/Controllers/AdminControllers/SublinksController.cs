@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Promote.website.Models;
 
-namespace Promote.website.Controllers
+namespace Promote.website.Controllers.AdminControllers
 {
     public class SublinksController : Controller
     {
@@ -18,7 +17,7 @@ namespace Promote.website.Controllers
         {
             _context = context;
         }
-        //[Authorize]
+
         // GET: Sublinks
         public async Task<IActionResult> Index()
         {
@@ -26,7 +25,7 @@ namespace Promote.website.Controllers
                           View(await _context.sublinks.ToListAsync()) :
                           Problem("Entity set 'Context.sublinks'  is null.");
         }
-        //[Authorize]
+
         // GET: Sublinks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +43,7 @@ namespace Promote.website.Controllers
 
             return View(sublink);
         }
-        //[Authorize]
+
         // GET: Sublinks/Create
         public IActionResult Create()
         {
@@ -56,7 +55,7 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,LogoPath,PageName")] Sublink sublink)
+        public async Task<IActionResult> Create([Bind("Id,PagePath,PageName")] Sublink sublink)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +65,7 @@ namespace Promote.website.Controllers
             }
             return View(sublink);
         }
-        //[Authorize]
+
         // GET: Sublinks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -88,7 +87,7 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,LogoPath,PageName")] Sublink sublink)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PagePath,PageName")] Sublink sublink)
         {
             if (id != sublink.Id)
             {
@@ -117,7 +116,7 @@ namespace Promote.website.Controllers
             }
             return View(sublink);
         }
-        //[Authorize]
+
         // GET: Sublinks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

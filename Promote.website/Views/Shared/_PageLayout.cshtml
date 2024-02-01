@@ -9,26 +9,48 @@
 <body>
 
     <div id="navbar">
-        <a href="home.html" id="logo">
+        @* <a href="home.html" id="logo">
             <img id="logo-image" src="~/image/touristt-high-resolution-logo-removebg-preview (1).png" alt="logo" style="height: 70px;">
+        </a> *@
+        <a href="home.html" id="logo">
+            @if (ViewBag.Layout != null)
+            {
+                <img id="logo-image" src="~/LayoutMedia/@ViewBag.Layout.LogoPath" alt="logo" style="height: 70px;">
+            }
         </a>
-        <div id="navbar-right">
+        @* <div id="navbar-right">
             <a href="/Home/Index">Home</a>
             <a href="/About/Index">About</a>
             <a href="/ProductPages/ProductListPage">Products</a>
             <a href="/Contact/Index">Contact</a>
 
+        </div> *@
+        <div id="navbar-right">
+            @if (ViewBag.Sublinks != null)
+            {
+                foreach (var sublink in ViewBag.Sublinks)
+                {
+                    <a href="@sublink.PagePath">@sublink.PageName</a>
+                }
+            }
         </div>
     </div>
 
     @RenderBody()
 
-    <footer class="footer">
+    <footer class="footer" style="background-color:@ViewBag.Layout.FooterColor;">
         <div class="container footer-row">
             <div class="footer-col">
                 <h4>About us</h4>
-
+                @if (ViewBag.Sublinks != null)
+                {
+                    foreach (var sublink in ViewBag.Sublinks)
+                    {
+                        <a href="@sublink.PageName">@sublink.PageName</a>
+                    }
+                }
             </div>
+
             <div class="footer-col">
                 <h4>Products</h4>
 
@@ -40,14 +62,67 @@
             <div class="footer-col">
                 <h4>follow us</h4>
                 <div class="social-links">
-                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a id="link1" href="@ViewBag.Layout.SocialMedia1Link" target="_blank"></a>
+                    <a id="link2" href="@ViewBag.Layout.SocialMedia2Link"target="_blank"></a>
+                    <a id="link3" href="@ViewBag.Layout.SocialMedia3Link" target="_blank"></a>
+                    <a id="link4" href="@ViewBag.Layout.SocialMedia4Link" target="_blank"></a>
                 </div>
             </div>
         </div>
     </footer>
+    <style>
+        .footer-col h4::before {
+            background-color: @ViewBag.Layout.HighlightColor;
+        }
+
+        #navbar a.active {
+            border-bottom: solid @ViewBag.Layout.HighlightColor; 
+        }
+         
+        #navbar a { 
+            border-radius: 0px;  
+        }
+        #link1{
+            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia1Icon');
+            background-size: cover;
+        }
+        #link2{
+            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia2Icon');
+            background-size: cover;
+        }
+
+        #link3{
+            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia3Icon');
+            background-size: cover;
+        }
+
+        #link4 {
+            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia4Icon');
+            background-size: cover;
+        }
+    </style>
+    <script>
+        // Sayfa yüklendiğinde çalışacak fonksiyon
+        document.addEventListener('DOMContentLoaded', function () {
+            // Aktif linki belirlemek için sayfanın URL'sini al
+            var currentPageUrl = window.location.pathname;
+
+            // Navbar içindeki linkleri seç
+            var navLinks = document.querySelectorAll('#navbar-right a');
+
+            // Her bir link için kontrol yap
+            navLinks.forEach(function (link) {
+                // Linkin href özelliğini al
+                var linkUrl = link.getAttribute('href');
+
+                // Eğer linkin href özelliği ve sayfanın URL'si eşleşiyorsa
+                if (currentPageUrl.startsWith(linkUrl)) {
+                    // Aktif sınıfı ekle
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 
     <script>
         // When the user scrolls down 80px from the top of the document, resize the navbar's padding and the logo's font size
