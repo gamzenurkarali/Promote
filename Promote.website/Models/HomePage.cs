@@ -11,7 +11,7 @@ namespace Promote.website.Models
         public string? VideoFileName { get; set; }
 
         [Display(Name = "Is Tagline Section Included")]
-        public bool? IsTaglineSectionIncluded { get; set; }
+        public bool  IsTaglineSectionIncluded { get; set; }
 
         [Display(Name = "Tagline Section Background Color")]
         public string? TaglineSectionBgColor { get; set; }
@@ -20,7 +20,7 @@ namespace Promote.website.Models
         public string? Tagline { get; set; }
 
         [Display(Name = "Is Popular Products Section Included")]
-        public bool? IsPopularProductsSectionIncluded { get; set; }
+        public bool  IsPopularProductsSectionIncluded { get; set; }
 
         [Display(Name = "Popular Products Section Title")]
         public string? PopularProductsSectionTitle { get; set; }
@@ -65,7 +65,7 @@ namespace Promote.website.Models
         public int? PopularProduct4Id { get; set; }
 
         [Display(Name = "Is Services Section Included")]
-        public bool? IsServicesSectionIncluded { get; set; }
+        public bool  IsServicesSectionIncluded { get; set; }
 
         [Display(Name = "Services Section Title")]
         public string? ServicesSectionTitle { get; set; }
@@ -98,7 +98,7 @@ namespace Promote.website.Models
         public string? Services4Description { get; set; }
 
         [Display(Name = "Is Statistics Section Included")]
-        public bool? IsStatisticsSectionIncluded { get; set; }
+        public bool  IsStatisticsSectionIncluded { get; set; }
 
         [Display(Name = "Statistic Section Background Color")]
         public string? StatisticSectionBgColor { get; set; }

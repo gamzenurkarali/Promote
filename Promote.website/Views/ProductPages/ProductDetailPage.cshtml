@@ -1,0 +1,306 @@
+﻿@model Promote.website.Models.ProductDetailPageViewModel
+
+@{
+    ViewData["Title"] = "ProductDetailPage";
+    Layout = "~/Views/Shared/_PageLayout.cshtml";
+}
+@section Styles {
+    <link href="~/css/detail.css" rel="stylesheet" />
+}
+
+<section class="banner-section">
+    <div class="banner-image-container">
+        @if (Model != null && Model.detailPage != null && !string.IsNullOrEmpty(Model.detailPage.ImageHeader))
+        {
+            <img src="@Model.detailPage.ImageHeader" alt="Banner Image">
+        }
+        else
+        {
+            <!-- Varsayılan görüntüyü kullanabilirsiniz -->
+            <img src="~/DefaultMedia/Header.png" alt="Default Image">
+        }
+    </div>
+
+    <div class="content">
+        <h1>Details</h1>
+        <h4><a href="home.html">Products</a> > <a href="contact.html">View details</a></h4>
+    </div>
+</section>
+
+
+
+<div class="middle">
+    <section class="contact-form-section">
+        <!--Şehir İsmi ve Şehir Resmi-->
+        <div class="form-row">
+            <div class="input-data textarea">
+                @if (Model != null && Model.product != null && !string.IsNullOrEmpty(Model.product.ProductImageFileName))
+                {
+                    <img style="padding-block: 3rem;width:100%;" src="~/image/@Model.product.ProductImageFileName" alt="">
+                }
+                else
+                {
+                    <!-- Varsayılan bir görüntü veya alternatif içerik ekleyebilirsiniz -->
+                    <img style="padding-block: 3rem;width:100%;" src="https://placehold.co/400" alt="No Image">
+                }
+                <br />
+                <br>
+            </div>
+            <br><br>
+        </div> 
+    </section>
+
+    <section class="contact-info-section">
+
+        <h1><strong>@(Model?.product?.ProductName)</strong></h1><!--Başlık buraya eklenmeli-->
+        <h2><strong>@(Model?.product?.Fee) ₺</strong></h2>
+        <br><br>
+        <div>
+            <p>@(Model?.product?.Description)</p>
+        </div>
+
+        <div class="row">
+            <nav class="c-tabs" data-toggle="c-tabs" role="navigation">
+                <ul class="c-tab--navigation">
+                    <!--Tab slider başlıkları-->
+                    <li class="c-tab--item"><a href="#test1" class="active">@((Model?.detailPage?.Tab1Title ?? "Dahil olan hizmetler"))</a></li>
+                    <li class="c-tab--item"><a href="#test2">@((Model?.detailPage?.Tab2Title ?? "Dahil olmayan hizmetler"))</a></li>
+                    <li class="c-tab--item"><a href="#test3">@((Model?.detailPage?.Tab3Title ?? "İptal politikası"))</a></li>
+                    <li class="c-tab--slider">
+                        <div class="c-tab-indicator"></div>
+                    </li>
+                </ul>
+
+            </nav>
+            <div class="c-tab--content-container">
+                <!--Tab slider başlık içerikleri-->
+                <div id="test1" class="c-tab--content active">
+                    @{
+                        string tab1Description = string.Empty;
+
+                        if (Model.product != null)
+                        {
+                            tab1Description = Model.product.Tab1Description;
+
+                            if (tab1Description != null)
+                            {
+                                if (tab1Description.Contains("$/"))
+                                {
+                                    tab1Description = tab1Description.Replace("$/", "<br />&#8226; ");
+                                }
+
+                                if (tab1Description.Contains("%/"))
+                                {
+                                    tab1Description = tab1Description.Replace("%/", "</br><strong>");
+                                    tab1Description += "</strong>";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            tab1Description = "Details not available.";
+                        }
+                    }
+
+                    <p>@Html.Raw(tab1Description)</p>
+
+
+                </div>
+                <div id="test2" class="c-tab--content">
+                    @{
+                        string tab2Description = string.Empty;
+
+                        if (Model.product != null)
+                        {
+                            tab2Description = Model.product.Tab2Description;
+
+                            if (tab2Description != null)
+                            {
+                                if (tab2Description.Contains("$/"))
+                                {
+                                    tab2Description = tab2Description.Replace("$/", "<br />&#8226; ");
+                                }
+
+                                if (tab2Description.Contains("%/"))
+                                {
+                                    tab2Description = tab2Description.Replace("%/", "</br><strong>");
+                                    tab2Description += "</strong>";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            tab2Description = "Details not available.";
+                        }
+                    }
+
+                    <p>@Html.Raw(tab2Description)</p>
+
+                </div>
+                <div id="test3" class="c-tab--content">
+                    @{
+                        string tab3Description = string.Empty;
+
+                        if (Model.product != null)
+                        {
+                            tab3Description = Model.product.Tab3Description;
+
+                            if (tab3Description != null)
+                            {
+                                if (tab3Description.Contains("$/"))
+                                {
+                                    tab3Description = tab3Description.Replace("$/", "<br />&#8226; ");
+                                }
+
+                                if (tab3Description.Contains("%/"))
+                                {
+                                    tab3Description = tab3Description.Replace("%/", "</br><strong>");
+                                    tab3Description += "</strong>";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            tab3Description = "Details not available.";
+                        }
+                    }
+
+                    <p>@Html.Raw(tab3Description)</p>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<section class="contact-info-sections">
+
+    <h1>@((Model?.detailPage?.DetailedDescriptionTitle ?? "Ürün Detayları"))</h1>
+     
+    <div data-aos="fade-down-right">
+        @{
+            string detailedDescription = Model?.product?.DetailedDescription;
+
+            if (!string.IsNullOrEmpty(detailedDescription) && detailedDescription.Contains("$/"))
+            {
+                detailedDescription = detailedDescription.Replace("$/", "<br />&#8226; ");
+            }
+
+            if (!string.IsNullOrEmpty(detailedDescription) && detailedDescription.Contains("%/"))
+            {
+                detailedDescription = detailedDescription.Replace("%/", "</br><strong>");
+                detailedDescription += "</strong>";
+            }
+        }
+
+        <p>@Html.Raw(detailedDescription)</p>
+
+    </div>
+    <br><br>
+
+</section>
+@section Scripts{
+    <script>
+        // Kullanıcı belgenin üst kısmından 80 piksel aşağı kaydırdığında gezinme çubuğunun dolgusunu ve logonun yazı tipi boyutunu yeniden boyutlandırın
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            // Sayfa yukarı veya aşağı kaydırıldığında çağrılan fonksiyon
+            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+                // Navbar'a stil uygula
+                document.getElementById("navbar").style.padding = "0px 10px";
+                document.getElementById("logo").style.fontSize = "25px";
+                document.getElementById("logo-image").style.height = "70px";
+                document.getElementById("navbar").style.backgroundColor = "#212121";
+            } else {
+                // Navbar'a farklı bir stil uygula
+                document.getElementById("navbar").style.padding = "40px 50px";
+                document.getElementById("logo").style.fontSize = "35px";
+
+                document.getElementById("navbar").style.backgroundColor = "transparent";
+                document.getElementById("navbar").style.opacity = "0.5";
+                document.getElementById("logo-image").style.height = "100px";
+            }
+            $(function () {
+                // Her bir '.c-tab--navigation' sınıfına sahip öğe için döngü
+                $('.c-tab--navigation').each(function (element) {
+
+                    var slider_width,
+                        tab_width,
+                        left_position,
+                        $active,
+                        $content,
+                        $links = $(this).find('a'),
+                        $currentTab = $(this).find('a.active'),
+                        $indicator = $(this).find('.c-tab-indicator');
+                    // Eğer varsayılan olarak bir tab seçiliyse
+                    if ($currentTab.hasClass('active')) {
+                        slider_width = $('.c-tab--slider').innerWidth();
+                        tab_width = $currentTab.innerWidth();
+                        // var $tab_position = $slider_width - tab_width;
+                        left_position = $currentTab.position().left;
+                        $indicator.css({ 'width': tab_width + 'px', 'left': left_position + 'px' });
+                    }
+                    // Aktif sekme ve içeriği belirleme
+                    $active = $($links.filter('[href="' + location.hash + '"]')[0] || $links[0]);
+                    $active.addClass('active');
+                    $content = $($active[0].hash);
+                    // Aktif olmayan linkleri gizleme
+                    $links.not($active).each(function () {
+                        $(this.hash).hide();
+                    });
+
+                    // Click olayı için olay işleyicisini bağlama
+                    $(this).on('click', 'a', function (e) {
+                        $active.removeClass('active');
+                        $content.hide();
+
+                        $active = $(this);
+                        $content = $(this.hash);
+
+                        $active.addClass('active');
+                        $content.show();
+                        // Slider'ın hareket etmesi
+                        moveSlider($active);
+                        // Ripple efekti eklenmesi
+                        addRipple(e);
+                        e.preventDefault();
+                    });
+                });
+            });
+
+            // Slider'ı hareket ettiren fonksiyon
+            function moveSlider($tab_clicked) {
+                var $new_tab = $tab_clicked;
+                var $tab_parent = $new_tab.parent();
+                var $list_parent = $tab_parent.parent();
+                var $indicator = $list_parent.find('.c-tab--slider').children();
+                var new_tab_width = $new_tab.innerWidth();
+                var left_position = $new_tab.position().left;
+
+                $indicator.css({ 'width': new_tab_width + 'px', 'left': left_position + 'px' });
+            }
+            // Ripple efekti ekleyen fonksiyon
+            function addRipple(e) {
+                var target = e.target;
+                var targetPosition = target.getBoundingClientRect(),
+                    offsetX = e.clientX - targetPosition.left,
+                    offsetY = e.clientY - targetPosition.top;
+                var top = offsetY;
+                var left = offsetX;
+                var timeout = null;
+                var ripple = document.createElement('span');
+                var styleString = 'top:calc(' + top + 'px - .5em); left:calc(' + left + 'px - .5em);';
+
+                target.appendChild(ripple);
+                ripple.setAttribute("style", styleString);
+                ripple.classList.add('-ripple');
+                timeout = setTimeout(function () {
+                    ripple.parentNode.removeChild(ripple);
+                }, 5000);
+            }
+        }
+    </script>
+
+
+}

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies; // Bu namespace'i ekleyin
 using Promote.website.Models;
-
+using Promote.website.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Servisleri konteynere ekle
@@ -14,7 +14,8 @@ var configuration = builder.Configuration;
 // Baðlantý dizesini ekleyin
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
+// Add LayoutService to the DI container
+builder.Services.AddScoped<LayoutService>();
 // Kimlik doðrulama servislerini ekle
 builder.Services.AddAuthentication(options =>
 {

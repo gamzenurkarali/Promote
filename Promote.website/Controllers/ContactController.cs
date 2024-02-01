@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promote.website.Models;
+using Promote.website.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,15 +9,20 @@ namespace Promote.website.Controllers
     public class ContactController : Controller
     {
         private readonly Context _context;
-
-        public ContactController(Context context)
+        private readonly LayoutService _layoutService;
+        public ContactController(Context context, LayoutService layoutService)
         {
             _context = context;
+            _layoutService = layoutService;
         }
 
         [HttpGet]
         public IActionResult Index(int id)
         {
+            var layout = _layoutService.GetLayout();
+            var sublinks = _layoutService.GetSublinks();
+            ViewBag.Layout = layout;
+            ViewBag.Sublinks = sublinks;
             var contact = _context.contactPages.FirstOrDefault();
             var contactFormList = _context.contactForms.Where(x => x.ContactFormId == id).ToList();
 

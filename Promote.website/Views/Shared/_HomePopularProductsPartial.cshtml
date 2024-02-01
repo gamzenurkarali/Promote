@@ -1,0 +1,52 @@
+﻿<section class="products-section" style="background-color: @Model.PopularProductsSectionBgColor">
+
+
+    <div class="row">
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="card">
+                <div class="cover item-a" style="background-image:url('@(Model?.PopularProduct1Image != null ? $"../Media/{Model.PopularProduct1Image}" : "../DefaultMedia/500x400.png")');">
+                    <h1>@Model.PopularProduct1Title</h1>
+                    <div class="card-back">
+                        <a href="/ProductPages/ProductDetailPage/@Model.PopularProduct1Id">View detail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="card">
+                <div class="cover item-a" style="background-image:url('@(Model?.PopularProduct1Image != null ? $"../Media/{Model.PopularProduct2Image}" : "../DefaultMedia/500x400.png")');">
+                    <h1>@Model.PopularProduct2Title</h1>
+                    <div class="card-back">
+                        <a href="/ProductPages/ProductDetailPage/@Model.PopularProduct2Id">View detail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="card">
+                <div class="cover item-a" style="background-image:url('@(Model?.PopularProduct1Image != null ? $"../Media/{Model.PopularProduct3Image}" : "../DefaultMedia/500x400.png")');">
+                    <h1>@Model.PopularProduct3Title</h1>
+                    <div class="card-back">
+                        <a href="/ProductPages/ProductDetailPage/@Model.PopularProduct3Id">View detail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="card">
+                <div class="cover item-a" style="background-image:url('@(Model?.PopularProduct1Image != null ? $"../Media/{Model.PopularProduct4Image}" : "../DefaultMedia/500x400.png")');">
+                    <h1>@Model.PopularProduct4Title</h1>
+                    <div class="card-back">
+                        <a href="/ProductPages/ProductDetailPage/@Model.PopularProduct4Id">View detail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</section>

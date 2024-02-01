@@ -7,9 +7,9 @@ namespace Promote.website.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "LogoPath is required.")]
-        [Display(Name = "Logo Path")]
-        public string LogoPath { get; set; }
+        [Required(ErrorMessage = "Page Path is required.")]
+        [Display(Name = "Page Path")]
+        public string PagePath { get; set; }
 
         [Required(ErrorMessage = "Page Name is required.")]
         [Display(Name = "Page Name")]

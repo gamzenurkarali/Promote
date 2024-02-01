@@ -296,16 +296,16 @@ namespace Promote.website.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HomeId"), 1L, 1);
 
-                    b.Property<bool?>("IsPopularProductsSectionIncluded")
+                    b.Property<bool>("IsPopularProductsSectionIncluded")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsServicesSectionIncluded")
+                    b.Property<bool>("IsServicesSectionIncluded")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsStatisticsSectionIncluded")
+                    b.Property<bool>("IsStatisticsSectionIncluded")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsTaglineSectionIncluded")
+                    b.Property<bool>("IsTaglineSectionIncluded")
                         .HasColumnType("bit");
 
                     b.Property<int?>("PopularProduct1Id")
@@ -441,6 +441,38 @@ namespace Promote.website.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SocialMedia1Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocialMedia1Link")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocialMedia2Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocialMedia2Link")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocialMedia3Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocialMedia3Link")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocialMedia4Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocialMedia4Link")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("layouts");
@@ -471,11 +503,11 @@ namespace Promote.website.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("LogoPath")
+                    b.Property<string>("PageName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PageName")
+                    b.Property<string>("PagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

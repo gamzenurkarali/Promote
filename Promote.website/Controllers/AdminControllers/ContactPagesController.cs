@@ -19,37 +19,46 @@ namespace Promote.website.Controllers
             _context = context;
             _hostingEnvironment = hostingEnvironment;
         }
-        //[Authorize]
-        // GET: ContactPages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Router()
         {
-              return _context.contactPages != null ? 
-                          View(await _context.contactPages.ToListAsync()) :
-                          Problem("Entity set 'Context.contactPages'  is null.");
-        }
-        //[Authorize]
-        // GET: ContactPages/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.contactPages == null)
-            {
-                return NotFound();
-            }
+            // Veritabanında AboutPages tablosunda kayıt var mı diye kontrol et
+            bool hasRecord = _context.contactPages.Any();
 
-            var contactPage = await _context.contactPages
-                .FirstOrDefaultAsync(m => m.ContactPageId == id);
-            if (contactPage == null)
-            {
-                return NotFound();
-            }
+            // Eğer bir kayıt varsa, ilk kaydın ID'sini al
+            int firstRecordId = hasRecord ? _context.contactPages.First().ContactPageId : 0;
 
-            return View(contactPage);
+            if (hasRecord)
+            {
+                // Eğer bir kayıt varsa, Edit action'ına yönlendir
+                return RedirectToAction("Edit", new { id = firstRecordId });
+            }
+            else
+            {
+                // Eğer kayıt yoksa, Create action'ına yönlendir
+                return RedirectToAction("Create");
+            }
         }
+        
         //[Authorize]
         // GET: ContactPages/Create
         public IActionResult Create()
         {
-            return View();
+            // Veritabanında AboutPages tablosunda kayıt var mı diye kontrol et
+            bool hasRecord = _context.contactPages.Any();
+
+            // Eğer bir kayıt varsa, ilk kaydın ID'sini al
+            int firstRecordId = hasRecord ? _context.contactPages.First().ContactPageId : 0;
+
+            if (hasRecord)
+            {
+                // Eğer bir kayıt varsa, Edit action'ına yönlendir
+                return RedirectToAction("Edit", new { id = firstRecordId });
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
         // POST: ContactPages/Create

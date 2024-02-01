@@ -1,0 +1,60 @@
+﻿<section class="services-section" style="background-color: @Model.ServicesSectionBgColor">
+
+    <div data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000" class="service-card">
+        <div class="service-image">
+            @if (!string.IsNullOrEmpty(Model.Services1Image))
+            {
+                <img src="~/Media/@Model.Services1Image" alt="" srcset="">
+            }
+            else
+            {
+                <img src="~/DefaultMedia/100x100.png" alt="" srcset="">
+            }
+        </div>
+        <div class="service-text">@Model.Services1Description</div>
+    </div>
+
+    <div data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="2000" class="service-card">
+        <div class="service-image">
+            @if (!string.IsNullOrEmpty(Model.Services2Image))
+            {
+                <img src="~/Media/@Model.Services2Image" alt="" srcset="">
+            }
+            else
+            {
+                <img src="~/DefaultMedia/100x100.png" alt="" srcset="">
+            }
+        </div>
+        <div class="service-text">@Model.Services2Description</div>
+    </div>
+
+    <div data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000" class="service-card">
+        <div class="service-image">
+            @if (!string.IsNullOrEmpty(Model.Services3Image))
+            {
+                <img src="~/Media/@Model.Services3Image" alt="" srcset="">
+            }
+            else
+            {
+                <img src="~/DefaultMedia/100x100.png" alt="" srcset="">
+            }
+
+        </div>
+        <div class="service-text">@Model.Services3Description</div>
+    </div>
+
+    <div data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="2000" class="service-card">
+        <div class="service-image">
+            @if (!string.IsNullOrEmpty(Model.Services4Image))
+            {
+                <img src="~/Media/@Model.Services4Image" alt="" srcset="">
+            }
+            else
+            {
+                <img src="~/DefaultMedia/100x100.png" alt="" srcset="">
+            }
+        </div>
+        <div class="service-text">@Model.Services4Description</div>
+    </div>
+
+</section>

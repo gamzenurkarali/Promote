@@ -18,37 +18,38 @@ namespace Promote.website.Controllers
         {
             _context = context;
         }
-        //[Authorize]
-        // GET: ProductListPages
-        public async Task<IActionResult> Index()
-        {
-              return _context.productLists != null ? 
-                          View(await _context.productLists.ToListAsync()) :
-                          Problem("Entity set 'Context.productLists'  is null.");
-        }
-        //[Authorize]
-        // GET: ProductListPages/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.productLists == null)
-            {
-                return NotFound();
-            }
+        public async Task<IActionResult> Router()
+        { 
+            bool hasRecord = _context.productLists.Any();
+             
+            int firstRecordId = hasRecord ? _context.productLists.First().Id : 0;
 
-            var productListPage = await _context.productLists
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (productListPage == null)
-            {
-                return NotFound();
+            if (hasRecord)
+            { 
+                return RedirectToAction("Edit", new { id = firstRecordId });
             }
-
-            return View(productListPage);
+            else
+            { 
+                return RedirectToAction("Create");
+            }
         }
         //[Authorize]
         // GET: ProductListPages/Create
         public IActionResult Create()
-        {
-            return View();
+        { 
+            bool hasRecord = _context.productLists.Any();
+             
+            int firstRecordId = hasRecord ? _context.productLists.First().Id : 0;
+
+            if (hasRecord)
+            { 
+                return RedirectToAction("Edit", new { id = firstRecordId });
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
         // POST: ProductListPages/Create
