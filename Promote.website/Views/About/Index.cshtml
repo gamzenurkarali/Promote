@@ -81,17 +81,28 @@
             @functions {
                 public string ShadeColor(string color, int shade)
                 {
-                    var r = int.Parse(color.Substring(1, 2), System.Globalization.NumberStyles.HexNumber);
-                    var g = int.Parse(color.Substring(3, 2), System.Globalization.NumberStyles.HexNumber);
-                    var b = int.Parse(color.Substring(5, 2), System.Globalization.NumberStyles.HexNumber);
+                    try
+                    {
+                        var r = int.Parse(color.Substring(1, 2), System.Globalization.NumberStyles.HexNumber);
+                        var g = int.Parse(color.Substring(3, 2), System.Globalization.NumberStyles.HexNumber);
+                        var b = int.Parse(color.Substring(5, 2), System.Globalization.NumberStyles.HexNumber);
 
-                    r = Math.Max(0, Math.Min(255, r + shade));
-                    g = Math.Max(0, Math.Min(255, g + shade));
-                    b = Math.Max(0, Math.Min(255, b + shade));
+                        r = Math.Max(0, Math.Min(255, r + shade));
+                        g = Math.Max(0, Math.Min(255, g + shade));
+                        b = Math.Max(0, Math.Min(255, b + shade));
 
-                    return $"#{r:X2}{g:X2}{b:X2}";
+                        return $"#{r:X2}{g:X2}{b:X2}";
+                    }
+                    catch (FormatException ex)
+                    {
+                        // Ayrıştırma hatası durumunda burada işlem yapabilirsiniz
+                        Console.WriteLine("Renk kodu ayrıştırma hatası: " + ex.Message);
+                        // veya hata durumunu belirli bir değerle işleyebilirsiniz
+                        return "#000000"; // varsayılan bir renk döndürülebilir
+                    }
                 }
             }
+
 
             <!-- ortadaki koyu renkli ayırıcının rengi fill kısmından değiştirilir -->
             <path d="M 30 73 L 100 18 V 10 Z" fill=@darkerUpperPathColor stroke-width="0" />
