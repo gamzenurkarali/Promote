@@ -38,7 +38,8 @@
 
     @RenderBody()
 
-    <footer class="footer" style="background-color:@ViewBag.Layout.FooterColor;">
+    <footer class="footer" style="background-color:@(ViewBag.Layout?.FooterColor ?? "defaultColor");">
+
         <div class="container footer-row">
             <div class="footer-col">
                 <h4>About us</h4>
@@ -62,44 +63,49 @@
             <div class="footer-col">
                 <h4>follow us</h4>
                 <div class="social-links">
-                    <a id="link1" href="@ViewBag.Layout.SocialMedia1Link" target="_blank"></a>
-                    <a id="link2" href="@ViewBag.Layout.SocialMedia2Link"target="_blank"></a>
-                    <a id="link3" href="@ViewBag.Layout.SocialMedia3Link" target="_blank"></a>
-                    <a id="link4" href="@ViewBag.Layout.SocialMedia4Link" target="_blank"></a>
+                    <a id="link1" href="@((string)ViewBag.Layout?.SocialMedia1Link)" target="_blank"></a>
+                    <a id="link2" href="@((string)ViewBag.Layout?.SocialMedia2Link)" target="_blank"></a>
+                    <a id="link3" href="@((string)ViewBag.Layout?.SocialMedia3Link)" target="_blank"></a>
+                    <a id="link4" href="@((string)ViewBag.Layout?.SocialMedia4Link)" target="_blank"></a>
+
                 </div>
             </div>
         </div>
     </footer>
     <style>
         .footer-col h4::before {
-            background-color: @ViewBag.Layout.HighlightColor;
+            background-color: @(ViewBag.Layout != null ? ViewBag.Layout.HighlightColor : "default-color");
         }
 
         #navbar a.active {
-            border-bottom: solid @ViewBag.Layout.HighlightColor; 
+            border-bottom: solid @(ViewBag.Layout != null ? ViewBag.Layout.HighlightColor : "default-color");
         }
-         
-        #navbar a { 
-            border-radius: 0px;  
+
+        #navbar a {
+            border-radius: 0px;
         }
-        #link1{
-            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia1Icon');
-            background-size: cover;
-        }
-        #link2{
-            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia2Icon');
+
+        #link1 {
+            background-image: url('../LayoutMedia/@(ViewBag.Layout?.SocialMedia1Icon ?? "default-icon")');
             background-size: cover;
         }
 
-        #link3{
-            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia3Icon');
+        #link2 {
+            background-image: url('../LayoutMedia/@(ViewBag.Layout?.SocialMedia2Icon ?? "default-icon")');
+            background-size: cover;
+        }
+
+        #link3 {
+            background-image: url('../LayoutMedia/@(ViewBag.Layout?.SocialMedia3Icon ?? "default-icon")');
             background-size: cover;
         }
 
         #link4 {
-            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia4Icon');
+            background-image: url('../LayoutMedia/@(ViewBag.Layout?.SocialMedia4Icon ?? "default-icon")');
             background-size: cover;
         }
+
+        
     </style>
     <script>
         // Sayfa yüklendiğinde çalışacak fonksiyon
