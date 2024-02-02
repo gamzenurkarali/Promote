@@ -11,7 +11,7 @@
     <div class="header-image-container">
         @if (Model != null && Model.productListPage != null && !string.IsNullOrEmpty(Model.productListPage.ImageHeader))
         {
-            <img src="@Model.productListPage.ImageHeader" alt="Banner Image">
+            <img src="~/Media/@Model.productListPage.ImageHeader" alt="Banner Image">
         }
         else
         {
@@ -39,7 +39,7 @@
             {
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="card">
-                        <div class="cover item-a" style="background-image: url(../../wwwroot/Image/@item.ProductImageFileName);">
+                        <div class="cover item-a" style="background-image: url('../Media/@item.ProductImageFileName');">
                             <h1>@item.ProductName</h1>
                             <!--Fotoğrafın arka yüzündeki link ve yazı-->
                             <div class="card-back">

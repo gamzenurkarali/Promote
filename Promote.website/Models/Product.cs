@@ -8,9 +8,8 @@ public class Product
     [Required(ErrorMessage = "Product Name is required.")]
     public string ProductName { get; set; }
 
-    [Display(Name = "Product Image File Name")]
-    [Required(ErrorMessage = "Product Image File Name is required.")]
-    public string ProductImageFileName { get; set; }
+    [Display(Name = "Product Image File Name")] 
+    public string? ProductImageFileName { get; set; }
 
     [Required(ErrorMessage = "Fee is required.")]
     public decimal Fee { get; set; }
@@ -30,9 +29,8 @@ public class Product
     [Required(ErrorMessage = "Tab 3 Description is required.")]
     public string Tab3Description { get; set; }
 
-    [Display(Name = "Detailed Description Background Image")]
-    [Required(ErrorMessage = "Detailed Description Background Image is required.")]
-    public string DetailedDescriptionBgImage { get; set; }
+    [Display(Name = "Detailed Description Background Image")] 
+    public string? DetailedDescriptionBgImage { get; set; }
 
     [Display(Name = "Detailed Description")]
     [Required(ErrorMessage = "Detailed Description is required.")]
