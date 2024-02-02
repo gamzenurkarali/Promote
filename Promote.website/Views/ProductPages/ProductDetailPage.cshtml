@@ -5,14 +5,14 @@
     Layout = "~/Views/Shared/_PageLayout.cshtml";
 }
 @section Styles {
-    <link href="~/css/detail.css" rel="stylesheet" />
+    <link href="~/css/Detail.css" rel="stylesheet" />
 }
 
 <section class="banner-section">
     <div class="banner-image-container">
         @if (Model != null && Model.detailPage != null && !string.IsNullOrEmpty(Model.detailPage.ImageHeader))
         {
-            <img src="@Model.detailPage.ImageHeader" alt="Banner Image">
+            <img src="~/Media/@Model.detailPage.ImageHeader" alt="Banner Image">
         }
         else
         {
@@ -36,7 +36,7 @@
             <div class="input-data textarea">
                 @if (Model != null && Model.product != null && !string.IsNullOrEmpty(Model.product.ProductImageFileName))
                 {
-                    <img style="padding-block: 3rem;width:100%;" src="~/image/@Model.product.ProductImageFileName" alt="">
+                    <img style="padding-block: 3rem;width:100%;" src="~/Media/@Model.product.ProductImageFileName" alt="">
                 }
                 else
                 {
@@ -173,7 +173,8 @@
         </div>
     </section>
 </div>
-<section class="contact-info-sections">
+ 
+<section class="contact-info-sections" style="background-image: url('../../Media/@Model.product.DetailedDescriptionBgImage');">
 
     <h1>@((Model?.detailPage?.DetailedDescriptionTitle ?? "Ürün Detayları"))</h1>
      

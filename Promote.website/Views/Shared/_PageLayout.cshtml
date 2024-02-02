@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -9,123 +9,333 @@
 <body>
 
     <div id="navbar">
-        @* <a href="home.html" id="logo">
-            <img id="logo-image" src="~/image/touristt-high-resolution-logo-removebg-preview (1).png" alt="logo" style="height: 70px;">
-        </a> *@
+
         <a href="home.html" id="logo">
             @if (ViewBag.Layout != null)
             {
                 <img id="logo-image" src="~/LayoutMedia/@ViewBag.Layout.LogoPath" alt="logo" style="height: 70px;">
             }
         </a>
-        @* <div id="navbar-right">
-            <a href="/Home/Index">Home</a>
-            <a href="/About/Index">About</a>
-            <a href="/ProductPages/ProductListPage">Products</a>
-            <a href="/Contact/Index">Contact</a>
-
-        </div> *@
         <div id="navbar-right">
-            @if (ViewBag.Sublinks != null)
-            {
-                foreach (var sublink in ViewBag.Sublinks)
-                {
-                    <a href="@sublink.PagePath">@sublink.PageName</a>
+
+
+            <style>
+                #navbar #navbar-right ul {
+                    list-style: none;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
                 }
-            }
+
+                li a, .dropbtn {
+                    display: inline-block;
+                    color: white;
+                    text-align: center;
+                    padding: 14px 16px;
+                    text-decoration: none;
+                }
+
+
+                li.dropdown {
+                    display: inline-block;
+                }
+
+                .dropdown-content {
+                    display: none;
+                    position: absolute;
+                    min-width: 120px;
+                    z-index: 1;
+                }
+
+                    .dropdown-content a {
+                        color: black;
+                        padding: 5px 10px;
+                        text-decoration: none;
+                        display: block;
+                        text-align: left;
+                        border-bottom: 0px !important;
+                    }
+
+
+                .dropdown:hover .dropdown-content {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                @@media screen and (max-width: 580px) {
+                    .dropdown-content {
+                        margin-block-start: 0.5rem !important;
+                    }
+                }
+            </style>
+            <ul>
+
+
+                @if (ViewBag.Sublinks != null)
+                {
+                    var homeSublinks = ((IEnumerable<Sublink>)ViewBag.Sublinks).Where(sublink => sublink.PagePath.StartsWith("/Home/")).ToList();
+
+                    if (homeSublinks.Count > 1)
+                    {
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropbtn">Home</a>
+                            <div class="dropdown-content">
+                                @foreach (var sublink in homeSublinks)
+                                {
+                                    <a href="@sublink.PagePath">@sublink.PageName</a>
+                                }
+                            </div>
+                        </li>
+                    }
+                    else if (homeSublinks.Count == 1)
+                    {
+                        var singleHomeSublink = homeSublinks.First();
+                        <li>
+                            <a href="@singleHomeSublink.PagePath">@singleHomeSublink.PageName</a>
+                        </li>
+                    }
+                }
+
+
+
+                @if (ViewBag.Sublinks != null)
+                {
+                    var aboutSublinks = ((IEnumerable<Sublink>)ViewBag.Sublinks).Where(sublink => sublink.PagePath.StartsWith("/About/")).ToList();
+
+                    if (aboutSublinks.Count > 1)
+                    {
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropbtn">About</a>
+                            <div class="dropdown-content">
+                                @foreach (var sublink in aboutSublinks)
+                                {
+                                    <a href="@sublink.PagePath">@sublink.PageName</a>
+                                }
+                            </div>
+                        </li>
+                    }
+                    else if (aboutSublinks.Count == 1)
+                    {
+                        var singleAboutSublink = aboutSublinks.First();
+                        <li>
+                            <a href="@singleAboutSublink.PagePath">@singleAboutSublink.PageName</a>
+                        </li>
+                    }
+                }
+                @if (ViewBag.Sublinks != null)
+                {
+                    var productSublinks = ((IEnumerable<Sublink>)ViewBag.Sublinks).Where(sublink => sublink.PagePath.StartsWith("/ProductPages/")).ToList();
+
+                    if (productSublinks.Count > 1)
+                    {
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropbtn">Products</a>
+                            <div class="dropdown-content">
+                                @foreach (var sublink in productSublinks)
+                                {
+                                    <a href="@sublink.PagePath">@sublink.PageName</a>
+                                }
+                            </div>
+                        </li>
+                    }
+                    else if (productSublinks.Count == 1)
+                    {
+                        var singleProductSublink = productSublinks.First();
+                        <li>
+                            <a href="@singleProductSublink.PagePath">@singleProductSublink.PageName</a>
+                        </li>
+                    }
+                }
+                @if (ViewBag.Sublinks != null)
+                {
+                    var contactSublinks = ((IEnumerable<Sublink>)ViewBag.Sublinks).Where(sublink => sublink.PagePath.StartsWith("/Contact/")).ToList();
+
+                    if (contactSublinks.Count > 1)
+                    {
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropbtn">Contact</a>
+                            <div class="dropdown-content">
+                                @foreach (var sublink in contactSublinks)
+                                {
+                                    <a href="@sublink.PagePath">@sublink.PageName</a>
+                                }
+                            </div>
+                        </li>
+                    }
+                    else if (contactSublinks.Count == 1)
+                    {
+                        var singleContactSublink = contactSublinks.First();
+                        <li>
+                            <a href="@singleContactSublink.PagePath">@singleContactSublink.PageName</a>
+                        </li>
+                    }
+                }
+
+            </ul>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var navbar = document.getElementById('navbar');
+                    var dropdownItems = navbar.querySelectorAll('.dropdown');
+
+                    dropdownItems.forEach(function (dropdown) {
+                        dropdown.addEventListener('mouseenter', function () {
+                            var dropdownContent = this.querySelector('.dropdown-content'); 
+                            dropdownContent.style.display = 'flex'; 
+                            dropdownContent.style.flexDirection = 'column !important'; 
+                            var highlightColor = '@(ViewBag.Layout != null ? ViewBag.Layout.HighlightColor : "red")';
+                            dropdownContent.style.backgroundColor = highlightColor;
+                            dropdownContent.style.marginBlockStart = '3rem'; 
+                            navbar.style.overflow = 'visible';
+                        });
+
+                        dropdown.addEventListener('mouseleave', function () {
+                            var dropdownContent = this.querySelector('.dropdown-content'); 
+                            dropdownContent.style.display = 'none'; 
+                            dropdownContent.style.marginBlockStart = '0';
+                        });
+                    });
+                });
+            </script>
         </div>
+
+
+
+
+
     </div>
 
     @RenderBody()
 
-    <footer class="footer" style="background-color:@ViewBag.Layout.FooterColor;">
+    <footer class="footer" style="background-color: @(ViewBag.Layout != null && ViewBag.Layout.FooterColor != null ? ViewBag.Layout.FooterColor : "black")">
         <div class="container footer-row">
             <div class="footer-col">
-                <h4>About us</h4>
-                @if (ViewBag.Sublinks != null)
-                {
-                    foreach (var sublink in ViewBag.Sublinks)
+                <h4>About</h4>
+                <div class="footer-links">
+                    @if (ViewBag.Sublinks != null)
                     {
-                        <a href="@sublink.PageName">@sublink.PageName</a>
+                        foreach (var sublink in ViewBag.Sublinks)
+                        {
+                            if (sublink.PagePath.StartsWith("/About/"))
+                            {
+                                <a href="@sublink.PagePath">@sublink.PageName</a>
+                            }
+
+                        }
                     }
-                }
+                </div>
+
             </div>
 
             <div class="footer-col">
                 <h4>Products</h4>
+                <div class="footer-links">
+                    @if (ViewBag.Sublinks != null)
+                    {
+                        foreach (var sublink in ViewBag.Sublinks)
+                        {
+                            if (sublink.PagePath.StartsWith("/ProductPages/"))
+                            {
+                                <a href="@sublink.PagePath">@sublink.PageName</a>
+                            }
+
+                        }
+                    }
+                </div>
+
 
             </div>
             <div class="footer-col">
                 <h4>Contact</h4>
+                <div class="footer-links">
+                    @if (ViewBag.Sublinks != null)
+                    {
+                        foreach (var sublink in ViewBag.Sublinks)
+                        {
+                            if (sublink.PagePath.StartsWith("/Contact/"))
+                            {
+                                <a href="@sublink.PagePath">@sublink.PageName</a>
+                            }
+
+                        }
+                    }
+                </div>
 
             </div>
             <div class="footer-col">
                 <h4>follow us</h4>
                 <div class="social-links">
-                    <a id="link1" href="@ViewBag.Layout.SocialMedia1Link" target="_blank"></a>
-                    <a id="link2" href="@ViewBag.Layout.SocialMedia2Link"target="_blank"></a>
-                    <a id="link3" href="@ViewBag.Layout.SocialMedia3Link" target="_blank"></a>
-                    <a id="link4" href="@ViewBag.Layout.SocialMedia4Link" target="_blank"></a>
+                    <a id="link1" href="@((ViewBag.Layout != null && ViewBag.Layout.SocialMedia1Link != null) ? ViewBag.Layout.SocialMedia1Link : "#")" target="_blank"></a>
+                    <a id="link2" href="@((ViewBag.Layout != null && ViewBag.Layout.SocialMedia2Link != null) ? ViewBag.Layout.SocialMedia2Link : "#")" target="_blank"></a>
+                    <a id="link3" href="@((ViewBag.Layout != null && ViewBag.Layout.SocialMedia3Link != null) ? ViewBag.Layout.SocialMedia3Link : "#")" target="_blank"></a>
+                    <a id="link4" href="@((ViewBag.Layout != null && ViewBag.Layout.SocialMedia4Link != null) ? ViewBag.Layout.SocialMedia4Link : "#")" target="_blank"></a> 
                 </div>
             </div>
         </div>
     </footer>
     <style>
+        .footer-col .footer-links {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+        }
+
+            .footer-col .footer-links a {
+                color: white !important;
+            }
+
+                .footer-col .footer-links a:hover {
+                    color: @(ViewBag.Layout != null && ViewBag.Layout.HighlightColor != null ? ViewBag.Layout.HighlightColor : "red") !important;
+                }
+
         .footer-col h4::before {
-            background-color: @ViewBag.Layout.HighlightColor;
+            background-color: @(ViewBag.Layout != null && ViewBag.Layout.HighlightColor != null ? ViewBag.Layout.HighlightColor : "red") !important;
         }
 
         #navbar a.active {
-            border-bottom: solid @ViewBag.Layout.HighlightColor; 
+            border-bottom: solid @(ViewBag.Layout != null && ViewBag.Layout.HighlightColor != null ? ViewBag.Layout.HighlightColor : "red");
         }
-         
-        #navbar a { 
-            border-radius: 0px;  
+
+        #navbar a {
+            border-radius: 0px;
         }
-        #link1{
-            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia1Icon');
-            background-size: cover;
-        }
-        #link2{
-            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia2Icon');
+
+        #link1 {
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia1Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia1Icon : "")');
             background-size: cover;
         }
 
-        #link3{
-            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia3Icon');
+        #link2 {
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia2Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia2Icon : "")');
+            background-size: cover;
+        }
+
+        #link3 {
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia3Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia3Icon : "")');
             background-size: cover;
         }
 
         #link4 {
-            background-image: url('../LayoutMedia/@ViewBag.Layout.SocialMedia4Icon');
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia4Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia4Icon : "")');
             background-size: cover;
         }
     </style>
-    <script>
-        // Sayfa yüklendiğinde çalışacak fonksiyon
-        document.addEventListener('DOMContentLoaded', function () {
-            // Aktif linki belirlemek için sayfanın URL'sini al
+    <script> 
+        document.addEventListener('DOMContentLoaded', function () { 
             var currentPageUrl = window.location.pathname;
-
-            // Navbar içindeki linkleri seç
+             
             var navLinks = document.querySelectorAll('#navbar-right a');
-
-            // Her bir link için kontrol yap
-            navLinks.forEach(function (link) {
-                // Linkin href özelliğini al
+             
+            navLinks.forEach(function (link) { 
                 var linkUrl = link.getAttribute('href');
-
-                // Eğer linkin href özelliği ve sayfanın URL'si eşleşiyorsa
-                if (currentPageUrl.startsWith(linkUrl)) {
-                    // Aktif sınıfı ekle
+                 
+                if (currentPageUrl.startsWith(linkUrl)) { 
                     link.classList.add('active');
                 }
             });
         });
     </script>
 
-    <script>
-        // When the user scrolls down 80px from the top of the document, resize the navbar's padding and the logo's font size
+    <script> 
         window.onscroll = function () { scrollFunction() };
 
         function scrollFunction() {

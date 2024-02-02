@@ -77,9 +77,9 @@ namespace Promote.website.Controllers
                     string fileNameBottom = Guid.NewGuid().ToString() + Path.GetExtension(ImageBottom.FileName);
 
                     // Dosyaları kaydetme işlemi
-                    string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileNameHeader);
-                    string filePathTop = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileNameTop);
-                    string filePathBottom = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileNameBottom);
+                    string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameHeader);
+                    string filePathTop = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameTop);
+                    string filePathBottom = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameBottom);
 
                     using (var stream = new FileStream(filePathHeader, FileMode.Create))
                     {
@@ -116,7 +116,7 @@ namespace Promote.website.Controllers
                 ModelState.AddModelError("", $"An error occurred: {ex.Message}");
             }
 
-            return View(aboutPage);
+            return RedirectToAction("Router");
         }
 
 
@@ -140,6 +140,8 @@ namespace Promote.website.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [RequestSizeLimit(500 * 1024 * 1024)]       //unit is bytes => 500Mb
+        [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         public async Task<IActionResult> Edit(int id, IFormFile ImageHeader, IFormFile ImageBottom, IFormFile ImageTop, [Bind("AboutId,CompanyDescription,MissionTitle,MissionDescription,MissionBgColor,VisionTitle,VisionDescription,VisionBgColor,WhyUsSectionTitle,WhyUsSectionBgColor,WhyUs1Title,WhyUs1Description,WhyUs1BgColor,WhyUs2Title,WhyUs2Description,WhyUs2BgColor,WhyUs3Title,WhyUs3Description,WhyUs3BgColor")] AboutPage aboutPage)
         {
             if (id != aboutPage.AboutId)
@@ -147,15 +149,14 @@ namespace Promote.website.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            
                 try
                 { 
                     var existingAboutPage = await _context.aboutPages.AsNoTracking().FirstOrDefaultAsync(m => m.AboutId == id);
                      
                     if (ImageHeader != null && existingAboutPage != null && !string.IsNullOrEmpty(existingAboutPage.ImageHeader) && ImageHeader.FileName != existingAboutPage.ImageHeader)
                     {
-                        string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Image", existingAboutPage.ImageHeader);
+                        string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Media", existingAboutPage.ImageHeader);
                         if (System.IO.File.Exists(filePathHeader))
                         {
                             System.IO.File.Delete(filePathHeader);
@@ -165,7 +166,7 @@ namespace Promote.website.Controllers
                     if (ImageHeader != null)
                     {
                         string fileNameHeader = Guid.NewGuid().ToString() + Path.GetExtension(ImageHeader.FileName);
-                        string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileNameHeader);
+                        string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameHeader);
 
                         using (var stream = new FileStream(filePathHeader, FileMode.Create))
                         {
@@ -176,7 +177,7 @@ namespace Promote.website.Controllers
                     }
                     if (ImageBottom != null && existingAboutPage != null && !string.IsNullOrEmpty(existingAboutPage.ImageBottom) && ImageBottom.FileName != existingAboutPage.ImageBottom)
                     {
-                        string filePathBottom = Path.Combine(_hostingEnvironment.WebRootPath, "Image", existingAboutPage.ImageBottom);
+                        string filePathBottom = Path.Combine(_hostingEnvironment.WebRootPath, "Media", existingAboutPage.ImageBottom);
                         if (System.IO.File.Exists(filePathBottom))
                         {
                             System.IO.File.Delete(filePathBottom);
@@ -186,7 +187,7 @@ namespace Promote.website.Controllers
                     if (ImageBottom != null)
                     {
                         string fileNameBottom = Guid.NewGuid().ToString() + Path.GetExtension(ImageBottom.FileName);
-                        string filePathBottom = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileNameBottom);
+                        string filePathBottom = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameBottom);
 
                         using (var stream = new FileStream(filePathBottom, FileMode.Create))
                         {
@@ -197,7 +198,7 @@ namespace Promote.website.Controllers
                     }
                     if (ImageTop != null && existingAboutPage != null && !string.IsNullOrEmpty(existingAboutPage.ImageTop) && ImageTop.FileName != existingAboutPage.ImageTop)
                     {
-                        string filePathTop = Path.Combine(_hostingEnvironment.WebRootPath, "Image", existingAboutPage.ImageTop);
+                        string filePathTop = Path.Combine(_hostingEnvironment.WebRootPath, "Media", existingAboutPage.ImageTop);
                         if (System.IO.File.Exists(filePathTop))
                         {
                             System.IO.File.Delete(filePathTop);
@@ -207,7 +208,7 @@ namespace Promote.website.Controllers
                     if (ImageTop != null)
                     {
                         string fileNameTop = Guid.NewGuid().ToString() + Path.GetExtension(ImageTop.FileName);
-                        string filePathTop = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileNameTop);
+                        string filePathTop = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameTop);
 
                         using (var stream = new FileStream(filePathTop, FileMode.Create))
                         {
@@ -230,9 +231,8 @@ namespace Promote.website.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(aboutPage);
+                
+            return RedirectToAction("Router");
         }
 
          
@@ -270,7 +270,7 @@ namespace Promote.website.Controllers
 
             if (aboutPage != null)
             { 
-                string imageDirectory = Path.Combine(_hostingEnvironment.WebRootPath, "Image");
+                string imageDirectory = Path.Combine(_hostingEnvironment.WebRootPath, "Media");
                  
                 if (!string.IsNullOrEmpty(aboutPage.ImageHeader))
                 {

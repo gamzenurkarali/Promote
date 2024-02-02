@@ -178,8 +178,7 @@ h1 {
     padding-block: 0rem;
     text-align: center;
     background-size: cover;
-    background-repeat: no-repeat;
-    background-image: url('../image/travel explore the world (banner (landscape)) (1).png');
+    background-repeat: no-repeat; 
 }
 
     .contact-info-sections h1,
