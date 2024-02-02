@@ -13,10 +13,11 @@ namespace Promote.website.Controllers
     public class ProductListPagesController : Controller
     {
         private readonly Context _context;
-
-        public ProductListPagesController(Context context)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public ProductListPagesController(Context context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
         public async Task<IActionResult> Router()
         { 
@@ -57,16 +58,47 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImageHeader")] ProductListPage productListPage)
+        public async Task<IActionResult> Create([Bind("Id")] ProductListPage productListPage, IFormFile ImageHeader)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(productListPage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ImageHeader != null)
+                {
+                    productListPage.ImageHeader = await SaveFile(ImageHeader);
+
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(productListPage);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Please select the required file.");
+                }
             }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+            }
+
             return View(productListPage);
         }
+
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return fileName;
+        }
+
         //[Authorize]
         // GET: ProductListPages/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -89,35 +121,59 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageHeader")] ProductListPage productListPage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageHeader")] ProductListPage productListPage, IFormFile ImageHeader)
         {
             if (id != productListPage.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var existingProductListPage = await _context.productLists.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+
+                // Delete the existing file if a new one is provided
+                if (ImageHeader != null)
+                {
+                    await DeleteFileIfExists(existingProductListPage.ImageHeader);
+                }
+
+                // Save the new file or keep the existing one
+                productListPage.ImageHeader = ImageHeader != null ? await SaveFile(ImageHeader) : existingProductListPage.ImageHeader;
+
+                if (ModelState.IsValid)
                 {
                     _context.Update(productListPage);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductListPageExists(productListPage.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductListPageExists(productListPage.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
             return View(productListPage);
         }
+        private async Task DeleteFileIfExists(string fileName)
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileName);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+        }
+
         //[Authorize]
         // GET: ProductListPages/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -144,17 +200,23 @@ namespace Promote.website.Controllers
         {
             if (_context.productLists == null)
             {
-                return Problem("Entity set 'Context.productLists'  is null.");
+                return Problem("Entity set 'Context.ProductLists' is null.");
             }
+
             var productListPage = await _context.productLists.FindAsync(id);
+
             if (productListPage != null)
             {
+                // Delete the associated file if it exists
+                await DeleteFileIfExists(productListPage.ImageHeader);
+
                 _context.productLists.Remove(productListPage);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool ProductListPageExists(int id)
         {

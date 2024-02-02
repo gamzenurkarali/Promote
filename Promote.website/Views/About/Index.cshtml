@@ -14,7 +14,7 @@
         <!--Sayfa üstü büyük görsel için resim yolu src kısmına yazılır-->}
         @if (!string.IsNullOrEmpty(Model.ImageHeader))
         {
-            <img src="@Model.ImageHeader" alt="Banner Image">
+            <img src="~/Media/@Model.ImageHeader" alt="Banner Image">
         }
         else
         {
@@ -34,7 +34,7 @@
         <!--alttaki görsel-->
         @if (!string.IsNullOrEmpty(Model.ImageBottom))
         {
-            <img class="image1"  src="@Model.ImageBottom" alt="Banner Image">
+            <img class="image1" src="~/Media/@Model.ImageBottom" alt="Banner Image">
         }
         else
         {
@@ -44,7 +44,7 @@
         <!--üstteki görsel-->
         @if (!string.IsNullOrEmpty(Model.ImageTop))
         {
-            <img class="image2" src="@Model.ImageTop" alt="Banner Image">
+            <img class="image2" src="~/Media/@Model.ImageTop" alt="Banner Image">
         }
         else
         {

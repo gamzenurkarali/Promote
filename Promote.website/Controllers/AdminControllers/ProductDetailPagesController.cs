@@ -13,10 +13,11 @@ namespace Promote.website.Controllers
     public class ProductDetailPagesController : Controller
     {
         private readonly Context _context;
-
-        public ProductDetailPagesController(Context context)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public ProductDetailPagesController(Context context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
         public async Task<IActionResult> Router()
         {
@@ -57,16 +58,47 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImageHeader,Tab1Title,Tab2Title,Tab3Title,DetailedDescriptionTitle")] ProductDetailPage productDetailPage)
+        public async Task<IActionResult> Create([Bind("Id,ImageHeader,Tab1Title,Tab2Title,Tab3Title,DetailedDescriptionTitle")] ProductDetailPage productDetailPage, IFormFile ImageHeader)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(productDetailPage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ImageHeader != null)
+                {
+                    productDetailPage.ImageHeader = await SaveFile(ImageHeader);
+
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(productDetailPage);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Please select the required file.");
+                }
             }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+            }
+
             return View(productDetailPage);
         }
+
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return fileName;
+        }
+
         //[Authorize]
         // GET: ProductDetailPages/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -83,41 +115,65 @@ namespace Promote.website.Controllers
             }
             return View(productDetailPage);
         }
+        private async Task DeleteFileIfExists(string fileName)
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileName);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+        }
 
         // POST: ProductDetailPages/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageHeader,Tab1Title,Tab2Title,Tab3Title,DetailedDescriptionTitle")] ProductDetailPage productDetailPage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageHeader,Tab1Title,Tab2Title,Tab3Title,DetailedDescriptionTitle")] ProductDetailPage productDetailPage, IFormFile ImageHeader)
         {
             if (id != productDetailPage.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var existingProductDetailPage = await _context.productDetailPages.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+
+                // Delete the existing file if a new one is provided
+                if (ImageHeader != null)
+                {
+                    await DeleteFileIfExists(existingProductDetailPage.ImageHeader);
+                }
+
+                // Save the new file or keep the existing one
+                productDetailPage.ImageHeader = ImageHeader != null ? await SaveFile(ImageHeader) : existingProductDetailPage.ImageHeader;
+
+                if (ModelState.IsValid)
                 {
                     _context.Update(productDetailPage);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductDetailPageExists(productDetailPage.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductDetailPageExists(productDetailPage.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
             return View(productDetailPage);
         }
+
         //[Authorize]
         // GET: ProductDetailPages/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -144,17 +200,23 @@ namespace Promote.website.Controllers
         {
             if (_context.productDetailPages == null)
             {
-                return Problem("Entity set 'Context.productDetailPages'  is null.");
+                return Problem("Entity set 'Context.ProductDetailPages' is null.");
             }
+
             var productDetailPage = await _context.productDetailPages.FindAsync(id);
+
             if (productDetailPage != null)
             {
+                // Delete the associated file if it exists
+                await DeleteFileIfExists(productDetailPage.ImageHeader);
+
                 _context.productDetailPages.Remove(productDetailPage);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool ProductDetailPageExists(int id)
         {
