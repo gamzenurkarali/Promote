@@ -12,8 +12,8 @@
 </head>
 <body>
 
-<section class="banner-section">
-    <div class="banner-image-container">
+    <section class="banner-section">
+        <div class="banner-image-container">
             @if (Model.Contact != null && !string.IsNullOrEmpty(Model.Contact.ImageHeader))
             {
                 <img src="~/image/@Model.Contact.ImageHeader" alt="Banner Image">
@@ -22,58 +22,58 @@
             {
                 <p>No image available</p>
             }
-    </div>
-    
-    <div class="content">
-        <h1>Contact</h1>
-        <h4><a href="home.html">Home</a> > <a href="contact.html">Contact</a></h4>
-    </div>
-</section>
+        </div>
 
-
-
-<div class="middle">
-    <section class="contact-form-section">
-        <form action="#">
-            <div class="form-row">
-               <div class="input-data">
-                  <input type="text" required>
-                  <div class="underline"></div>
-                  <label for="">First Name</label>
-               </div>
-               <div class="input-data">
-                  <input type="text" required>
-                  <div class="underline"></div>
-                  <label for="">Last Name</label>
-               </div>
-            </div>
-            <div class="form-row">
-               <div class="input-data">
-                  <input type="text" required>
-                  <div class="underline"></div>
-                  <label for="">Email Address</label>
-               </div>
-            </div>
-            <div class="form-row">
-            <div class="input-data textarea">
-               <textarea rows="8" cols="80" required></textarea>
-               <br />
-               <div class="underline"></div>
-               <label for="">Write your message</label>
-               <br>
-               <div class="submit-btn">
-                  <div>
-                     <div class="inner"></div>
-                     <button class="button-86" role="button">Send</button>
-                  </div>
-               </div>
-               <br><br>
-            </div> 
-            <!--buton css !-->
-  
-         </form>
-      
+        <div class="content">
+            <h1>Contact</h1>
+            <h4><a href="home.html">Home</a> > <a href="contact.html">Contact</a></h4>
+        </div>
     </section>
+
+
+
+    <div class="middle">
+        <section class="contact-form-section">
+            <form action="" method="post">
+                <div class="form-row">
+                    <div class="input-data">
+                        <input type="text" name="FirstName" required>
+                        <div class="underline"></div>
+                        <label for="FirstName">First Name</label>
+                    </div>
+                    <div class="input-data">
+                        <input type="text" name="LastName" required>
+                        <div class="underline"></div>
+                        <label for="LastName">Last Name</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-data">
+                        <input type="text" name="Email" required>
+                        <div class="underline"></div>
+                        <label for="Email">Email Address</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-data textarea">
+                        <textarea name="Message" rows="8" cols="80" required></textarea>
+                        <br />
+                        <div class="underline"></div>
+                        <label for="Message">Write your message</label>
+                        <br>
+                        <div class="submit-btn">
+                            <div>
+                                <div class="inner"></div>
+                                <button class="button-86" type="submit" role="button">Send</button>
+                            </div>
+                        </div>
+                        <br><br>
+                    </div>
+                </div>
+                <!--buton css !-->
+            </form>
+        </section>
+
 
         <section class="contact-info-section">
             <h1><strong>@Model.Contact.ContactInfoTitle</strong></h1>
@@ -110,30 +110,30 @@
         </section>
 
 
-     
-    <section class="map-section">
-        <div class="map-container">
-            @if (!string.IsNullOrEmpty(Model.Contact.MapIframeUrl))
-            {
-                <iframe src="@Model.Contact.MapIframeUrl" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            }
-            else
-            {
-                <p>Map not available</p>
-            }
-        </div>
-      </section>
-   
- 
-</div>
+
+        <section class="map-section">
+            <div class="map-container">
+                @if (!string.IsNullOrEmpty(Model.Contact.MapIframeUrl))
+                {
+                    <iframe src="@Model.Contact.MapIframeUrl" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                }
+                else
+                {
+                    <p>Map not available</p>
+                }
+            </div>
+        </section>
 
 
-  
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  
-  <script>
-    AOS.init();
+    </div>
+
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        AOS.init();
     </script>
 </body>
 </html>

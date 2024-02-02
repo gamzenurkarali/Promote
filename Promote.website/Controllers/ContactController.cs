@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promote.website.Models;
-using Promote.website.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,20 +8,15 @@ namespace Promote.website.Controllers
     public class ContactController : Controller
     {
         private readonly Context _context;
-        private readonly LayoutService _layoutService;
-        public ContactController(Context context, LayoutService layoutService)
+
+        public ContactController(Context context)
         {
             _context = context;
-            _layoutService = layoutService;
         }
 
         [HttpGet]
         public IActionResult Index(int id)
         {
-            var layout = _layoutService.GetLayout();
-            var sublinks = _layoutService.GetSublinks();
-            ViewBag.Layout = layout;
-            ViewBag.Sublinks = sublinks;
             var contact = _context.contactPages.FirstOrDefault();
             var contactFormList = _context.contactForms.Where(x => x.ContactFormId == id).ToList();
 
@@ -43,13 +37,14 @@ namespace Promote.website.Controllers
                 _context.contactForms.Add(contactForm);
                 _context.SaveChanges();
 
-                // Burada, eklenen formun ait olduğu sayfanın ID'sini almalısınız.
-                // Eğer bu bilgiyi alamıyorsanız, sabit bir ID kullanmak yerine dinamik bir şekilde belirlemelisiniz.
-                return RedirectToAction("Index", new { id = 1 });
+                // Formun içinde ilgili iletişim sayfasının ID'si olduğunu varsayıyorum
+                // 'contactForm.PageId' ifadesini, gerçek sayfa ID'sini tutan özelliğinizle değiştirin
+                return RedirectToAction("Index", new { id = contactForm.ContactFormId });
             }
 
             return View(contactForm);
         }
+
 
     }
 }
