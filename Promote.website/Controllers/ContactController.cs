@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promote.website.Models;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Promote.website.Controllers
@@ -15,10 +14,12 @@ namespace Promote.website.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int id)
+        public IActionResult Index(int contactFormId)
         {
             var contact = _context.contactPages.FirstOrDefault();
-            var contactFormList = _context.contactForms.Where(x => x.ContactFormId == id).ToList();
+            var contactFormList = _context.contactForms
+                .Where(x => x.ContactFormId == contactFormId)
+                .ToList();
 
             ContactViewModel model = new ContactViewModel
             {
@@ -34,17 +35,15 @@ namespace Promote.website.Controllers
         {
             if (ModelState.IsValid)
             {
+                // ContactForm içinde ContactFormId olduğunu varsayalım
                 _context.contactForms.Add(contactForm);
                 _context.SaveChanges();
 
-                // Formun içinde ilgili iletişim sayfasının ID'si olduğunu varsayıyorum
-                // 'contactForm.PageId' ifadesini, gerçek sayfa ID'sini tutan özelliğinizle değiştirin
-                return RedirectToAction("Index", new { id = contactForm.ContactFormId });
+                // Formun içindeki iletişim formunun ID'si olduğunu varsayıyorum
+                return RedirectToAction("Index", new { contactFormId = contactForm.ContactFormId });
             }
 
             return View(contactForm);
         }
-
-
     }
 }
