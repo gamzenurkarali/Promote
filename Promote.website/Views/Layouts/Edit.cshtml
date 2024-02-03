@@ -4,7 +4,23 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@if (TempData["Message"] != null)
+{
+    <div id="dismissable-alert" class="alert @(TempData["AlertClass"] ?? "") alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
+    <script>
+        $(document).ready(function () {
+            window.setTimeout(function () {
+                $("#dismissable-alert").alert('close');
+            }, 5000); // 5000 milisaniye (5 saniye) sonra alert'ı otomatik olarak kapat
+        });
+    </script>
+}
 <h1>Edit</h1>
 
 <h4>Layout</h4>
@@ -16,8 +32,9 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="LogoPath" class="control-label"></label>
-                <input asp-for="LogoPath" name="LogoPath" type="file" class="form-control" />
+                <input asp-for="LogoPath" name="LogoPath" type="file" class="form-control removeValue" onchange="updateFileName('logoFileInput', 'logoFileName')" style="color: transparent;" />
                 <span asp-validation-for="LogoPath" class="text-danger"></span>
+                <small id="logoFileName" class="form-text text-muted">@Model.LogoPath</small>
             </div>
             <div class="form-group">
                 <label asp-for="FooterColor" class="control-label"></label>
@@ -36,8 +53,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="SocialMedia1Icon" class="control-label"></label>
-                <input asp-for="SocialMedia1Icon" name="SocialMedia1Icon" type="file" class="form-control" />
+                <input asp-for="SocialMedia1Icon" name="SocialMedia1Icon" type="file" class="form-control removeValue" onchange="updateFileName('socialMedia1IconInput', 'socialMedia1IconName')" style="color: transparent;" />
                 <span asp-validation-for="SocialMedia1Icon" class="text-danger"></span>
+                <small id="socialMedia1IconName" class="form-text text-muted">@Model.SocialMedia1Icon</small>
             </div>
             <div class="form-group">
                 <label asp-for="SocialMedia2Link" class="control-label"></label>
@@ -46,8 +64,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="SocialMedia2Icon" class="control-label"></label>
-                <input asp-for="SocialMedia2Icon" name="SocialMedia2Icon" type="file" class="form-control" />
+                <input asp-for="SocialMedia2Icon" name="SocialMedia2Icon" type="file" class="form-control removeValue" onchange="updateFileName('socialMedia2IconInput', 'socialMedia2IconName')" style="color: transparent;" />
                 <span asp-validation-for="SocialMedia2Icon" class="text-danger"></span>
+                <small id="socialMedia2IconName" class="form-text text-muted">@Model.SocialMedia2Icon</small>
             </div>
             <div class="form-group">
                 <label asp-for="SocialMedia3Link" class="control-label"></label>
@@ -56,8 +75,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="SocialMedia3Icon" class="control-label"></label>
-                <input asp-for="SocialMedia3Icon" name="SocialMedia3Icon" type="file" class="form-control" />
+                <input asp-for="SocialMedia3Icon" name="SocialMedia3Icon" type="file" class="form-control removeValue" onchange="updateFileName('socialMedia3IconInput', 'socialMedia3IconName')" style="color: transparent;" />
                 <span asp-validation-for="SocialMedia3Icon" class="text-danger"></span>
+                <small id="socialMedia3IconName" class="form-text text-muted">@Model.SocialMedia3Icon</small>
             </div>
             <div class="form-group">
                 <label asp-for="SocialMedia4Link" class="control-label"></label>
@@ -66,8 +86,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="SocialMedia4Icon" class="control-label"></label>
-                <input asp-for="SocialMedia4Icon" name="SocialMedia4Icon" type="file" class="form-control" />
+                <input asp-for="SocialMedia4Icon" name="SocialMedia4Icon" type="file" class="form-control removeValue" onchange="updateFileName('socialMedia4IconInput', 'socialMedia4IconName')" style="color: transparent;" />
                 <span asp-validation-for="SocialMedia4Icon" class="text-danger"></span>
+                <small id="socialMedia4IconName" class="form-text text-muted">@Model.SocialMedia4Icon</small>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -76,7 +97,16 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function updateFileName(inputId, outputId) {
+            var input = document.getElementById(inputId);
+            var output = document.getElementById(outputId);
+            output.innerText = input.files.length > 0 ? input.files[0].name : "";
+            input.nextElementSibling.style.display = "none";
+        }
+    </script>
+}

@@ -20,29 +20,20 @@ namespace Promote.website.Controllers.AdminControllers
         }
 
         // GET: Layouts
-        public async Task<IActionResult> Index()
-        {
-              return _context.layouts != null ? 
-                          View(await _context.layouts.ToListAsync()) :
-                          Problem("Entity set 'Context.layouts'  is null.");
-        }
+        public async Task<IActionResult> Router()
+        { 
+            bool hasRecord = _context.layouts.Any();
+             
+            int firstRecordId = hasRecord ? _context.layouts.First().Id : 0;
 
-        // GET: Layouts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.layouts == null)
-            {
-                return NotFound();
+            if (hasRecord)
+            { 
+                return RedirectToAction("Edit", new { id = firstRecordId });
             }
-
-            var layout = await _context.layouts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (layout == null)
-            {
-                return NotFound();
+            else
+            { 
+                return RedirectToAction("Create");
             }
-
-            return View(layout);
         }
 
         // GET: Layouts/Create
@@ -62,7 +53,17 @@ namespace Promote.website.Controllers.AdminControllers
         {
             try
             {
-                if (LogoPath != null && SocialMedia1Icon != null && SocialMedia2Icon != null && SocialMedia3Icon != null && SocialMedia4Icon != null)
+                if (LogoPath != null &&
+                    SocialMedia1Icon != null &&
+                    SocialMedia2Icon != null &&
+                    SocialMedia3Icon != null &&
+                    SocialMedia4Icon != null &&
+                    !string.IsNullOrEmpty(layout.FooterColor) &&
+                    !string.IsNullOrEmpty(layout.HighlightColor) &&
+                    !string.IsNullOrEmpty(layout.SocialMedia1Link) &&
+                    !string.IsNullOrEmpty(layout.SocialMedia2Link) &&
+                    !string.IsNullOrEmpty(layout.SocialMedia3Link) &&
+                    !string.IsNullOrEmpty(layout.SocialMedia4Link))
                 {
                     // Save files
                     layout.LogoPath = await SaveFile(LogoPath);
@@ -74,20 +75,26 @@ namespace Promote.website.Controllers.AdminControllers
                     _context.Add(layout);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "Layout successfully created!";
+                    TempData["AlertClass"] = "alert-success";
+
+                    return RedirectToAction("Router");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please select all required files.");
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+                TempData["Message"] = $"An error occurred: {ex.Message}";
+                TempData["AlertClass"] = "alert-danger";
             }
 
             return View(layout);
         }
+
 
         private async Task<string> SaveFile(IFormFile file)
         {
@@ -135,42 +142,59 @@ namespace Promote.website.Controllers.AdminControllers
             try
             {
                 var existingLayout = await _context.layouts.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
-
-                // Delete existing files
-                if (LogoPath != null)
+                if (layout.FooterColor != null
+                    && layout.HighlightColor != null
+                    && layout.SocialMedia1Link != null
+                    && layout.SocialMedia2Link != null
+                    && layout.SocialMedia3Link != null
+                    && layout.SocialMedia4Link != null)
                 {
-                    await DeleteFileIfExists(existingLayout.LogoPath);
-                }
+                    if (LogoPath != null)
+                    {
+                        await DeleteFileIfExists(existingLayout.LogoPath);
+                    }
 
-                if (SocialMedia1Icon != null)
+                    if (SocialMedia1Icon != null)
+                    {
+                        await DeleteFileIfExists(existingLayout.SocialMedia1Icon);
+                    }
+
+                    if (SocialMedia2Icon != null)
+                    {
+                        await DeleteFileIfExists(existingLayout.SocialMedia2Icon);
+                    }
+
+                    if (SocialMedia3Icon != null)
+                    {
+                        await DeleteFileIfExists(existingLayout.SocialMedia3Icon);
+                    }
+
+                    if (SocialMedia4Icon != null)
+                    {
+                        await DeleteFileIfExists(existingLayout.SocialMedia4Icon);
+                    }
+                     
+                    layout.LogoPath = LogoPath != null ? await SaveFile(LogoPath) : existingLayout.LogoPath;
+                    layout.SocialMedia1Icon = SocialMedia1Icon != null ? await SaveFile(SocialMedia1Icon) : existingLayout.SocialMedia1Icon;
+                    layout.SocialMedia2Icon = SocialMedia2Icon != null ? await SaveFile(SocialMedia2Icon) : existingLayout.SocialMedia2Icon;
+                    layout.SocialMedia3Icon = SocialMedia3Icon != null ? await SaveFile(SocialMedia3Icon) : existingLayout.SocialMedia3Icon;
+                    layout.SocialMedia4Icon = SocialMedia4Icon != null ? await SaveFile(SocialMedia4Icon) : existingLayout.SocialMedia4Icon;
+
+                    _context.Update(layout);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "Layout updated successfully!";
+                    TempData["AlertClass"] = "alert-success";
+
+                    return RedirectToAction("Router");
+                }
+                else
                 {
-                    await DeleteFileIfExists(existingLayout.SocialMedia1Icon);
-                }
-
-                if (SocialMedia2Icon != null)
-                {
-                    await DeleteFileIfExists(existingLayout.SocialMedia2Icon);
-                }
-
-                if (SocialMedia3Icon != null)
-                {
-                    await DeleteFileIfExists(existingLayout.SocialMedia3Icon);
-                }
-
-                if (SocialMedia4Icon != null)
-                {
-                    await DeleteFileIfExists(existingLayout.SocialMedia4Icon);
-                }
-
-                // Save new files or keep existing file names
-                layout.LogoPath = LogoPath != null ? await SaveFile(LogoPath) : existingLayout.LogoPath;
-                layout.SocialMedia1Icon = SocialMedia1Icon != null ? await SaveFile(SocialMedia1Icon) : existingLayout.SocialMedia1Icon;
-                layout.SocialMedia2Icon = SocialMedia2Icon != null ? await SaveFile(SocialMedia2Icon) : existingLayout.SocialMedia2Icon;
-                layout.SocialMedia3Icon = SocialMedia3Icon != null ? await SaveFile(SocialMedia3Icon) : existingLayout.SocialMedia3Icon;
-                layout.SocialMedia4Icon = SocialMedia4Icon != null ? await SaveFile(SocialMedia4Icon) : existingLayout.SocialMedia4Icon;
-
-                _context.Update(layout);
-                await _context.SaveChangesAsync();
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
+                    return RedirectToAction("Router");
+                } 
+               
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -183,8 +207,7 @@ namespace Promote.website.Controllers.AdminControllers
                     throw;
                 }
             }
-
-            return RedirectToAction(nameof(Index));
+             
         }
         private async Task DeleteFileIfExists(string fileName)
         {

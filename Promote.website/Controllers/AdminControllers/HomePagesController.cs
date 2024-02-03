@@ -21,24 +21,20 @@ namespace Promote.website.Controllers
         }
         public async Task<IActionResult> Router()
         {
-            // Veritabanında AboutPages tablosunda kayıt var mı diye kontrol et
             bool hasRecord = _context.homePages.Any();
 
-            // Eğer bir kayıt varsa, ilk kaydın ID'sini al
             int firstRecordId = hasRecord ? _context.homePages.First().HomeId : 0;
 
             if (hasRecord)
             {
-                // Eğer bir kayıt varsa, Edit action'ına yönlendir
                 return RedirectToAction("Edit", new { id = firstRecordId });
             }
             else
             {
-                // Eğer kayıt yoksa, Create action'ına yönlendir
                 return RedirectToAction("Create");
             }
         }
-        
+
         //[Authorize]
         // GET: HomePages/Create
         public IActionResult Create()
@@ -58,7 +54,7 @@ namespace Promote.website.Controllers
             {
                 return View();
             }
-            
+
         }
 
         // POST: HomePages/Create
@@ -66,7 +62,7 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [RequestSizeLimit(500 * 1024 * 1024)] // 500 MB limit
-        [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)] 
+        [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         public async Task<IActionResult> Create(
      IFormFile VideoFileName,
      IFormFile PopularProduct1Image,
@@ -89,9 +85,20 @@ namespace Promote.website.Controllers
                     Services1Image != null &&
                     Services2Image != null &&
                     Services3Image != null &&
-                    Services4Image != null)
+                    Services4Image != null &&
+                    !string.IsNullOrEmpty(homePage.PopularProduct1Title) &&
+                    !string.IsNullOrEmpty(homePage.PopularProduct2Title) &&
+                    !string.IsNullOrEmpty(homePage.PopularProduct3Title) &&
+                    !string.IsNullOrEmpty(homePage.PopularProduct4Title) &&
+                    !string.IsNullOrEmpty(homePage.Services1Description) &&
+                    !string.IsNullOrEmpty(homePage.Services2Description) &&
+                    !string.IsNullOrEmpty(homePage.Services3Description) &&
+                    !string.IsNullOrEmpty(homePage.Services4Description) &&
+                    !string.IsNullOrEmpty(homePage.Statistic1Title) &&
+                    !string.IsNullOrEmpty(homePage.Statistic2Title) &&
+                    !string.IsNullOrEmpty(homePage.Statistic3Title) &&
+                    !string.IsNullOrEmpty(homePage.Statistic4Title))
                 {
-                    // Dosyaları kaydetme işlemi
                     homePage.VideoFileName = await SaveFile(VideoFileName);
                     homePage.PopularProduct1Image = await SaveFile(PopularProduct1Image);
                     homePage.PopularProduct2Image = await SaveFile(PopularProduct2Image);
@@ -105,20 +112,26 @@ namespace Promote.website.Controllers
                     _context.Add(homePage);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("Edit",homePage.HomeId);
+                    TempData["Message"] = "HomePage successfully created!";
+                    TempData["AlertClass"] = "alert-success";
+
+                    return RedirectToAction("Router");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please select all required files.");
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+                TempData["Message"] = $"An error occurred: {ex.Message}";
+                TempData["AlertClass"] = "alert-danger";
             }
 
             return View(homePage);
         }
+
 
         private async Task<string> SaveFile(IFormFile file)
         {
@@ -154,7 +167,8 @@ namespace Promote.website.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [RequestSizeLimit(500 * 1024 * 1024)] // 500 MB limit
+        [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         public async Task<IActionResult> Edit(int id,
     IFormFile VideoFileName,
     IFormFile PopularProduct1Image,
@@ -172,60 +186,93 @@ namespace Promote.website.Controllers
                 return NotFound();
             }
 
-             
-                try
-                {
-                    var existingHomePage = await _context.homePages.AsNoTracking().FirstOrDefaultAsync(m => m.HomeId == id);
 
-                // Dosyaların silme işlemleri
-                if (VideoFileName != null)
+            try
+            {
+                var existingHomePage = await _context.homePages.AsNoTracking().FirstOrDefaultAsync(m => m.HomeId == id);
+
+
+                if (homePage.TaglineSectionBgColor == null
+                    || homePage.Tagline == null
+                    || homePage.PopularProductsSectionTitle == null
+                    || homePage.PopularProductsSectionBgColor == null
+                    || homePage.PopularProduct1Title == null
+                    || homePage.PopularProduct1Id == null
+                    || homePage.PopularProduct2Title == null
+                    || homePage.PopularProduct2Id == null
+                    || homePage.PopularProduct3Title == null
+                    || homePage.PopularProduct3Id == null
+                    || homePage.PopularProduct4Title == null
+                    || homePage.PopularProduct4Id == null
+                    || homePage.ServicesSectionTitle == null
+                    || homePage.ServicesSectionBgColor == null
+                    || homePage.Services1Description == null
+                    || homePage.Services2Description == null
+                    || homePage.Services3Description == null
+                    || homePage.Services4Description == null
+                    || homePage.StatisticSectionBgColor == null
+                    || homePage.Statistic1Number == null
+                    || homePage.Statistic1Title == null
+                    || homePage.Statistic2Number == null
+                    || homePage.Statistic2Title == null
+                    || homePage.Statistic3Number == null
+                    || homePage.Statistic3Title == null
+                    || homePage.Statistic4Number == null
+                    || homePage.Statistic4Title == null)
                 {
-                    await DeleteFileIfExists(existingHomePage.VideoFileName);
+                    TempData["Message"] = "Please fill in all fields.";
+                    TempData["AlertClass"] = "alert-danger";
+                    return RedirectToAction("Router");
                 }
-
-                if (PopularProduct1Image != null)
+                else
                 {
-                    await DeleteFileIfExists(existingHomePage.PopularProduct1Image);
-                }
+                    if (VideoFileName != null)
+                    {
+                        await DeleteFileIfExists(existingHomePage.VideoFileName);
+                    }
 
-                if (PopularProduct2Image != null)
-                {
-                    await DeleteFileIfExists(existingHomePage.PopularProduct2Image);
-                }
+                    if (PopularProduct1Image != null)
+                    {
+                        await DeleteFileIfExists(existingHomePage.PopularProduct1Image);
+                    }
 
-                if (PopularProduct3Image != null)
-                {
-                    await DeleteFileIfExists(existingHomePage.PopularProduct3Image);
-                }
+                    if (PopularProduct2Image != null)
+                    {
+                        await DeleteFileIfExists(existingHomePage.PopularProduct2Image);
+                    }
 
-                if (PopularProduct4Image != null)
-                {
-                    await DeleteFileIfExists(existingHomePage.PopularProduct4Image);
-                }
+                    if (PopularProduct3Image != null)
+                    {
+                        await DeleteFileIfExists(existingHomePage.PopularProduct3Image);
+                    }
 
-                if (Services1Image != null)
-                {
-                    await DeleteFileIfExists(existingHomePage.Services1Image);
-                }
+                    if (PopularProduct4Image != null)
+                    {
+                        await DeleteFileIfExists(existingHomePage.PopularProduct4Image);
+                    }
 
-                if (Services2Image != null)
-                {
-                    await DeleteFileIfExists(existingHomePage.Services2Image);
-                }
+                    if (Services1Image != null)
+                    {
+                        await DeleteFileIfExists(existingHomePage.Services1Image);
+                    }
 
-                if (Services3Image != null)
-                {
-                    await DeleteFileIfExists(existingHomePage.Services3Image);
-                }
+                    if (Services2Image != null)
+                    {
+                        await DeleteFileIfExists(existingHomePage.Services2Image);
+                    }
 
-                if (Services4Image != null)
-                {
-                    await DeleteFileIfExists(existingHomePage.Services4Image);
-                }
+                    if (Services3Image != null)
+                    {
+                        await DeleteFileIfExists(existingHomePage.Services3Image);
+                    }
 
+                    if (Services4Image != null)
+                    {
+                        await DeleteFileIfExists(existingHomePage.Services4Image);
+                    }
 
-                // Dosyaları kaydetme işlemleri
-                homePage.VideoFileName = VideoFileName != null ? await SaveFile(VideoFileName) : existingHomePage.VideoFileName;
+                     
+                    homePage.VideoFileName = VideoFileName != null ? await SaveFile(VideoFileName) : existingHomePage.VideoFileName;
                     homePage.PopularProduct1Image = PopularProduct1Image != null ? await SaveFile(PopularProduct1Image) : existingHomePage.PopularProduct1Image;
                     homePage.PopularProduct2Image = PopularProduct2Image != null ? await SaveFile(PopularProduct2Image) : existingHomePage.PopularProduct2Image;
                     homePage.PopularProduct3Image = PopularProduct3Image != null ? await SaveFile(PopularProduct3Image) : existingHomePage.PopularProduct3Image;
@@ -237,20 +284,24 @@ namespace Promote.website.Controllers
 
                     _context.Update(homePage);
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Home page updated successfully!";
+                    TempData["AlertClass"] = "alert-success";
                 }
-                catch (DbUpdateConcurrencyException)
+            }
+
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!HomePageExists(homePage.HomeId))
                 {
-                    if (!HomePageExists(homePage.HomeId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
+                else
+                {
+                    throw;
+                }
+            }
             return RedirectToAction("Router");
-             
+
         }
 
         private async Task DeleteFileIfExists(string fileName)
@@ -264,7 +315,7 @@ namespace Promote.website.Controllers
                 }
             }
         }
-         
+
 
 
 
@@ -322,7 +373,7 @@ namespace Promote.website.Controllers
 
         private bool HomePageExists(int id)
         {
-          return (_context.homePages?.Any(e => e.HomeId == id)).GetValueOrDefault();
+            return (_context.homePages?.Any(e => e.HomeId == id)).GetValueOrDefault();
         }
     }
 }
