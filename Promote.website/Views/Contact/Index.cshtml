@@ -7,25 +7,23 @@
     <link href="~/css/contact.css" rel="stylesheet" />
     }
 
-
-    <section class="banner-section">
-        <div class="banner-image-container">
-        @if (!string.IsNullOrEmpty(Model.Contact.ImageHeader))
-        {
-            <img src="~/Media/@Model.Contact.ImageHeader" alt="Banner Image">
-        }
-        else
-        {
-            <!-- Varsayılan görüntüyü kullanabilirsiniz -->
-            <img src="~/DefaultMedia/Header.png" alt="Default Image">
-        }
-        </div>
-
-        <div class="content">
-            <h1>Contact</h1>
-            <h4><a href="home.html">Home</a> > <a href="contact.html">Contact</a></h4>
-        </div>
-    </section>
+<section class="banner-section">
+    <div class="banner-image-container">
+            @if (Model.Contact != null && !string.IsNullOrEmpty(Model.Contact.ImageHeader))
+            {
+                <img src="~/Media/@Model.Contact.ImageHeader" alt="Banner Image">
+            }
+            else
+            {
+                <img src="~/DefaultMedia/Header.png" alt="Banner Image">
+            }
+    </div>
+    
+    <div class="content">
+        <h1>Contact</h1>
+        <h4><a href="home.html">Home</a> > <a href="contact.html">Contact</a></h4>
+    </div>
+</section>
 
 
 
@@ -107,23 +105,30 @@
         </section>
 
 
-
-        <section class="map-section">
-            <div class="map-container">
-                @if (!string.IsNullOrEmpty(Model.Contact.MapIframeUrl))
-                {
-                    <iframe src="@Model.Contact.MapIframeUrl" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                }
-                else
-                {
-                    <p>Map not available</p>
-                }
-            </div>
-        </section>
-
-
-    </div>
-
-
-
+     
     
+   
+ 
+</div>
+    <section class="map-section">
+        <div class="map-container">
+            @if (!string.IsNullOrEmpty(Model.Contact.MapIframeUrl))
+            {
+                <iframe src="@Model.Contact.MapIframeUrl" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            }
+            else
+            {
+                <p>Map not available</p>
+            }
+        </div>
+    </section>
+
+  
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  
+  <script>
+    AOS.init();
+    </script>
+</body>
+</html>

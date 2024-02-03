@@ -16,6 +16,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ImageHeader" class="control-label"></label>
+                <p><small style="color: #888; font-size: 14px;">2026 × 648 px boyutlarında bir görsel yükleyiniz.</small> </p>
+
                 <input asp-for="ImageHeader" name="ImageHeader" class="form-control" type="file" />
                 <span asp-validation-for="ImageHeader" class="text-danger"></span>
             </div>

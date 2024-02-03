@@ -17,6 +17,7 @@
             <!-- ImageHeader -->
             <div class="form-group">
                 <label asp-for="ImageHeader" class="control-label"></label>
+                <p><small style="color: #888; font-size: 14px;">2026 × 648 px boyutlarında bir görsel yükleyiniz.</small> </p>
                 <input asp-for="ImageHeader" name="ImageHeader" class="form-control removeValue" type="file" id="imageHeaderInput" onchange="updateFileName('imageHeaderInput', 'imageHeaderName')" style="color:transparent;" />
                 <span asp-validation-for="ImageHeader" class="text-danger"></span>
                 <small id="imageHeaderName" class="form-text text-muted">@Model.ImageHeader</small>

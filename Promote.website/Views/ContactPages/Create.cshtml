@@ -15,7 +15,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ImageHeader" class="control-label"></label>
-                <input asp-for="ImageHeader" name="headerImage" class="form-control" type="file" />
+                <p><small style="color: #888; font-size: 14px;">2026 × 648 px boyutlarında bir görsel yükleyiniz.</small> </p>
+                <input asp-for="ImageHeader" name="ImageHeader" class="form-control" type="file" />
                 <span asp-validation-for="ImageHeader" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -40,6 +41,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="MapIframeUrl" class="control-label"></label>
+                <p><small style="color: #888; font-size: 14px;">Google Haritalar üzerinden kopyaladığınız iframe tagını buraya yapıştırınız.</small> </p>
                 <input asp-for="MapIframeUrl" class="form-control" />
                 <span asp-validation-for="MapIframeUrl" class="text-danger"></span>
             </div>
