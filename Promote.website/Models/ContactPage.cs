@@ -6,6 +6,7 @@ namespace Promote.website.Models
     {
         public int ContactPageId { get; set; }
 
+        [Required(ErrorMessage = "Header Image is required.")]
         [Display(Name = "Header Image")]
         public string ImageHeader { get; set; } = string.Empty;
 
