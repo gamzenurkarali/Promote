@@ -39,23 +39,30 @@ namespace Promote.website.Controllers
         // GET: HomePages/Create
         public IActionResult Create()
         {
-            // Veritabanında AboutPages tablosunda kayıt var mı diye kontrol et
-            bool hasRecord = _context.homePages.Any();
-
-            // Eğer bir kayıt varsa, ilk kaydın ID'sini al
-            int firstRecordId = hasRecord ? _context.homePages.First().HomeId : 0;
-
-            if (hasRecord)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                // Eğer bir kayıt varsa, Edit action'ına yönlendir
-                return RedirectToAction("Edit", new { id = firstRecordId });
+                // Veritabanında AboutPages tablosunda kayıt var mı diye kontrol et
+                bool hasRecord = _context.homePages.Any();
+
+                // Eğer bir kayıt varsa, ilk kaydın ID'sini al
+                int firstRecordId = hasRecord ? _context.homePages.First().HomeId : 0;
+
+                if (hasRecord)
+                {
+                    // Eğer bir kayıt varsa, Edit action'ına yönlendir
+                    return RedirectToAction("Edit", new { id = firstRecordId });
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Index", "Login");
             }
 
-        }
+            }
 
         // POST: HomePages/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -150,18 +157,25 @@ namespace Promote.website.Controllers
         // GET: HomePages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.homePages == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.homePages == null)
+                {
+                    return NotFound();
+                }
 
-            var homePage = await _context.homePages.FindAsync(id);
-            if (homePage == null)
-            {
-                return NotFound();
+                var homePage = await _context.homePages.FindAsync(id);
+                if (homePage == null)
+                {
+                    return NotFound();
+                }
+                return View(homePage);
             }
-            return View(homePage);
-        }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            }
 
         // POST: HomePages/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -323,22 +337,29 @@ namespace Promote.website.Controllers
         // GET: HomePages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.homePages == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.homePages == null)
+                {
+                    return NotFound();
+                }
 
-            var homePage = await _context.homePages
-                .FirstOrDefaultAsync(m => m.HomeId == id);
-            if (homePage == null)
+                var homePage = await _context.homePages
+                    .FirstOrDefaultAsync(m => m.HomeId == id);
+                if (homePage == null)
+                {
+                    return NotFound();
+                }
+
+                return View(homePage);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-
-            return View(homePage);
         }
 
-        // POST: HomePages/Delete/5
+            // POST: HomePages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

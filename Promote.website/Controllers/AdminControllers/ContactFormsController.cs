@@ -22,13 +22,20 @@ namespace Promote.website.Controllers
         // GET: ContactForms
         public async Task<IActionResult> Index()
         {
-              return _context.contactForms != null ? 
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                return _context.contactForms != null ?
                           View(await _context.contactForms.ToListAsync()) :
                           Problem("Entity set 'Context.contactForms'  is null.");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
-        //[Authorize]
-        // GET: ContactForms/Details/5
-        public async Task<IActionResult> Details(int? id)
+            //[Authorize]
+            // GET: ContactForms/Details/5
+            public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.contactForms == null)
             {
@@ -48,13 +55,20 @@ namespace Promote.website.Controllers
         // GET: ContactForms/Create
         public IActionResult Create()
         {
-            return View();
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
-        // POST: ContactForms/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+            // POST: ContactForms/Create
+            // To protect from overposting attacks, enable the specific properties you want to bind to.
+            // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+            [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ContactFormId,FirstName,LastName,Email,Message")] ContactForm contactForm)
         {
@@ -70,23 +84,30 @@ namespace Promote.website.Controllers
         // GET: ContactForms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.contactForms == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.contactForms == null)
+                {
+                    return NotFound();
+                }
 
-            var contactForm = await _context.contactForms.FindAsync(id);
-            if (contactForm == null)
-            {
-                return NotFound();
+                var contactForm = await _context.contactForms.FindAsync(id);
+                if (contactForm == null)
+                {
+                    return NotFound();
+                }
+                return View(contactForm);
             }
-            return View(contactForm);
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
-        // POST: ContactForms/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+            // POST: ContactForms/Edit/5
+            // To protect from overposting attacks, enable the specific properties you want to bind to.
+            // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+            [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ContactFormId,FirstName,LastName,Email,Message")] ContactForm contactForm)
         {
@@ -121,23 +142,30 @@ namespace Promote.website.Controllers
         // GET: ContactForms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.contactForms == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.contactForms == null)
+                {
+                    return NotFound();
+                }
 
-            var contactForm = await _context.contactForms
-                .FirstOrDefaultAsync(m => m.ContactFormId == id);
-            if (contactForm == null)
+                var contactForm = await _context.contactForms
+                    .FirstOrDefaultAsync(m => m.ContactFormId == id);
+                if (contactForm == null)
+                {
+                    return NotFound();
+                }
+
+                return View(contactForm);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-
-            return View(contactForm);
         }
 
-        // POST: ContactForms/Delete/5
-        [HttpPost, ActionName("Delete")]
+            // POST: ContactForms/Delete/5
+            [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

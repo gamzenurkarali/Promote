@@ -21,13 +21,20 @@ namespace Promote.website.Controllers.AdminControllers
         // GET: Sublinks
         public async Task<IActionResult> Index()
         {
-              return _context.sublinks != null ? 
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                return _context.sublinks != null ?
                           View(await _context.sublinks.ToListAsync()) :
                           Problem("Entity set 'Context.sublinks'  is null.");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
-        // GET: Sublinks/Details/5
-        public async Task<IActionResult> Details(int? id)
+            // GET: Sublinks/Details/5
+            public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.sublinks == null)
             {
@@ -47,8 +54,15 @@ namespace Promote.website.Controllers.AdminControllers
         // GET: Sublinks/Create
         public IActionResult Create()
         {
-            return View();
-        }
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            }
 
         // POST: Sublinks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -88,18 +102,25 @@ namespace Promote.website.Controllers.AdminControllers
         // GET: Sublinks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.sublinks == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.sublinks == null)
+                {
+                    return NotFound();
+                }
 
-            var sublink = await _context.sublinks.FindAsync(id);
-            if (sublink == null)
-            {
-                return NotFound();
+                var sublink = await _context.sublinks.FindAsync(id);
+                if (sublink == null)
+                {
+                    return NotFound();
+                }
+                return View(sublink);
             }
-            return View(sublink);
-        }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            }
 
         // POST: Sublinks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -141,20 +162,27 @@ namespace Promote.website.Controllers.AdminControllers
         // GET: Sublinks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.sublinks == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.sublinks == null)
+                {
+                    return NotFound();
+                }
 
-            var sublink = await _context.sublinks
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (sublink == null)
+                var sublink = await _context.sublinks
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (sublink == null)
+                {
+                    return NotFound();
+                }
+
+                return View(sublink);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-
-            return View(sublink);
-        }
+            }
 
         // POST: Sublinks/Delete/5
         [HttpPost, ActionName("Delete")]
