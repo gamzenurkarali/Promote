@@ -4,7 +4,23 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@if (TempData["Message"] != null)
+{
+    <div id="dismissable-alert" class="alert @(TempData["AlertClass"] ?? "") alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
+    <script>
+        $(document).ready(function () {
+            window.setTimeout(function () {
+                $("#dismissable-alert").alert('close');
+            }, 5000); // 5000 milisaniye (5 saniye) sonra alert'ı otomatik olarak kapat
+        });
+    </script>
+}
 <h1>Edit</h1>
 
 <h4>ProductDetailPage</h4>
@@ -16,9 +32,10 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="ImageHeader" class="control-label"></label>
-                <p><small style="color: #888; font-size: 14px;">2026 × 648 px boyutlarında bir görsel yükleyiniz.</small> </p>
-                <input asp-for="ImageHeader" class="form-control" />
+                <p><small style="color: #888; font-size: 14px;">2026 × 648 px boyutlarında bir görsel yükleyiniz.</small></p>
+                <input asp-for="ImageHeader" name="ImageHeader" type="file" class="form-control removeValue" onchange="updateFileName('imageHeaderInput', 'imageHeaderName')" style="color: transparent;" />
                 <span asp-validation-for="ImageHeader" class="text-danger"></span>
+                <small id="imageHeaderName" class="form-text text-muted">@Model.ImageHeader</small>
             </div>
             <div class="form-group">
                 <label asp-for="Tab1Title" class="control-label"></label>
@@ -47,7 +64,16 @@
     </div>
 </div>
  
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function updateFileName(inputId, outputId) {
+            var input = document.getElementById(inputId);
+            var output = document.getElementById(outputId);
+            output.innerText = input.files.length > 0 ? input.files[0].name : "";
+            input.nextElementSibling.style.display = "none";
+        }
+    </script>
 }

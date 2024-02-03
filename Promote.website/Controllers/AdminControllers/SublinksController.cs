@@ -57,14 +57,33 @@ namespace Promote.website.Controllers.AdminControllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,PagePath,PageName")] Sublink sublink)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(sublink);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(sublink);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "Sublink successfully created!";
+                    TempData["AlertClass"] = "alert-success";
+
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
+                }
             }
+            catch (Exception ex)
+            {
+                TempData["Message"] = $"An error occurred: {ex.Message}";
+                TempData["AlertClass"] = "alert-danger";
+            }
+
             return View(sublink);
         }
+
 
         // GET: Sublinks/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -100,6 +119,8 @@ namespace Promote.website.Controllers.AdminControllers
                 {
                     _context.Update(sublink);
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Sublink successfully updated!";
+                    TempData["AlertClass"] = "alert-success";
                 }
                 catch (DbUpdateConcurrencyException)
                 {

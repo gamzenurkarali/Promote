@@ -62,25 +62,34 @@ namespace Promote.website.Controllers
         {
             try
             {
-                if (ImageHeader != null)
+                if (ImageHeader != null &&
+                    !string.IsNullOrEmpty(productDetailPage.Tab1Title) &&
+                    !string.IsNullOrEmpty(productDetailPage.Tab2Title) &&
+                    !string.IsNullOrEmpty(productDetailPage.Tab3Title) &&
+                    !string.IsNullOrEmpty(productDetailPage.DetailedDescriptionTitle))
                 {
                     productDetailPage.ImageHeader = await SaveFile(ImageHeader);
 
-                    if (ModelState.IsValid)
-                    {
-                        _context.Add(productDetailPage);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
+                     
+                    _context.Add(productDetailPage);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "ProductDetailPage successfully created!";
+                    TempData["AlertClass"] = "alert-success";
+
+                    return RedirectToAction("Router");
+                    
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please select the required file.");
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+                TempData["Message"] = $"An error occurred: {ex.Message}";
+                TempData["AlertClass"] = "alert-danger";
             }
 
             return View(productDetailPage);
@@ -142,22 +151,40 @@ namespace Promote.website.Controllers
             try
             {
                 var existingProductDetailPage = await _context.productDetailPages.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+                if (productDetailPage.Tab1Title != null
+                    && productDetailPage.Tab2Title != null
+                    && productDetailPage.Tab3Title != null
+                    && productDetailPage.DetailedDescriptionTitle != null)
+                { 
+                    if (ImageHeader != null)
+                    {
+                        await DeleteFileIfExists(existingProductDetailPage.ImageHeader);
+                    }
+                    else
+                    {
+                        productDetailPage.ImageHeader = existingProductDetailPage.ImageHeader;
+                    }
+                    productDetailPage.ImageHeader = ImageHeader != null ? await SaveFile(ImageHeader) : existingProductDetailPage.ImageHeader;
 
-                // Delete the existing file if a new one is provided
-                if (ImageHeader != null)
-                {
-                    await DeleteFileIfExists(existingProductDetailPage.ImageHeader);
+                    if (ModelState.IsValid)
+                    {
+                        _context.Update(productDetailPage);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    TempData["Message"] = "ProductDetailPage updated successfully!";
+                    TempData["AlertClass"] = "alert-success";
+
+                    return RedirectToAction("Router");
+
                 }
-
-                // Save the new file or keep the existing one
-                productDetailPage.ImageHeader = ImageHeader != null ? await SaveFile(ImageHeader) : existingProductDetailPage.ImageHeader;
-
-                if (ModelState.IsValid)
+                else
                 {
-                    _context.Update(productDetailPage);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
                 }
+                
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -171,7 +198,7 @@ namespace Promote.website.Controllers
                 }
             }
 
-            return View(productDetailPage);
+            return RedirectToAction("Router");
         }
 
         //[Authorize]

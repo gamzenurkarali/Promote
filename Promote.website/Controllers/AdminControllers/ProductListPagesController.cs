@@ -62,29 +62,33 @@ namespace Promote.website.Controllers
         {
             try
             {
-                if (ImageHeader != null)
+                if (ImageHeader != null && ModelState.IsValid)
                 {
                     productListPage.ImageHeader = await SaveFile(ImageHeader);
 
-                    if (ModelState.IsValid)
-                    {
-                        _context.Add(productListPage);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
+                    _context.Add(productListPage);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "ProductListPage successfully created!";
+                    TempData["AlertClass"] = "alert-success";
+
+                    return RedirectToAction("Router");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please select the required file.");
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+                TempData["Message"] = $"An error occurred: {ex.Message}";
+                TempData["AlertClass"] = "alert-danger";
             }
 
             return View(productListPage);
         }
+
 
         private async Task<string> SaveFile(IFormFile file)
         {
@@ -131,22 +135,38 @@ namespace Promote.website.Controllers
             try
             {
                 var existingProductListPage = await _context.productLists.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
-
-                // Delete the existing file if a new one is provided
-                if (ImageHeader != null)
+                if (ImageHeader != null && ModelState.IsValid)
                 {
-                    await DeleteFileIfExists(existingProductListPage.ImageHeader);
+                    // Delete the existing file if a new one is provided
+                    if (ImageHeader != null)
+                    {
+                        await DeleteFileIfExists(existingProductListPage.ImageHeader);
+                    }
+                    else
+                    {
+                        productListPage.ImageHeader = existingProductListPage.ImageHeader;
+                    }
+                    // Save the new file or keep the existing one
+                    productListPage.ImageHeader = ImageHeader != null ? await SaveFile(ImageHeader) : existingProductListPage.ImageHeader;
+
+                    if (ModelState.IsValid)
+                    {
+                        _context.Update(productListPage);
+                        await _context.SaveChangesAsync();
+                        TempData["Message"] = "ProductListPage successfully updated!";
+                        TempData["AlertClass"] = "alert-success";
+
+                        return RedirectToAction("Router");
+                    }
+
+                    
                 }
-
-                // Save the new file or keep the existing one
-                productListPage.ImageHeader = ImageHeader != null ? await SaveFile(ImageHeader) : existingProductListPage.ImageHeader;
-
-                if (ModelState.IsValid)
+                else
                 {
-                    _context.Update(productListPage);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
                 }
+                
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -160,7 +180,7 @@ namespace Promote.website.Controllers
                 }
             }
 
-            return View(productListPage);
+            return RedirectToAction("Router");
         }
         private async Task DeleteFileIfExists(string fileName)
         {

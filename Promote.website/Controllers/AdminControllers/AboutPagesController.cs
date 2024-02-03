@@ -63,20 +63,36 @@ namespace Promote.website.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [RequestSizeLimit(500 * 1024 * 1024)]       //unit is bytes => 500Mb
+        [RequestSizeLimit(500 * 1024 * 1024)] // unit is bytes => 500Mb
         [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
-
-        public async Task<IActionResult> Create(IFormFile ImageHeader, IFormFile ImageBottom, IFormFile ImageTop,[Bind("CompanyDescription,MissionTitle,MissionDescription,MissionBgColor,VisionTitle,VisionDescription,VisionBgColor,WhyUsSectionTitle,WhyUsSectionBgColor,WhyUs1Title,WhyUs1Description,WhyUs1BgColor,WhyUs2Title,WhyUs2Description,WhyUs2BgColor,WhyUs3Title,WhyUs3Description,WhyUs3BgColor")] AboutPage aboutPage )
+        public async Task<IActionResult> Create(IFormFile ImageHeader, IFormFile ImageBottom, IFormFile ImageTop, [Bind("CompanyDescription,MissionTitle,MissionDescription,MissionBgColor,VisionTitle,VisionDescription,VisionBgColor,WhyUsSectionTitle,WhyUsSectionBgColor,WhyUs1Title,WhyUs1Description,WhyUs1BgColor,WhyUs2Title,WhyUs2Description,WhyUs2BgColor,WhyUs3Title,WhyUs3Description,WhyUs3BgColor")] AboutPage aboutPage)
         {
             try
             {
-                if (ImageHeader != null && ImageTop != null && ImageBottom != null)
+                if (ImageHeader != null && ImageTop != null && ImageBottom != null
+                    && !string.IsNullOrEmpty(aboutPage.CompanyDescription)
+                    && !string.IsNullOrEmpty(aboutPage.MissionTitle)
+                    && !string.IsNullOrEmpty(aboutPage.MissionDescription)
+                    && !string.IsNullOrEmpty(aboutPage.MissionBgColor)
+                    && !string.IsNullOrEmpty(aboutPage.VisionTitle)
+                    && !string.IsNullOrEmpty(aboutPage.VisionDescription)
+                    && !string.IsNullOrEmpty(aboutPage.VisionBgColor)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUsSectionTitle)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUsSectionBgColor)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUs1Title)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUs1Description)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUs1BgColor)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUs2Title)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUs2Description)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUs2BgColor)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUs3Title)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUs3Description)
+                    && !string.IsNullOrEmpty(aboutPage.WhyUs3BgColor))
                 {
                     string fileNameHeader = Guid.NewGuid().ToString() + Path.GetExtension(ImageHeader.FileName);
                     string fileNameTop = Guid.NewGuid().ToString() + Path.GetExtension(ImageTop.FileName);
                     string fileNameBottom = Guid.NewGuid().ToString() + Path.GetExtension(ImageBottom.FileName);
-
-                    // Dosyaları kaydetme işlemi
+                     
                     string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameHeader);
                     string filePathTop = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameTop);
                     string filePathBottom = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameBottom);
@@ -95,8 +111,7 @@ namespace Promote.website.Controllers
                     {
                         await ImageBottom.CopyToAsync(stream);
                     }
-
-                    // Veritabanına sadece dosya adlarını ekleme işlemi
+                     
                     aboutPage.ImageHeader = fileNameHeader;
                     aboutPage.ImageBottom = fileNameBottom;
                     aboutPage.ImageTop = fileNameTop;
@@ -104,20 +119,26 @@ namespace Promote.website.Controllers
                     _context.Add(aboutPage);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "AboutPage successfully created!";
+                    TempData["AlertClass"] = "alert-success";
+                    return RedirectToAction("Router");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please select all three images.");
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
+                     
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+                TempData["Message"] = $"An error occurred: {ex.Message}";
+                TempData["AlertClass"] = "alert-danger";
             }
 
             return RedirectToAction("Router");
         }
+
 
 
         //[Authorize]
@@ -149,11 +170,32 @@ namespace Promote.website.Controllers
                 return NotFound();
             }
 
-            
-                try
-                { 
-                    var existingAboutPage = await _context.aboutPages.AsNoTracking().FirstOrDefaultAsync(m => m.AboutId == id);
-                     
+
+            try
+            {
+                var existingAboutPage = await _context.aboutPages.AsNoTracking().FirstOrDefaultAsync(m => m.AboutId == id);
+
+
+
+                if (aboutPage.CompanyDescription != null
+                     && aboutPage.MissionTitle != null
+                     && aboutPage.MissionDescription != null
+                     && aboutPage.MissionBgColor != null
+                     && aboutPage.VisionTitle != null
+                     && aboutPage.VisionDescription != null
+                     && aboutPage.VisionBgColor != null
+                     && aboutPage.WhyUsSectionTitle != null
+                     && aboutPage.WhyUsSectionBgColor != null
+                     && aboutPage.WhyUs1Title != null
+                     && aboutPage.WhyUs1Description != null
+                     && aboutPage.WhyUs1BgColor != null
+                     && aboutPage.WhyUs2Title != null
+                     && aboutPage.WhyUs2Description != null
+                     && aboutPage.WhyUs2BgColor != null
+                     && aboutPage.WhyUs3Title != null
+                     && aboutPage.WhyUs3Description != null
+                     && aboutPage.WhyUs3BgColor != null)
+                {
                     if (ImageHeader != null && existingAboutPage != null && !string.IsNullOrEmpty(existingAboutPage.ImageHeader) && ImageHeader.FileName != existingAboutPage.ImageHeader)
                     {
                         string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Media", existingAboutPage.ImageHeader);
@@ -162,7 +204,7 @@ namespace Promote.website.Controllers
                             System.IO.File.Delete(filePathHeader);
                         }
                     }
-                     
+
                     if (ImageHeader != null)
                     {
                         string fileNameHeader = Guid.NewGuid().ToString() + Path.GetExtension(ImageHeader.FileName);
@@ -174,6 +216,10 @@ namespace Promote.website.Controllers
                         }
 
                         aboutPage.ImageHeader = fileNameHeader;
+                    }
+                    else
+                    {
+                        aboutPage.ImageHeader = existingAboutPage.ImageHeader;
                     }
                     if (ImageBottom != null && existingAboutPage != null && !string.IsNullOrEmpty(existingAboutPage.ImageBottom) && ImageBottom.FileName != existingAboutPage.ImageBottom)
                     {
@@ -196,6 +242,10 @@ namespace Promote.website.Controllers
 
                         aboutPage.ImageBottom = fileNameBottom;
                     }
+                    else
+                    {
+                        aboutPage.ImageBottom = existingAboutPage.ImageBottom;
+                    }
                     if (ImageTop != null && existingAboutPage != null && !string.IsNullOrEmpty(existingAboutPage.ImageTop) && ImageTop.FileName != existingAboutPage.ImageTop)
                     {
                         string filePathTop = Path.Combine(_hostingEnvironment.WebRootPath, "Media", existingAboutPage.ImageTop);
@@ -216,23 +266,39 @@ namespace Promote.website.Controllers
                         }
 
                         aboutPage.ImageTop = fileNameTop;
-                    } 
-                    _context.Update(aboutPage);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AboutPageExists(aboutPage.AboutId))
-                    {
-                        return NotFound();
                     }
                     else
                     {
-                        throw;
+                        aboutPage.ImageTop = existingAboutPage.ImageTop;
                     }
+                    _context.Update(aboutPage);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "About page updated successfully!";
+                    TempData["AlertClass"] = "alert-success";
+                    return RedirectToAction("Router");
                 }
+                else
+                {
+                    TempData["Message"] = "Please fill in all field.";
+                    TempData["AlertClass"] = "alert-danger";
+                    return RedirectToAction("Router");
+                }
+                 
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AboutPageExists(aboutPage.AboutId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
                 
-            return RedirectToAction("Router");
+            
         }
 
          
