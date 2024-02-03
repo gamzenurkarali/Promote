@@ -42,20 +42,28 @@ namespace Promote.website.Controllers
        
         // GET: AboutPages/Create
         public IActionResult Create()
-        { 
-            bool hasRecord = _context.aboutPages.Any();
-             
-            int firstRecordId = hasRecord ? _context.aboutPages.First().AboutId : 0;
-
-            if (hasRecord)
+        {
+            if (HttpContext.Session.GetString("UserId")!=null)
             {
-                // Eğer bir kayıt varsa, Edit action'ına yönlendir
-                return RedirectToAction("Edit", new { id = firstRecordId });
+                bool hasRecord = _context.aboutPages.Any();
+
+                int firstRecordId = hasRecord ? _context.aboutPages.First().AboutId : 0;
+
+                if (hasRecord)
+                {
+                    // Eğer bir kayıt varsa, Edit action'ına yönlendir
+                    return RedirectToAction("Edit", new { id = firstRecordId });
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Index", "Login");
             }
+            
             
         }
 
@@ -145,17 +153,24 @@ namespace Promote.website.Controllers
         // GET: AboutPages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.aboutPages == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.aboutPages == null)
+                {
+                    return NotFound();
+                }
 
-            var aboutPage = await _context.aboutPages.FindAsync(id);
-            if (aboutPage == null)
-            {
-                return NotFound();
+                var aboutPage = await _context.aboutPages.FindAsync(id);
+                if (aboutPage == null)
+                {
+                    return NotFound();
+                }
+                return View(aboutPage);
             }
-            return View(aboutPage);
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
         // POST: AboutPages/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -307,19 +322,26 @@ namespace Promote.website.Controllers
         // GET: AboutPages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.aboutPages == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.aboutPages == null)
+                    {
+                        return NotFound();
+                    }
 
-            var aboutPage = await _context.aboutPages
-                .FirstOrDefaultAsync(m => m.AboutId == id);
-            if (aboutPage == null)
+                    var aboutPage = await _context.aboutPages
+                        .FirstOrDefaultAsync(m => m.AboutId == id);
+                    if (aboutPage == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(aboutPage);
+                }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-
-            return View(aboutPage);
         }
 
         // POST: AboutPages/Delete/5

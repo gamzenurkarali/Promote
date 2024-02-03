@@ -28,7 +28,12 @@ builder.Services.AddAuthentication(options =>
     // Çerez kimlik doðrulama seçenekleri
     options.Cookie.Name = "SizinCerezAdiniz"; // Ýhtiyaca göre özel bir çerez adý belirleyin
 });
-
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 var app = builder.Build();
 
 // HTTP isteði pipeline'ýný yapýlandýr
@@ -42,7 +47,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+// Session
+app.UseSession();
 // Yetkilendirme öncesinde kimlik doðrulamayý kullan
 app.UseAuthentication();
 app.UseAuthorization();
