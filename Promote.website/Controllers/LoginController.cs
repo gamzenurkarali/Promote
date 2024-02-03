@@ -28,7 +28,9 @@ namespace Promote.website.Controllers
 
             if (adminuserinfo != null)
             {
-                return RedirectToAction("Index", "AboutPages");
+                HttpContext.Session.SetString("UserId", adminuserinfo.AdminId.ToString());//HttpContext.Session.GetString("UserId")
+                return RedirectToAction("Router", "AboutPages");
+                
             }
             else
             {
@@ -37,5 +39,10 @@ namespace Promote.website.Controllers
             }
         }
 
+        public IActionResult Logout()
+        { 
+            HttpContext.Session.Clear(); 
+            return RedirectToAction("Index", "Login");
+        }
     }
 }
