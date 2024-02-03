@@ -30,14 +30,38 @@ namespace Promote.website.Controllers
                 .Where(x => x.ContactFormId == contactFormId)
                 .ToList();
 
-            ContactViewModel model = new ContactViewModel
-            {
-                Contact = contact,
-                ContactForm = contactFormList
-            };
+            ContactViewModel values;
 
-            return View(model);
+            if (contact != null || contactFormList.Count > 0)
+            {
+                values = new ContactViewModel
+                {
+                    Contact = contact ?? GetDefaultContactPage(),
+                    ContactForm = contactFormList
+                };
+            }
+            else
+            {
+                values = new ContactViewModel
+                {
+                    Contact = contact ?? GetDefaultContactPage()
+                };
+            }
+
+            return View(values);
         }
+
+        private ContactPage GetDefaultContactPage()
+        {
+            return new ContactPage
+            { 
+                ContactInfoTitle = "defaultContactInfoTitle",
+                ContactInfoDescription = "defaultContactInfoDescription",
+                PhoneNumber = "defaultPhoneNumber",
+                EmailAddress = "defaultEmailAddress"
+            };
+        }
+
 
         [HttpPost]
         public IActionResult Index(ContactForm contactForm)

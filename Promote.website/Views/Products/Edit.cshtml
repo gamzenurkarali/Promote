@@ -4,7 +4,23 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@if (TempData["Message"] != null)
+{
+    <div id="dismissable-alert" class="alert @(TempData["AlertClass"] ?? "") alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
+    <script>
+        $(document).ready(function () {
+            window.setTimeout(function () {
+                $("#dismissable-alert").alert('close');
+            }, 5000); // 5000 milisaniye (5 saniye) sonra alert'ı otomatik olarak kapat
+        });
+    </script>
+}
 <h1>Edit</h1>
 
 <h4>Product</h4>
@@ -21,8 +37,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProductImageFileName" class="control-label"></label>
-                <input asp-for="ProductImageFileName" type="file" name="ProductImageFileName" class="form-control" />
+                <input asp-for="ProductImageFileName" name="ProductImageFileName" type="file" class="form-control removeValue" onchange="updateFileName('productImageInput', 'productImageName')" style="color: transparent;" />
                 <span asp-validation-for="ProductImageFileName" class="text-danger"></span>
+                <small id="productImageName" class="form-text text-muted">@Model.ProductImageFileName</small>
             </div>
             <div class="form-group">
                 <label asp-for="Fee" class="control-label"></label>
@@ -36,26 +53,31 @@
             </div>
             <div class="form-group">
                 <label asp-for="Tab1Description" class="control-label"></label>
+                <p><small style="color: #888; font-size: 14px;">Metin içinde '$/' iki karakterini ekledikten sonra yazdıklarınız başlık, '%/' iki karakterinden sonra yazdıklarınız madde olarak yazılır.</small> </p>
                 <input asp-for="Tab1Description" class="form-control" />
                 <span asp-validation-for="Tab1Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Tab2Description" class="control-label"></label>
+                <p><small style="color: #888; font-size: 14px;">Metin içinde '$/' iki karakterini ekledikten sonra yazdıklarınız başlık, '%/' iki karakterinden sonra yazdıklarınız madde olarak yazılır.</small> </p>
                 <input asp-for="Tab2Description" class="form-control" />
                 <span asp-validation-for="Tab2Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Tab3Description" class="control-label"></label>
+                <p><small style="color: #888; font-size: 14px;">Metin içinde '$/' iki karakterini ekledikten sonra yazdıklarınız başlık, '%/' iki karakterinden sonra yazdıklarınız madde olarak yazılır.</small> </p>
                 <input asp-for="Tab3Description" class="form-control" />
                 <span asp-validation-for="Tab3Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DetailedDescriptionBgImage" class="control-label"></label>
-                <input asp-for="DetailedDescriptionBgImage" type="file" name="DetailedDescriptionBgImage" class="form-control" />
+                <input asp-for="DetailedDescriptionBgImage" name="DetailedDescriptionBgImage" type="file" class="form-control removeValue" onchange="updateFileName('detailedDescriptionBgImageInput', 'detailedDescriptionBgImageName')" style="color: transparent;" />
                 <span asp-validation-for="DetailedDescriptionBgImage" class="text-danger"></span>
+                <small id="detailedDescriptionBgImageName" class="form-text text-muted">@Model.DetailedDescriptionBgImage</small>
             </div>
             <div class="form-group">
                 <label asp-for="DetailedDescription" class="control-label"></label>
+                <p><small style="color: #888; font-size: 14px;">Metin içinde '$/' iki karakterini ekledikten sonra yazdıklarınız başlık, '%/' iki karakterinden sonra yazdıklarınız madde olarak yazılır.</small> </p>
                 <input asp-for="DetailedDescription" class="form-control" />
                 <span asp-validation-for="DetailedDescription" class="text-danger"></span>
             </div>
@@ -71,5 +93,15 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function updateFileName(inputId, outputId) {
+            var input = document.getElementById(inputId);
+            var output = document.getElementById(outputId);
+            output.innerText = input.files.length > 0 ? input.files[0].name : "";
+            input.nextElementSibling.style.display = "none";
+        }
+    </script>
 }

@@ -70,43 +70,47 @@ namespace Promote.website.Controllers
         {
             try
             {
-                if (headerImage != null )
+                if (headerImage != null
+                    && !string.IsNullOrEmpty(contactPage.ContactInfoTitle)
+                    && !string.IsNullOrEmpty(contactPage.ContactInfoDescription)
+                    && !string.IsNullOrEmpty(contactPage.PhoneNumber)
+                    && !string.IsNullOrEmpty(contactPage.EmailAddress)
+                    && !string.IsNullOrEmpty(contactPage.MapIframeUrl))
                 {
                     string fileNameHeader = Guid.NewGuid().ToString() + Path.GetExtension(headerImage.FileName);
-                    
-
-                    // Dosyaları kaydetme işlemi
+                     
                     string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameHeader);
-                    
 
                     using (var stream = new FileStream(filePathHeader, FileMode.Create))
                     {
                         await headerImage.CopyToAsync(stream);
                     }
-
-                   
-
-                    // Veritabanına sadece dosya adlarını ekleme işlemi
+                     
                     contactPage.ImageHeader = fileNameHeader;
-                    
 
                     _context.Add(contactPage);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "ContactPage successfully created!";
+                    TempData["AlertClass"] = "alert-success";
+
+                    return RedirectToAction("Router");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please select all three images.");
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+                TempData["Message"] = $"An error occurred: {ex.Message}";
+                TempData["AlertClass"] = "alert-danger";
             }
 
             return RedirectToAction("Router");
         }
+
 
         //[Authorize]
         // GET: ContactPages/Edit/5

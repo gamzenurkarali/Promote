@@ -56,35 +56,52 @@ namespace Promote.website.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [RequestSizeLimit(500 * 1024 * 1024)]       //unit is bytes => 500Mb
+        [RequestSizeLimit(500 * 1024 * 1024)] // 500 MB limit
         [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         public async Task<IActionResult> Create(IFormFile ProductImageFileName, IFormFile DetailedDescriptionBgImage, [Bind("Id,ProductName,Fee,Description,Tab1Description,Tab2Description,Tab3Description,DetailedDescription")] Product product)
         {
             try
             {
-                if (ProductImageFileName != null)
-                {
-                    product.ProductImageFileName = await SaveFile(ProductImageFileName);
-                }
-
-                if (DetailedDescriptionBgImage != null)
-                {
-                    product.DetailedDescriptionBgImage = await SaveFile(DetailedDescriptionBgImage);
-                }
-
                 
+
+                if (ProductImageFileName != null && DetailedDescriptionBgImage != null &&
+                    !string.IsNullOrEmpty(product.ProductName) &&
+                    !string.IsNullOrEmpty(product.Description) &&
+                    !string.IsNullOrEmpty(product.Tab1Description) &&
+                    !string.IsNullOrEmpty(product.Tab2Description) &&
+                    !string.IsNullOrEmpty(product.Tab3Description) &&
+                    !string.IsNullOrEmpty(product.DetailedDescription))
+                {
+                    
+                        product.ProductImageFileName = await SaveFile(ProductImageFileName);
+                   
+
+                     
+                        product.DetailedDescriptionBgImage = await SaveFile(DetailedDescriptionBgImage);
+                     
                     _context.Add(product);
                     await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "Product successfully created!";
+                    TempData["AlertClass"] = "alert-success";
+
                     return RedirectToAction(nameof(Index));
-                
+                }
+                else
+                {
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
+                }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+                TempData["Message"] = $"An error occurred: {ex.Message}";
+                TempData["AlertClass"] = "alert-danger";
             }
 
             return View(product);
         }
+
 
         private async Task<string> SaveFile(IFormFile file)
         {
@@ -132,32 +149,50 @@ namespace Promote.website.Controllers
             try
             {
                 var existingProduct = await _context.products.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
-
-                // Delete the existing files if new ones are provided
-                if (ProductImageFileName != null)
+                if (product.ProductName != null
+                    && product.Description != null
+                    && product.Tab1Description != null
+                    && product.Tab2Description != null
+                    && product.Tab3Description != null
+                    && product.DetailedDescription != null)
                 {
-                    await DeleteFileIfExists(existingProduct.ProductImageFileName);
-                    product.ProductImageFileName = await SaveFile(ProductImageFileName);
-                }
-                else
-                {
-                    product.ProductImageFileName = existingProduct.ProductImageFileName;
-                }
+                     
+                    if (ProductImageFileName != null)
+                    {
+                        await DeleteFileIfExists(existingProduct.ProductImageFileName);
+                        product.ProductImageFileName = await SaveFile(ProductImageFileName);
+                    }
+                    else
+                    {
+                        product.ProductImageFileName = existingProduct.ProductImageFileName;
+                    }
 
-                if (DetailedDescriptionBgImage != null)
-                {
-                    await DeleteFileIfExists(existingProduct.DetailedDescriptionBgImage);
-                    product.DetailedDescriptionBgImage = await SaveFile(DetailedDescriptionBgImage);
-                }
-                else
-                {
-                    product.DetailedDescriptionBgImage = existingProduct.DetailedDescriptionBgImage;
-                }
+                    if (DetailedDescriptionBgImage != null)
+                    {
+                        await DeleteFileIfExists(existingProduct.DetailedDescriptionBgImage);
+                        product.DetailedDescriptionBgImage = await SaveFile(DetailedDescriptionBgImage);
+                    }
+                    else
+                    {
+                        product.DetailedDescriptionBgImage = existingProduct.DetailedDescriptionBgImage;
+                    }
 
 
-                _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    _context.Update(product);
+                    await _context.SaveChangesAsync(); 
+
+                    TempData["Message"] = "Product successfully updated!";
+                    TempData["AlertClass"] = "alert-success";
                     return RedirectToAction(nameof(Index));
+
+                }
+                else
+                {
+
+                    TempData["Message"] = "Please fill in all required fields.";
+                    TempData["AlertClass"] = "alert-danger";
+                }
+               
                
             }
             catch (DbUpdateConcurrencyException)
@@ -172,7 +207,7 @@ namespace Promote.website.Controllers
                 }
             }
 
-            return View(product);
+            return RedirectToAction("Edit",id);
         }
         private async Task DeleteFileIfExists(string fileName)
         {
