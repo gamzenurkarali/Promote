@@ -68,29 +68,44 @@ namespace Promote.website.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ContactPageId,ImageHeader,ContactInfoTitle,ContactInfoDescription,PhoneNumber,EmailAddress,MapIframeUrl")] ContactPage contactPage, IFormFile headerImage)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (headerImage != null && headerImage.Length > 0)
+                if (headerImage != null )
                 {
-                    string fileName = headerImage.FileName;
-                    // Dosyanın kaydedileceği yol (image klasörü)
-                    string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "Image", fileName);
+                    string fileNameHeader = Guid.NewGuid().ToString() + Path.GetExtension(headerImage.FileName);
+                    
 
-                    // Dosyayı kopyala
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    // Dosyaları kaydetme işlemi
+                    string filePathHeader = Path.Combine(_hostingEnvironment.WebRootPath, "Media", fileNameHeader);
+                    
+
+                    using (var stream = new FileStream(filePathHeader, FileMode.Create))
                     {
                         await headerImage.CopyToAsync(stream);
                     }
 
-                    // Set the ImageHeader property to the file name
-                    contactPage.ImageHeader = fileName;
-                }
+                   
 
-                _context.Add(contactPage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    // Veritabanına sadece dosya adlarını ekleme işlemi
+                    contactPage.ImageHeader = fileNameHeader;
+                    
+
+                    _context.Add(contactPage);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Please select all three images.");
+                }
             }
-            return View(contactPage);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+            }
+
+            return RedirectToAction("Router");
         }
 
         //[Authorize]
