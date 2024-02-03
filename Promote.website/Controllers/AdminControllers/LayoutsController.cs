@@ -39,8 +39,15 @@ namespace Promote.website.Controllers.AdminControllers
         // GET: Layouts/Create
         public IActionResult Create()
         {
-            return View();
-        }
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            }
 
         // POST: Layouts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -112,23 +119,30 @@ namespace Promote.website.Controllers.AdminControllers
         // GET: Layouts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.layouts == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.layouts == null)
+                {
+                    return NotFound();
+                }
 
-            var layout = await _context.layouts.FindAsync(id);
-            if (layout == null)
-            {
-                return NotFound();
+                var layout = await _context.layouts.FindAsync(id);
+                if (layout == null)
+                {
+                    return NotFound();
+                }
+                return View(layout);
             }
-            return View(layout);
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
-        // POST: Layouts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+            // POST: Layouts/Edit/5
+            // To protect from overposting attacks, enable the specific properties you want to bind to.
+            // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+            [HttpPost]
         [RequestSizeLimit(500 * 1024 * 1024)] // 500 MB limit
         [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         [ValidateAntiForgeryToken]
@@ -224,23 +238,30 @@ namespace Promote.website.Controllers.AdminControllers
         // GET: Layouts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.layouts == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.layouts == null)
+                {
+                    return NotFound();
+                }
 
-            var layout = await _context.layouts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (layout == null)
+                var layout = await _context.layouts
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (layout == null)
+                {
+                    return NotFound();
+                }
+
+                return View(layout);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-
-            return View(layout);
         }
 
-        // POST: Layouts/Delete/5
-        [HttpPost, ActionName("Delete")]
+            // POST: Layouts/Delete/5
+            [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

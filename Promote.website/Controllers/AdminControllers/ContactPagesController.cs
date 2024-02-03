@@ -43,23 +43,30 @@ namespace Promote.website.Controllers
         // GET: ContactPages/Create
         public IActionResult Create()
         {
-            // Veritabanında AboutPages tablosunda kayıt var mı diye kontrol et
-            bool hasRecord = _context.contactPages.Any();
-
-            // Eğer bir kayıt varsa, ilk kaydın ID'sini al
-            int firstRecordId = hasRecord ? _context.contactPages.First().ContactPageId : 0;
-
-            if (hasRecord)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                // Eğer bir kayıt varsa, Edit action'ına yönlendir
-                return RedirectToAction("Edit", new { id = firstRecordId });
+                // Veritabanında AboutPages tablosunda kayıt var mı diye kontrol et
+                bool hasRecord = _context.contactPages.Any();
+
+                // Eğer bir kayıt varsa, ilk kaydın ID'sini al
+                int firstRecordId = hasRecord ? _context.contactPages.First().ContactPageId : 0;
+
+                if (hasRecord)
+                {
+                    // Eğer bir kayıt varsa, Edit action'ına yönlendir
+                    return RedirectToAction("Edit", new { id = firstRecordId });
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Index", "Login");
             }
-            
-        }
+
+            }
 
         // POST: ContactPages/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -116,18 +123,25 @@ namespace Promote.website.Controllers
         // GET: ContactPages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.contactPages == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.contactPages == null)
+                {
+                    return NotFound();
+                }
 
-            var contactPage = await _context.contactPages.FindAsync(id);
-            if (contactPage == null)
-            {
-                return NotFound();
+                var contactPage = await _context.contactPages.FindAsync(id);
+                if (contactPage == null)
+                {
+                    return NotFound();
+                }
+                return View(contactPage);
             }
-            return View(contactPage);
-        }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            }
 
         // POST: ContactPages/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -167,22 +181,29 @@ namespace Promote.website.Controllers
         // GET: ContactPages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.contactPages == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.contactPages == null)
+                {
+                    return NotFound();
+                }
 
-            var contactPage = await _context.contactPages
-                .FirstOrDefaultAsync(m => m.ContactPageId == id);
-            if (contactPage == null)
+                var contactPage = await _context.contactPages
+                    .FirstOrDefaultAsync(m => m.ContactPageId == id);
+                if (contactPage == null)
+                {
+                    return NotFound();
+                }
+
+                return View(contactPage);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-
-            return View(contactPage);
         }
 
-        // POST: ContactPages/Delete/5
+            // POST: ContactPages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

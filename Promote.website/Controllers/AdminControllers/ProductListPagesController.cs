@@ -37,21 +37,27 @@ namespace Promote.website.Controllers
         //[Authorize]
         // GET: ProductListPages/Create
         public IActionResult Create()
-        { 
-            bool hasRecord = _context.productLists.Any();
-             
-            int firstRecordId = hasRecord ? _context.productLists.First().Id : 0;
+        {
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                bool hasRecord = _context.productLists.Any();
 
-            if (hasRecord)
-            { 
-                return RedirectToAction("Edit", new { id = firstRecordId });
+                int firstRecordId = hasRecord ? _context.productLists.First().Id : 0;
+
+                if (hasRecord)
+                {
+                    return RedirectToAction("Edit", new { id = firstRecordId });
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Index", "Login");
             }
-            
-        }
+            }
 
         // POST: ProductListPages/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -107,18 +113,25 @@ namespace Promote.website.Controllers
         // GET: ProductListPages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.productLists == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.productLists == null)
+                {
+                    return NotFound();
+                }
 
-            var productListPage = await _context.productLists.FindAsync(id);
-            if (productListPage == null)
-            {
-                return NotFound();
+                var productListPage = await _context.productLists.FindAsync(id);
+                if (productListPage == null)
+                {
+                    return NotFound();
+                }
+                return View(productListPage);
             }
-            return View(productListPage);
-        }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            }
 
         // POST: ProductListPages/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -198,19 +211,26 @@ namespace Promote.website.Controllers
         // GET: ProductListPages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.productLists == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.productLists == null)
+                {
+                    return NotFound();
+                }
 
-            var productListPage = await _context.productLists
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (productListPage == null)
+                var productListPage = await _context.productLists
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (productListPage == null)
+                {
+                    return NotFound();
+                }
+
+                return View(productListPage);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-
-            return View(productListPage);
         }
 
         // POST: ProductListPages/Delete/5

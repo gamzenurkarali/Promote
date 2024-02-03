@@ -23,10 +23,17 @@ namespace Promote.website.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-              return _context.products != null ? 
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                return _context.products != null ?
                           View(await _context.products.ToListAsync()) :
                           Problem("Entity set 'Context.products'  is null.");
-        }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            }
         //[Authorize]
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -49,8 +56,15 @@ namespace Promote.website.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            return View();
-        }
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            }
 
         // POST: Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -120,18 +134,25 @@ namespace Promote.website.Controllers
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.products == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.products == null)
+                {
+                    return NotFound();
+                }
 
-            var product = await _context.products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
+                var product = await _context.products.FindAsync(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                return View(product);
             }
-            return View(product);
-        }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            }
 
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -225,23 +246,30 @@ namespace Promote.website.Controllers
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.products == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.products == null)
+                {
+                    return NotFound();
+                }
 
-            var product = await _context.products
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+                var product = await _context.products
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                return View(product);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-
-            return View(product);
         }
 
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
+            // POST: Products/Delete/5
+            [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
