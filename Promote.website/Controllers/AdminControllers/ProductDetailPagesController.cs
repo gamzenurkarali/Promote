@@ -38,20 +38,26 @@ namespace Promote.website.Controllers
         // GET: ProductDetailPages/Create
         public IActionResult Create()
         {
-            bool hasRecord = _context.productDetailPages.Any();
-
-            int firstRecordId = hasRecord ? _context.productDetailPages.First().Id : 0;
-
-            if (hasRecord)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return RedirectToAction("Edit", new { id = firstRecordId });
+                bool hasRecord = _context.productDetailPages.Any();
+
+                int firstRecordId = hasRecord ? _context.productDetailPages.First().Id : 0;
+
+                if (hasRecord)
+                {
+                    return RedirectToAction("Edit", new { id = firstRecordId });
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Index", "Login");
             }
-            
-        }
+            }
 
         // POST: ProductDetailPages/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -112,19 +118,26 @@ namespace Promote.website.Controllers
         // GET: ProductDetailPages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.productDetailPages == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.productDetailPages == null)
+                {
+                    return NotFound();
+                }
 
-            var productDetailPage = await _context.productDetailPages.FindAsync(id);
-            if (productDetailPage == null)
-            {
-                return NotFound();
+                var productDetailPage = await _context.productDetailPages.FindAsync(id);
+                if (productDetailPage == null)
+                {
+                    return NotFound();
+                }
+                return View(productDetailPage);
             }
-            return View(productDetailPage);
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
-        private async Task DeleteFileIfExists(string fileName)
+       private async Task DeleteFileIfExists(string fileName)
         {
             if (!string.IsNullOrEmpty(fileName))
             {
@@ -205,20 +218,27 @@ namespace Promote.website.Controllers
         // GET: ProductDetailPages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.productDetailPages == null)
+            if (HttpContext.Session.GetString("UserId") != null)
             {
-                return NotFound();
-            }
+                if (id == null || _context.productDetailPages == null)
+                {
+                    return NotFound();
+                }
 
-            var productDetailPage = await _context.productDetailPages
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (productDetailPage == null)
+                var productDetailPage = await _context.productDetailPages
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (productDetailPage == null)
+                {
+                    return NotFound();
+                }
+
+                return View(productDetailPage);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-
-            return View(productDetailPage);
-        }
+            }
 
         // POST: ProductDetailPages/Delete/5
         [HttpPost, ActionName("Delete")]

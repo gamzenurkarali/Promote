@@ -9,14 +9,15 @@
 
 <section class="banner-section">
     <div class="banner-image-container">
-            @if (Model.Contact != null && !string.IsNullOrEmpty(Model.Contact.ImageHeader))
-            {
-                <img src="~/Media/@Model.Contact.ImageHeader" alt="Banner Image">
-            }
-            else
-            {
-                <img src="~/DefaultMedia/Header.png" alt="Banner Image">
-            }
+        @if (!string.IsNullOrEmpty(Model.Contact.ImageHeader))
+        {
+            <img src="~/Media/@Model.Contact.ImageHeader" alt="Banner Image">
+        }
+        else
+        {
+            <!-- Varsayılan görüntüyü kullanabilirsiniz -->
+            <img src="~/DefaultMedia/Header.png" alt="Default Image">
+        }
     </div>
     
     <div class="content">
