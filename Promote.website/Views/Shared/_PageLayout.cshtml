@@ -20,6 +20,14 @@
 
 
             <style>
+                .dropdown-content a:hover {
+                    scale: none !important;
+                    letter-spacing: 1px !important;
+                }
+                body { 
+                    line-height: 1.5 !important;
+                    overflow-x: hidden !important;
+                }
                 #navbar #navbar-right ul {
                     list-style: none;
                     display: flex;
@@ -64,9 +72,27 @@
 
                 @@media screen and (max-width: 580px) {
                     .dropdown-content {
-                        margin-block-start: 0.5rem !important;
+                        margin-block-start: 0rem !important;
+                    }
+                     
+
+                    .footer-col .footer-links a {
+                        font-size: smaller !important;
+                    }
+
+                    .footer-col h4::before {
+                        bottom: -17px !important;
+                    }
+
+                    img#logo-image {
+                        height: 75px !important;
                     }
                 }
+                @@media (max-width: 767px)
+                    .footer-col { 
+                        margin-bottom: 30px !important;
+                    }
+                 }
             </style>
             <ul>
 
