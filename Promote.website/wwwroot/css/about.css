@@ -117,11 +117,12 @@ h1 {
     width: 100%;
     max-height: 500px; /* Set a max-height to avoid stretching */
     overflow: hidden;
+    line-height: 0 !important;
 }
 
     .header-image-container img {
         width: 100%;
-        height: 100%;
+        height: 400px; 
         object-fit: cover; /* Maintain aspect ratio */
     }
 
@@ -471,3 +472,71 @@ ul {
     }
 }
 /*Footer stil sonu*/
+
+@media(min-width: 1285px) {
+    .welcome-section {
+        gap: 11rem;
+    }
+}
+
+@media(min-width: 1330px) {
+    .welcome-section {
+        gap: 13rem;
+    }
+}
+
+@media(min-width: 1400px) {
+    .welcome-section {
+        gap: 15rem;
+    }
+}
+@media(max-width: 1285px) {
+    .welcome-section p{
+        width:20% !important;
+    }
+    .welcome-section{
+        gap: 10rem;
+    }
+}
+@media(max-width: 1125px) {
+    .welcome-section p {
+        width: 10% !important;
+    }
+}
+@media(max-width: 1120px) {
+    .welcome-section p {
+        width: 100% !important;
+    } 
+}
+@media(max-width: 800px) {
+    
+
+    img.image2 {
+        left: 65%;
+        width: 59%;
+        height: 92%;
+        top: 22%;
+    }
+
+    img.image1 {
+        height: 136%;
+        width: 110%;
+        left: -10%;
+    }
+}
+@media(max-width: 550px) {
+
+    h2.mission__title {
+        width: 80%;
+    }
+    p.mission__descr {
+        width: 80%;
+    }
+    h2.vision__title {
+        width: 80%;
+    }
+
+    p.vision__descr {
+        width: 80%;
+    }
+}
