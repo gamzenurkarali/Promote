@@ -23,6 +23,8 @@ namespace Promote.website.Models
         public DbSet<ProductListPage>? productLists { get; set; }
         public DbSet<Sublink>? sublinks { get; set; }
 
+        public DbSet<PasswordResetToken>? passwordResetTokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

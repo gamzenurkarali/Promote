@@ -4,7 +4,7 @@
 }
 
 @section Styles {
-    <link href="~/css/contact.css" rel="stylesheet" />
+    <link href="~/css/Contact.css" rel="stylesheet" />
     }
 
 <section class="banner-section">
@@ -115,7 +115,8 @@
         <div class="map-container">
             @if (!string.IsNullOrEmpty(Model.Contact.MapIframeUrl))
             {
-                <iframe src="@Model.Contact.MapIframeUrl" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                @Html.Raw(@Model.Contact.MapIframeUrl)
+            
             }
             else
             {

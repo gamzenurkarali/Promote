@@ -39,14 +39,12 @@ namespace Promote.website.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DetailedDescriptionBgImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Fee")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductImageFileName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductName")
@@ -476,6 +474,29 @@ namespace Promote.website.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("layouts");
+                });
+
+            modelBuilder.Entity("Promote.website.Models.PasswordResetToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AdminId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpirationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("passwordResetTokens");
                 });
 
             modelBuilder.Entity("Promote.website.Models.ProductListPage", b =>
