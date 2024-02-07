@@ -168,11 +168,8 @@ namespace Promote.website.Controllers
                         await _context.SaveChangesAsync();
                         TempData["Message"] = "ProductListPage successfully updated!";
                         TempData["AlertClass"] = "alert-success";
-
                         return RedirectToAction("Router");
-                    }
-
-                    
+                    }                    
                 }
                 else
                 {

@@ -183,14 +183,10 @@ namespace Promote.website.Controllers
                     {
                         _context.Update(productDetailPage);
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        TempData["Message"] = "ProductDetailPage updated successfully!";
+                        TempData["AlertClass"] = "alert-success";
+                        return RedirectToAction("Router");
                     }
-
-                    TempData["Message"] = "ProductDetailPage updated successfully!";
-                    TempData["AlertClass"] = "alert-success";
-
-                    return RedirectToAction("Router");
-
                 }
                 else
                 {

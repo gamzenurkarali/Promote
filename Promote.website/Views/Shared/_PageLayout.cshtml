@@ -229,10 +229,74 @@
 
 
     </div>
+    <style>
+        .overlay {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+        }
+
+        .floating-textbox {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: purple;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            z-index: 10000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            cursor: pointer;
+        }
+
+        .text-input {
+            width: calc(100% - 90px); /* Text input'in geniþliði, buton hariç */
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .submit-btn {
+            float: right; /* Saða yaslanmasý */
+            background-color: #f0ad4e;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+
+    <div class="overlay"></div>
+
+    <!-- Floating Textbox -->
+    <div class="floating-textbox" id="floating-textbox">
+        <span class="close-btn" onclick="closeFloatingTextbox()">X</span>
+        <h3>Bilgilendirilmek istiyor musunuz ?</h3>
+        <br/>
+        <input type="text" class="text-input" placeholder="Mail Adress" />
+        <!-- Buton textbox içinde -->
+        <button class="submit-btn" onclick="submitForm()">Send</button>
+    </div>
 
     @RenderBody()
 
     <footer class="footer" style="background-color: @(ViewBag.Layout != null && ViewBag.Layout.FooterColor != null ? ViewBag.Layout.FooterColor : "black")">
+        
         <div class="container footer-row">
             <div class="footer-col">
                 <h4>About</h4>
@@ -345,6 +409,16 @@
             background-size: cover;
         }
     </style>
+    <script>
+        function submitForm() {
+            // Form gönderimini iþle
+            alert("Form gönderildi!");
+        }
+
+        function closeFloatingTextbox() {
+            document.getElementById('floating-textbox').style.display = 'none';
+        }
+    </script>
     <script> 
         document.addEventListener('DOMContentLoaded', function () { 
             var currentPageUrl = window.location.pathname;
