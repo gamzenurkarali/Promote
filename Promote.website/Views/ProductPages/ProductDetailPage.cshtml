@@ -174,7 +174,17 @@
     </section>
 </div>
  
-<section class="contact-info-sections" style="background-image: url('../../Media/@Model.product.DetailedDescriptionBgImage');">
+@if (Model.product != null)
+{
+    <section class="contact-info-sections" style="background-image: url('@Model.product.DetailedDescriptionBgImage');">
+        <!-- Diğer içerik -->
+    </section>
+}
+else
+{
+    
+}
+
 
     <h1>@((Model?.detailPage?.DetailedDescriptionTitle ?? "Ürün Detayları"))</h1>
      
