@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\LayoutMedia\" />
+    <Folder Include="wwwroot\RelevantDocuments\" />
   </ItemGroup>
 
 </Project>

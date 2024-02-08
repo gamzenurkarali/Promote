@@ -56,7 +56,7 @@ namespace Promote.website.Controllers.AdminControllers
         [RequestSizeLimit(500 * 1024 * 1024)] // 500 MB limit
         [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile LogoPath, IFormFile SocialMedia1Icon, IFormFile SocialMedia2Icon, IFormFile SocialMedia3Icon, IFormFile SocialMedia4Icon, [Bind("Id,LogoPath,FooterColor,HighlightColor,SocialMedia1Link,SocialMedia1Icon,SocialMedia2Link,SocialMedia2Icon,SocialMedia3Link,SocialMedia3Icon,SocialMedia4Link,SocialMedia4Icon")] Layout layout)
+        public async Task<IActionResult> Create(IFormFile LogoPath, IFormFile SocialMedia1Icon, IFormFile SocialMedia2Icon, IFormFile SocialMedia3Icon, IFormFile SocialMedia4Icon, IFormFile SocialMedia5Icon, [Bind("Id,LogoPath,FooterColor,HighlightColor,SocialMedia1Link,SocialMedia1Icon,SocialMedia2Link,SocialMedia2Icon,SocialMedia3Link,SocialMedia3Icon,SocialMedia4Link,SocialMedia4Icon,SocialMedia5Link,SocialMedia5Icon")] Layout layout)
         {
             try
             {
@@ -65,12 +65,14 @@ namespace Promote.website.Controllers.AdminControllers
                     SocialMedia2Icon != null &&
                     SocialMedia3Icon != null &&
                     SocialMedia4Icon != null &&
+                    SocialMedia5Icon != null &&
                     !string.IsNullOrEmpty(layout.FooterColor) &&
                     !string.IsNullOrEmpty(layout.HighlightColor) &&
                     !string.IsNullOrEmpty(layout.SocialMedia1Link) &&
                     !string.IsNullOrEmpty(layout.SocialMedia2Link) &&
                     !string.IsNullOrEmpty(layout.SocialMedia3Link) &&
-                    !string.IsNullOrEmpty(layout.SocialMedia4Link))
+                    !string.IsNullOrEmpty(layout.SocialMedia4Link) &&
+                    !string.IsNullOrEmpty(layout.SocialMedia5Link))
                 {
                     // Save files
                     layout.LogoPath = await SaveFile(LogoPath);
@@ -78,6 +80,7 @@ namespace Promote.website.Controllers.AdminControllers
                     layout.SocialMedia2Icon = await SaveFile(SocialMedia2Icon);
                     layout.SocialMedia3Icon = await SaveFile(SocialMedia3Icon);
                     layout.SocialMedia4Icon = await SaveFile(SocialMedia4Icon);
+                    layout.SocialMedia5Icon = await SaveFile(SocialMedia5Icon);
 
                     _context.Add(layout);
                     await _context.SaveChangesAsync();
@@ -146,7 +149,7 @@ namespace Promote.website.Controllers.AdminControllers
         [RequestSizeLimit(500 * 1024 * 1024)] // 500 MB limit
         [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, IFormFile LogoPath, IFormFile SocialMedia1Icon, IFormFile SocialMedia2Icon, IFormFile SocialMedia3Icon, IFormFile SocialMedia4Icon, [Bind("Id,LogoPath,FooterColor,HighlightColor,SocialMedia1Link,SocialMedia1Icon,SocialMedia2Link,SocialMedia2Icon,SocialMedia3Link,SocialMedia3Icon,SocialMedia4Link,SocialMedia4Icon")] Layout layout)
+        public async Task<IActionResult> Edit(int id, IFormFile LogoPath, IFormFile SocialMedia1Icon, IFormFile SocialMedia2Icon, IFormFile SocialMedia3Icon, IFormFile SocialMedia4Icon, IFormFile SocialMedia5Icon, [Bind("Id,LogoPath,FooterColor,HighlightColor,SocialMedia1Link,SocialMedia1Icon,SocialMedia2Link,SocialMedia2Icon,SocialMedia3Link,SocialMedia3Icon,SocialMedia4Link,SocialMedia4Icon,SocialMedia5Link,SocialMedia5Icon")] Layout layout)
         {
             if (id != layout.Id)
             {
@@ -161,7 +164,8 @@ namespace Promote.website.Controllers.AdminControllers
                     && layout.SocialMedia1Link != null
                     && layout.SocialMedia2Link != null
                     && layout.SocialMedia3Link != null
-                    && layout.SocialMedia4Link != null)
+                    && layout.SocialMedia4Link != null
+                    && layout.SocialMedia5Link != null)
                 {
                     if (LogoPath != null)
                     {
@@ -187,12 +191,17 @@ namespace Promote.website.Controllers.AdminControllers
                     {
                         await DeleteFileIfExists(existingLayout.SocialMedia4Icon);
                     }
-                     
+                    if (SocialMedia5Icon != null)
+                    {
+                        await DeleteFileIfExists(existingLayout.SocialMedia5Icon);
+                    }
+
                     layout.LogoPath = LogoPath != null ? await SaveFile(LogoPath) : existingLayout.LogoPath;
                     layout.SocialMedia1Icon = SocialMedia1Icon != null ? await SaveFile(SocialMedia1Icon) : existingLayout.SocialMedia1Icon;
                     layout.SocialMedia2Icon = SocialMedia2Icon != null ? await SaveFile(SocialMedia2Icon) : existingLayout.SocialMedia2Icon;
                     layout.SocialMedia3Icon = SocialMedia3Icon != null ? await SaveFile(SocialMedia3Icon) : existingLayout.SocialMedia3Icon;
                     layout.SocialMedia4Icon = SocialMedia4Icon != null ? await SaveFile(SocialMedia4Icon) : existingLayout.SocialMedia4Icon;
+                    layout.SocialMedia5Icon = SocialMedia5Icon != null ? await SaveFile(SocialMedia5Icon) : existingLayout.SocialMedia5Icon;
 
                     _context.Update(layout);
                     await _context.SaveChangesAsync();

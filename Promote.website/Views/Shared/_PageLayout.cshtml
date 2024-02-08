@@ -10,7 +10,7 @@
 
     <div id="navbar">
 
-        <a href="home.html" id="logo">
+        <a href="/Home/Index/" id="logo">
             @if (ViewBag.Layout != null)
             {
                 <img id="logo-image" src="~/LayoutMedia/@ViewBag.Layout.LogoPath" alt="logo" style="height: 70px;">
@@ -353,14 +353,96 @@
             </div>
             <div class="footer-col">
                 <h4>follow us</h4>
-                <div class="social-links">
+               @*  <div class="social-links">
                     <a id="link1" href="@((ViewBag.Layout != null && ViewBag.Layout.SocialMedia1Link != null) ? ViewBag.Layout.SocialMedia1Link : "#")" target="_blank"></a>
                     <a id="link2" href="@((ViewBag.Layout != null && ViewBag.Layout.SocialMedia2Link != null) ? ViewBag.Layout.SocialMedia2Link : "#")" target="_blank"></a>
                     <a id="link3" href="@((ViewBag.Layout != null && ViewBag.Layout.SocialMedia3Link != null) ? ViewBag.Layout.SocialMedia3Link : "#")" target="_blank"></a>
                     <a id="link4" href="@((ViewBag.Layout != null && ViewBag.Layout.SocialMedia4Link != null) ? ViewBag.Layout.SocialMedia4Link : "#")" target="_blank"></a> 
+                </div> *@
+
+                @functions {
+                    public void CreateSocialLink(string linkId, string link)
+                    {
+                        if (link != null || link.Equals("."))
+                        {
+                            <a id="@linkId" href="@link" target="_blank"></a>
+                        }
+                    }
+                }
+
+                <div class="social-links">
+                    @if (ViewBag.Layout != null)
+                    {
+                        CreateSocialLink("link1", ViewBag.Layout.SocialMedia1Link);
+                        CreateSocialLink("link2", ViewBag.Layout.SocialMedia2Link);
+                        CreateSocialLink("link3", ViewBag.Layout.SocialMedia3Link);
+                        CreateSocialLink("link4", ViewBag.Layout.SocialMedia4Link);
+                        CreateSocialLink("link5", ViewBag.Layout.SocialMedia5Link);
+                    }
                 </div>
+
             </div>
         </div>
+        <style>
+            .documents {
+                padding: 1.25rem;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                max-width: ;
+                min-width: 50%;
+                flex-direction: row;
+                justify-content: flex-end;
+            }
+
+            .footer {
+                
+                padding-bottom: 0px;
+            }
+            @@media (max-width: 840px) {
+                .footer p { 
+                    font-size: 10px ;
+                }
+
+                .documents {
+                    font-size: 10px !important;
+                }
+            }
+
+            @@media (max-width: 638px) {
+                .footer p {
+                    font-size: 8px ;
+                }
+
+                .documents {
+                    font-size: 8px !important;
+                }
+            }
+        </style>
+        <div style="display:flex;flex-wrap:wrap;flex-direction:row;justify-content: space-between;margin-top:50px;">
+            <div style="display:flex;align-content:center;">
+                <p style="color:white;padding:1rem;">@DateTime.Now.Year Copyright &copy; Company Name </p>
+            </div>
+            @if (ViewBag.relDocuments != null)
+            {
+                
+                <div class="documents">
+
+                    @foreach (var item in ViewBag.relDocuments)
+                    {
+                        <a style="font-size:smaller;" href="@((item.Content != null) ? $"~/RelevantDocuments/{item.Content}" : "#")" target="_blank">@item.Title</a>
+                    }
+                </div>
+            }
+
+
+            
+
+
+        </div>
+      
+        
+
     </footer>
     <style>
         .footer-col .footer-links {
@@ -406,6 +488,11 @@
 
         #link4 {
             background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia4Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia4Icon : "")');
+            background-size: cover;
+        }
+
+        #link5 {
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia5Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia5Icon : "")');
             background-size: cover;
         }
     </style>
