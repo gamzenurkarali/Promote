@@ -19,6 +19,8 @@ namespace Promote.website.Controllers
 
         public IActionResult Index()
         {
+            var documents = _layoutService.GetDocuments();
+            ViewBag.relDocuments = documents;
             var layout = _layoutService.GetLayout();
             var sublinks = _layoutService.GetSublinks();
             ViewBag.Layout = layout;

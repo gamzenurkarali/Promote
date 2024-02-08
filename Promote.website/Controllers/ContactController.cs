@@ -20,7 +20,8 @@ namespace Promote.website.Controllers
         public IActionResult Index(int contactFormId)
         {
             var layout = _layoutService.GetLayout();
-
+            var documents = _layoutService.GetDocuments();
+            ViewBag.relDocuments = documents;
             var sublinks = _layoutService.GetSublinks();
             ViewBag.Layout = layout;
             ViewBag.Sublinks = sublinks;

@@ -39,5 +39,11 @@ namespace Promote.website.Models
 
         [Display(Name = "Social Media 4 Icon")]
         public string SocialMedia4Icon { get; set; }
+
+        [Display(Name = "Social Media 5 Link")]
+        public string SocialMedia5Link { get; set; }
+
+        [Display(Name = "Social Media 5 Icon")]
+        public string SocialMedia5Icon { get; set; }
     }
 }
