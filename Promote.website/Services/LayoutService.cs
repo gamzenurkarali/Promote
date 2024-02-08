@@ -19,5 +19,9 @@ namespace Promote.website.Services
         {
             return _context.sublinks.ToList();
         }
+        public List<RelevantDocument> GetDocuments()
+        {
+            return _context.relevantDocuments.ToList();
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace Promote.website.Models
         public DbSet<Sublink>? sublinks { get; set; }
 
         public DbSet<PasswordResetToken>? passwordResetTokens { get; set; }
+        public DbSet<RelevantDocument>? relevantDocuments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
