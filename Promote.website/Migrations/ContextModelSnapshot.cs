@@ -419,6 +419,23 @@ namespace Promote.website.Migrations
                     b.ToTable("homePages");
                 });
 
+            modelBuilder.Entity("Promote.website.Models.İnformationForm", b =>
+                {
+                    b.Property<int>("İnformationFormId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("İnformationFormId"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("İnformationFormId");
+
+                    b.ToTable("İnformationForm");
+                });
+
             modelBuilder.Entity("Promote.website.Models.Layout", b =>
                 {
                     b.Property<int>("Id")

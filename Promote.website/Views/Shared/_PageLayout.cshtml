@@ -285,13 +285,17 @@
 
     <!-- Floating Textbox -->
     <div class="floating-textbox" id="floating-textbox">
-        <span class="close-btn" onclick="closeFloatingTextbox()">X</span>
+        <span class="close-btn" onclick="closeFloatingTextbox()"><strong>x</strong></span>
+
         <h3>Bilgilendirilmek istiyor musunuz ?</h3>
-        <br/>
-        <input type="text" class="text-input" placeholder="Mail Adress" />
-        <!-- Buton textbox içinde -->
-        <button class="submit-btn" onclick="submitForm()">Send</button>
+        <br />
+        <form action="" method="post" >
+            <input type="text" class="text-input" placeholder="Mail Adress" />
+            <!-- Buton textbox içinde -->
+            <button type="submit" class="submit-btn" role="button">Send</button>
+        </form>
     </div>
+
 
     @RenderBody()
 
@@ -496,16 +500,18 @@
             background-size: cover;
         }
     </style>
-    <script>
-        function submitForm() {
-            // Form gönderimini iþle
-            alert("Form gönderildi!");
-        }
+
+        <script>
+            function submitForm() {
+                // Form gönderimini iþle
+                alert("Form gönderildi!");
+            }
 
         function closeFloatingTextbox() {
             document.getElementById('floating-textbox').style.display = 'none';
         }
     </script>
+
     <script> 
         document.addEventListener('DOMContentLoaded', function () { 
             var currentPageUrl = window.location.pathname;
