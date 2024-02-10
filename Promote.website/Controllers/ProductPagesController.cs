@@ -43,7 +43,7 @@ namespace Promote.website.Controllers
             ViewBag.Sublinks = sublinks;
             var page = _context.productDetailPages.FirstOrDefault();
             var product = _context.products.FirstOrDefault(x => x.Id == id);
-
+            
             var values = new ProductDetailPageViewModel
             {
                 detailPage = page,
@@ -64,6 +64,7 @@ namespace Promote.website.Controllers
                         Tab2Title = "Dahil olmayan hizmetler",
                         Tab3Title = "İptal politikası",
                         DetailedDescriptionTitle = "Detaylı Bilgiler",
+                        IsTabSectionIncluded = true,
                         
                     },
                     product = new Product

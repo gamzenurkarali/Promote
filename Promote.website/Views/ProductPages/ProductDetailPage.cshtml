@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_PageLayout.cshtml";
 }
 @section Styles {
-    <link href="~/css/dDetail.css" rel="stylesheet" />
+    <link href="~/css/detail.css" rel="stylesheet" />
 }
 
 <section class="banner-section">
@@ -59,124 +59,16 @@
             <p>@(Model?.product?.Description)</p>
         </div>
 
-        <div class="row">
-            <nav class="c-tabs" data-toggle="c-tabs" role="navigation">
-                <ul class="c-tab--navigation">
-                    <!--Tab slider başlıkları-->
-                    <li class="c-tab--item"><a href="#test1" class="active">@((Model?.detailPage?.Tab1Title ?? "Dahil olan hizmetler"))</a></li>
-                    <li class="c-tab--item"><a href="#test2">@((Model?.detailPage?.Tab2Title ?? "Dahil olmayan hizmetler"))</a></li>
-                    <li class="c-tab--item"><a href="#test3">@((Model?.detailPage?.Tab3Title ?? "İptal politikası"))</a></li>
-                    <li class="c-tab--slider">
-                        <div class="c-tab-indicator"></div>
-                    </li>
-                </ul>
-
-            </nav>
-            <div class="c-tab--content-container">
-                <!--Tab slider başlık içerikleri-->
-                <div id="test1" class="c-tab--content active">
-                    @{
-                        string tab1Description = string.Empty;
-
-                        if (Model.product != null)
-                        {
-                            tab1Description = Model.product.Tab1Description;
-
-                            if (tab1Description != null)
-                            {
-                                if (tab1Description.Contains("$/"))
-                                {
-                                    tab1Description = tab1Description.Replace("$/", "<br />&#8226; ");
-                                }
-
-                                if (tab1Description.Contains("%/"))
-                                {
-                                    tab1Description = tab1Description.Replace("%/", "</br><strong>");
-                                    tab1Description += "</strong>";
-                                }
-                            }
-                        }
-                        else
-                        {
-                            tab1Description = "Details not available.";
-                        }
-                    }
-
-                    <p>@Html.Raw(tab1Description)</p>
-
-
-                </div>
-                <div id="test2" class="c-tab--content">
-                    @{
-                        string tab2Description = string.Empty;
-
-                        if (Model.product != null)
-                        {
-                            tab2Description = Model.product.Tab2Description;
-
-                            if (tab2Description != null)
-                            {
-                                if (tab2Description.Contains("%/"))
-                                {
-                                    tab2Description = tab2Description.Replace("%/", "<br />&#8226; ");
-                                }
-
-                                if (tab2Description.Contains("$/"))
-                                {
-                                    tab2Description = tab2Description.Replace("$/", "</br><strong>");
-                                    tab2Description += "</strong>";
-                                }
-                            }
-                        }
-                        else
-                        {
-                            tab2Description = "Details not available.";
-                        }
-                    }
-
-                    <p>@Html.Raw(tab2Description)</p>
-
-                </div>
-                <div id="test3" class="c-tab--content">
-                    @{
-                        string tab3Description = string.Empty;
-
-                        if (Model.product != null)
-                        {
-                            tab3Description = Model.product.Tab3Description;
-
-                            if (tab3Description != null)
-                            {
-                                if (tab3Description.Contains("%/"))
-                                {
-                                    tab3Description = tab3Description.Replace("%/", "<br />&#8226; ");
-                                }
-
-                                if (tab3Description.Contains("$/"))
-                                {
-                                    tab3Description = tab3Description.Replace("$/", "</br><strong>");
-                                    tab3Description += "</strong>";
-                                }
-                            }
-                        }
-                        else
-                        {
-                            tab3Description = "Details not available.";
-                        }
-                    }
-
-                    <p>@Html.Raw(tab3Description)</p>
-
-
-                </div>
-            </div>
-        </div>
+        @if (Model.detailPage.IsTabSectionIncluded == true)
+        {
+            Html.RenderPartial("_TabSectionPartial");
+        }
     </section>
 </div>
  
 @if (Model.product != null && Model.product.DetailedDescription != null)
-{
-    <section class="contact-info-sections" style="background-image: url('@Model.product.DetailedDescriptionBgImage');">
+{ 
+        <section class="contact-info-sections" style="background-image: url('../../Media/@Model.product.DetailedDescriptionBgImage');">
         <h1>@((Model?.detailPage?.DetailedDescriptionTitle ?? "Ürün Detayları"))</h1>
 
         <div data-aos="fade-down-right">
@@ -248,6 +140,7 @@ else
                     document.getElementById("logo").style.fontSize = "25px";
                     document.getElementById("logo-image").style.height = "70px";
                     document.getElementById("navbar").style.backgroundColor = "#212121";
+                    document.getElementById("navbar").style.opacity = "0.5";
                 } else {
                     // Navbar'a farklı bir stil uygula
                     document.getElementById("navbar").style.padding = "40px 50px";
@@ -302,6 +195,29 @@ else
                     adjustTabContent();
 
                     e.preventDefault();
+                });
+            });
+            // Ekran boyutu değiştiğinde tetiklenen fonksiyon
+            function handleResize() {
+                $('.c-tab--navigation').each(function () {
+                    var $currentTab = $(this).find('a.active'),
+                        $indicator = $(this).find('.c-tab-indicator');
+
+                    if ($currentTab.hasClass('active')) {
+                        var tab_width = $currentTab.innerWidth(),
+                            left_position = $currentTab.position().left;
+
+                        $indicator.css({ 'width': tab_width + 'px', 'left': left_position + 'px' });
+                    }
+                });
+            }
+
+            // Sayfa yüklendiğinde ve ekran boyutu değiştiğinde handleResize fonksiyonunu çağırma
+            $(document).ready(function () {
+                handleResize(); // Sayfa yüklendiğinde bir kere çağrılmalı
+
+                $(window).on('resize', function () {
+                    handleResize(); // Ekran boyutu değiştiğinde çağrılmalı
                 });
             });
 

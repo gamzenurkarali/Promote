@@ -84,6 +84,9 @@ namespace Promote.website.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsTabSectionIncluded")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Tab1Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
