@@ -434,7 +434,7 @@
 
                     @foreach (var item in ViewBag.relDocuments)
                     {
-                        <a style="font-size:smaller;" href="@((item.Content != null) ? $"~/RelevantDocuments/{item.Content}" : "#")" target="_blank">@item.Title</a>
+                        <a style="font-size:smaller;" href="@((item.Content != null) ? Url.Content("~/RelevantDocuments/" + item.Content) : "#")" target="_blank">@item.Title</a>
                     }
                 </div>
             }
