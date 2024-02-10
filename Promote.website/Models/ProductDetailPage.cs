@@ -9,6 +9,10 @@ public class ProductDetailPage
     [Display(Name = "Header Image")]
     public string ImageHeader { get; set; } = string.Empty;
 
+    [Display(Name = "is Tab Section Included")]
+    [Required(ErrorMessage = "is Tab Section Included is required.")]
+    public bool IsTabSectionIncluded { get; set; }
+
     [Display(Name = "Tab 1 Title")]
     [Required(ErrorMessage = "Tab 1 Title is required.")]
     public string Tab1Title { get; set; }

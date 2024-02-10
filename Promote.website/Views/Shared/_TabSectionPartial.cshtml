@@ -1,0 +1,112 @@
+﻿<div class="row">
+    <nav class="c-tabs" data-toggle="c-tabs" role="navigation">
+        <ul class="c-tab--navigation">
+            <!--Tab slider başlıkları-->
+            <li class="c-tab--item"><a href="#test1" class="active">@((Model?.detailPage?.Tab1Title ?? "Dahil olan hizmetler"))</a></li>
+            <li class="c-tab--item"><a href="#test2">@((Model?.detailPage?.Tab2Title ?? "Dahil olmayan hizmetler"))</a></li>
+            <li class="c-tab--item"><a href="#test3">@((Model?.detailPage?.Tab3Title ?? "İptal politikası"))</a></li>
+            <li class="c-tab--slider">
+                <div class="c-tab-indicator"></div>
+            </li>
+        </ul>
+
+    </nav>
+    <div class="c-tab--content-container">
+        <!--Tab slider başlık içerikleri-->
+        <div id="test1" class="c-tab--content active">
+            @{
+                string tab1Description = string.Empty;
+
+                if (Model.product != null)
+                {
+                    tab1Description = Model.product.Tab1Description;
+
+                    if (tab1Description != null)
+                    {
+                        if (tab1Description.Contains("$/"))
+                        {
+                            tab1Description = tab1Description.Replace("$/", "<br />&#8226; ");
+                        }
+
+                        if (tab1Description.Contains("%/"))
+                        {
+                            tab1Description = tab1Description.Replace("%/", "</br><strong>");
+                            tab1Description += "</strong>";
+                        }
+                    }
+                }
+                else
+                {
+                    tab1Description = "Details not available.";
+                }
+            }
+
+            <p>@Html.Raw(tab1Description)</p>
+
+
+        </div>
+        <div id="test2" class="c-tab--content">
+            @{
+                string tab2Description = string.Empty;
+
+                if (Model.product != null)
+                {
+                    tab2Description = Model.product.Tab2Description;
+
+                    if (tab2Description != null)
+                    {
+                        if (tab2Description.Contains("%/"))
+                        {
+                            tab2Description = tab2Description.Replace("%/", "<br />&#8226; ");
+                        }
+
+                        if (tab2Description.Contains("$/"))
+                        {
+                            tab2Description = tab2Description.Replace("$/", "</br><strong>");
+                            tab2Description += "</strong>";
+                        }
+                    }
+                }
+                else
+                {
+                    tab2Description = "Details not available.";
+                }
+            }
+
+            <p>@Html.Raw(tab2Description)</p>
+
+        </div>
+        <div id="test3" class="c-tab--content">
+            @{
+                string tab3Description = string.Empty;
+
+                if (Model.product != null)
+                {
+                    tab3Description = Model.product.Tab3Description;
+
+                    if (tab3Description != null)
+                    {
+                        if (tab3Description.Contains("%/"))
+                        {
+                            tab3Description = tab3Description.Replace("%/", "<br />&#8226; ");
+                        }
+
+                        if (tab3Description.Contains("$/"))
+                        {
+                            tab3Description = tab3Description.Replace("$/", "</br><strong>");
+                            tab3Description += "</strong>";
+                        }
+                    }
+                }
+                else
+                {
+                    tab3Description = "Details not available.";
+                }
+            }
+
+            <p>@Html.Raw(tab3Description)</p>
+
+
+        </div>
+    </div>
+</div>

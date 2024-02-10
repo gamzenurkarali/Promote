@@ -31,7 +31,7 @@ namespace Promote.website.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
             }
         //[Authorize]
@@ -62,7 +62,7 @@ namespace Promote.website.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
             }
 
@@ -150,7 +150,7 @@ namespace Promote.website.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
             }
 
@@ -264,7 +264,7 @@ namespace Promote.website.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
         }
 

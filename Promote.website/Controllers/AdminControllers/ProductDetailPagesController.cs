@@ -55,7 +55,7 @@ namespace Promote.website.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
             }
 
@@ -64,7 +64,7 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImageHeader,Tab1Title,Tab2Title,Tab3Title,DetailedDescriptionTitle")] ProductDetailPage productDetailPage, IFormFile ImageHeader)
+        public async Task<IActionResult> Create([Bind("Id,ImageHeader,IsTabSectionIncluded,Tab1Title,Tab2Title,Tab3Title,DetailedDescriptionTitle")] ProductDetailPage productDetailPage, IFormFile ImageHeader)
         {
             try
             {
@@ -134,7 +134,7 @@ namespace Promote.website.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
         }
        private async Task DeleteFileIfExists(string fileName)
@@ -154,7 +154,7 @@ namespace Promote.website.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageHeader,Tab1Title,Tab2Title,Tab3Title,DetailedDescriptionTitle")] ProductDetailPage productDetailPage, IFormFile ImageHeader)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageHeader,IsTabSectionIncluded,Tab1Title,Tab2Title,Tab3Title,DetailedDescriptionTitle")] ProductDetailPage productDetailPage, IFormFile ImageHeader)
         {
             if (id != productDetailPage.Id)
             {
@@ -179,14 +179,13 @@ namespace Promote.website.Controllers
                     }
                     productDetailPage.ImageHeader = ImageHeader != null ? await SaveFile(ImageHeader) : existingProductDetailPage.ImageHeader;
 
-                    if (ModelState.IsValid)
-                    {
+                    
                         _context.Update(productDetailPage);
                         await _context.SaveChangesAsync();
                         TempData["Message"] = "ProductDetailPage updated successfully!";
                         TempData["AlertClass"] = "alert-success";
                         return RedirectToAction("Router");
-                    }
+                    
                 }
                 else
                 {
@@ -232,7 +231,7 @@ namespace Promote.website.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
             }
 

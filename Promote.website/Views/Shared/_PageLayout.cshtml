@@ -104,7 +104,7 @@
                     if (homeSublinks.Count > 1)
                     {
                         <li class="dropdown">
-                            <a href="javascript:void(0)" class="dropbtn">Home</a>
+                            <a href="javascript:void(0)" class="dropbtn linktitle1">Home</a>
                             <div class="dropdown-content">
                                 @foreach (var sublink in homeSublinks)
                                 {
@@ -117,7 +117,7 @@
                     {
                         var singleHomeSublink = homeSublinks.First();
                         <li>
-                            <a href="@singleHomeSublink.PagePath">@singleHomeSublink.PageName</a>
+                            <a href="@singleHomeSublink.PagePath" class="linktitle1">@singleHomeSublink.PageName</a>
                         </li>
                     }
                 }
@@ -131,7 +131,7 @@
                     if (aboutSublinks.Count > 1)
                     {
                         <li class="dropdown">
-                            <a href="javascript:void(0)" class="dropbtn">About</a>
+                            <a href="javascript:void(0)" class="dropbtn linktitle2">About</a>
                             <div class="dropdown-content">
                                 @foreach (var sublink in aboutSublinks)
                                 {
@@ -144,7 +144,7 @@
                     {
                         var singleAboutSublink = aboutSublinks.First();
                         <li>
-                            <a href="@singleAboutSublink.PagePath">@singleAboutSublink.PageName</a>
+                            <a href="@singleAboutSublink.PagePath" class="linktitle2">@singleAboutSublink.PageName</a>
                         </li>
                     }
                 }
@@ -155,7 +155,7 @@
                     if (productSublinks.Count > 1)
                     {
                         <li class="dropdown">
-                            <a href="javascript:void(0)" class="dropbtn">Products</a>
+                            <a href="javascript:void(0)" class="dropbtn linktitle3">Products</a>
                             <div class="dropdown-content">
                                 @foreach (var sublink in productSublinks)
                                 {
@@ -168,7 +168,7 @@
                     {
                         var singleProductSublink = productSublinks.First();
                         <li>
-                            <a href="@singleProductSublink.PagePath">@singleProductSublink.PageName</a>
+                            <a href="@singleProductSublink.PagePath" class="linktitle3">@singleProductSublink.PageName</a>
                         </li>
                     }
                 }
@@ -179,7 +179,7 @@
                     if (contactSublinks.Count > 1)
                     {
                         <li class="dropdown">
-                            <a href="javascript:void(0)" class="dropbtn">Contact</a>
+                            <a href="javascript:void(0)" class="dropbtn linktitle4">Contact</a>
                             <div class="dropdown-content">
                                 @foreach (var sublink in contactSublinks)
                                 {
@@ -192,7 +192,7 @@
                     {
                         var singleContactSublink = contactSublinks.First();
                         <li>
-                            <a href="@singleContactSublink.PagePath">@singleContactSublink.PageName</a>
+                            <a href="@singleContactSublink.PagePath" class="linktitle4">@singleContactSublink.PageName</a>
                         </li>
                     }
                 }
@@ -369,7 +369,7 @@
                     {
                         if (link != null || link.Equals("."))
                         {
-                            <a id="@linkId" href="@link" target="_blank"></a>
+                                <a id="@linkId" href="@link" target="_blank"></a>
                         }
                     }
                 }
@@ -434,7 +434,7 @@
 
                     @foreach (var item in ViewBag.relDocuments)
                     {
-                        <a style="font-size:smaller;" href="@((item.Content != null) ? $"~/RelevantDocuments/{item.Content}" : "#")" target="_blank">@item.Title</a>
+                        <a style="font-size:smaller;" href="@((item.Content != null) ? Url.Content("~/RelevantDocuments/" + item.Content) : "#")" target="_blank">@item.Title</a>
                     }
                 </div>
             }
@@ -476,27 +476,27 @@
         }
 
         #link1 {
-            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia1Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia1Icon : "")');
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia1Icon != null ? "../../LayoutMedia/" + ViewBag.Layout.SocialMedia1Icon : "")');
             background-size: cover;
         }
 
         #link2 {
-            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia2Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia2Icon : "")');
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia2Icon != null ? "../../LayoutMedia/" + ViewBag.Layout.SocialMedia2Icon : "")');
             background-size: cover;
         }
 
         #link3 {
-            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia3Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia3Icon : "")');
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia3Icon != null ? "../../LayoutMedia/" + ViewBag.Layout.SocialMedia3Icon : "")');
             background-size: cover;
         }
 
         #link4 {
-            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia4Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia4Icon : "")');
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia4Icon != null ? "../../LayoutMedia/" + ViewBag.Layout.SocialMedia4Icon : "")');
             background-size: cover;
         }
 
         #link5 {
-            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia5Icon != null ? "../LayoutMedia/" + ViewBag.Layout.SocialMedia5Icon : "")');
+            background-image: url('@(ViewBag.Layout != null && ViewBag.Layout.SocialMedia5Icon != null ? "../../LayoutMedia/" + ViewBag.Layout.SocialMedia5Icon : "")');
             background-size: cover;
         }
     </style>
@@ -512,21 +512,38 @@
         }
     </script>
 
-    <script> 
-        document.addEventListener('DOMContentLoaded', function () { 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
             var currentPageUrl = window.location.pathname;
-             
-            var navLinks = document.querySelectorAll('#navbar-right a');
-             
-            navLinks.forEach(function (link) { 
-                var linkUrl = link.getAttribute('href');
-                 
-                if (currentPageUrl.startsWith(linkUrl)) { 
-                    link.classList.add('active');
-                }
-            });
+
+            // Home link title
+            var linkTitle1 = document.querySelector('.linktitle1');
+            if (linkTitle1 && currentPageUrl.startsWith("/Home/")) {
+                linkTitle1.classList.add('active');
+            }
+
+            // About link title
+            var linkTitle2 = document.querySelector('.linktitle2');
+            if (linkTitle2 && currentPageUrl.startsWith("/About/")) {
+                linkTitle2.classList.add('active');
+            }
+
+            // Products link title
+            var linkTitle3 = document.querySelector('.linktitle3');
+            if (linkTitle3 && currentPageUrl.startsWith("/ProductPages/")) {
+                linkTitle3.classList.add('active');
+            }
+
+            // Contact link title
+            var linkTitle4 = document.querySelector('.linktitle4');
+            if (linkTitle4 && currentPageUrl.startsWith("/Contact/")) {
+                linkTitle4.classList.add('active');
+            }
         });
     </script>
+
+
+     
 
     <script> 
         window.onscroll = function () { scrollFunction() };

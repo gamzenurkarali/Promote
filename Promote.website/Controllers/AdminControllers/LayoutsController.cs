@@ -45,7 +45,7 @@ namespace Promote.website.Controllers.AdminControllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
             }
 
@@ -138,7 +138,7 @@ namespace Promote.website.Controllers.AdminControllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
         }
 
@@ -265,26 +265,35 @@ namespace Promote.website.Controllers.AdminControllers
             }
             else
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "LoginAdminPanel100224cr");
             }
         }
 
-            // POST: Layouts/Delete/5
-            [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.layouts == null)
             {
-                return Problem("Entity set 'Context.layouts'  is null.");
+                return Problem("Entity set 'Context.layouts' is null.");
             }
+
             var layout = await _context.layouts.FindAsync(id);
+
             if (layout != null)
             {
+                // Dosyaların silme işlemleri
+                await DeleteFileIfExists(layout.LogoPath);
+                await DeleteFileIfExists(layout.SocialMedia1Icon);
+                await DeleteFileIfExists(layout.SocialMedia2Icon);
+                await DeleteFileIfExists(layout.SocialMedia3Icon);
+                await DeleteFileIfExists(layout.SocialMedia4Icon);
+                await DeleteFileIfExists(layout.SocialMedia5Icon);
+
                 _context.layouts.Remove(layout);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

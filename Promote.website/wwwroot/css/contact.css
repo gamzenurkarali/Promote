@@ -44,7 +44,7 @@ body {
     }
 
     #navbar a:hover {
-        transform: scale(1.2);
+        letter-spacing: 2px;
     }
 
     #navbar a.active {
