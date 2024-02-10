@@ -11,7 +11,7 @@ public class ProductDetailPage
 
     [Display(Name = "is Tab Section Included")]
     [Required(ErrorMessage = "is Tab Section Included is required.")]
-    public bool isTabSectionIncluded { get; set; }
+    public bool IsTabSectionIncluded { get; set; }
 
     [Display(Name = "Tab 1 Title")]
     [Required(ErrorMessage = "Tab 1 Title is required.")]
