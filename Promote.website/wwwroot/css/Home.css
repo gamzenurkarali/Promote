@@ -44,7 +44,7 @@ body {
     }
 
     #navbar a:hover {
-        scale: 1.2;
+        letter-spacing:2px;
     }
 
     #navbar a.active {
@@ -217,8 +217,8 @@ h1 {
 
 .card {
     position: relative;
-    height: 400px;
-    width: 500px;
+    height: 350px;
+    width: 450px;
     margin: 10px 0;
     transition: ease all 2.3s;
     perspective: 1200px;

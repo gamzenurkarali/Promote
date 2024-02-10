@@ -59,7 +59,7 @@ body {
     /* wwwroot/css/style.css */
 
     #navbar a:hover {
-        transform: scale(1.2); /* Navbar bağlantı üzerine gelindiğinde */
+        letter-spacing: 2px; /* Navbar bağlantı üzerine gelindiğinde */
     }
 
 
