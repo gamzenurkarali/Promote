@@ -17,7 +17,7 @@ namespace Promote.website.Controllers
             _layoutService = layoutService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int informationFormId)
         {
             var documents = _layoutService.GetDocuments();
             ViewBag.relDocuments = documents;
@@ -26,6 +26,9 @@ namespace Promote.website.Controllers
             ViewBag.Layout = layout;
             ViewBag.Sublinks = sublinks;
             var values = _context.homePages.FirstOrDefault();
+            var informationFormList = _context.informationForms
+                .Where(x => x.InformationFormId == informationFormId)
+                .ToList();
             if (values != null)
             {
                 return View(values);
@@ -71,7 +74,21 @@ namespace Promote.website.Controllers
                 return View(defaultValue);
             }
         }
+        [HttpPost]
+        public IActionResult Index(InformationForm informationForm)
+        {
+            if (ModelState.IsValid)
+            {
+                // ContactForm içinde ContactFormId olduğunu varsayalım
+                _context.informationForms.Add(informationForm);
+                _context.SaveChanges();
 
+                // Formun içindeki iletişim formunun ID'si olduğunu varsayıyorum
+                return RedirectToAction("Index", new { informationFormId = informationForm.InformationFormId });
+            }
+
+            return View(informationForm);
+        }
         public IActionResult Privacy()
         {
             return View();

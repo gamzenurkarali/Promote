@@ -49,3 +49,28 @@
 
 
 
+    <div class="overlay"></div>
+
+    <!-- Floating Textbox -->
+    <div class="floating-textbox" id="floating-textbox">
+        <span class="close-btn" onclick="closeFloatingTextbox()"><strong>x</strong></span>
+
+        <h3>Bilgilendirilmek istiyor musunuz ?</h3>
+        <br />
+        <form action="/Home/Index" method="post">
+            <input type="text" class="text-input" placeholder="Mail Adress" name="EmailAdress" />
+            <!-- Buton textbox içinde -->
+            <button type="submit" class="submit-btn" role="button">Send</button>
+        </form>
+    </div>
+
+    <script>
+            function submitForm() {
+                // Form gönderimini işle
+                alert("Form gönderildi!");
+            }
+
+        function closeFloatingTextbox() {
+            document.getElementById('floating-textbox').style.display = 'none';
+        }
+    </script>
